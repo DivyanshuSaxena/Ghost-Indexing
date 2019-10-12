@@ -1,0 +1,7 @@
+graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')                                                   
+                                                                                                                            
+mgmt = graph.openManagement()                                                                                               
+                                                                                                                            
+tp = mgmt.makeEdgeLabel('NEXT_LEAF_EDGE').multiplicity(SINGLE).make()                                                            
+                                                                                                                            
+mgmt.commit()

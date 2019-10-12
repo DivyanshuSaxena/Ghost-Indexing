@@ -1,0 +1,16 @@
+graph.tx().rollback() //Never create new indexes while a transaction is active
+mgmt = graph.openManagement()
+creationDate = mgmt.getPropertyKey('creationDate')
+
+mgmt.buildIndex('byCreationDateComposite', Vertex.class).addKey(creationDate).buildCompositeIndex()
+mgmt.commit()
+
+//Wait for the index to become available
+mgmt.awaitGraphIndexStatus(graph, 'byCreationDateComposite').call()
+
+
+
+//Reindex the existing data
+mgmt = graph.openManagement()
+mgmt.updateIndex(mgmt.getGraphIndex("byCreationDateComposite"), SchemaAction.REINDEX).get()
+mgmt.commit()

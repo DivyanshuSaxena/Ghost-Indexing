@@ -1,0 +1,64 @@
+graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')
+df = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+dfb = new java.text.SimpleDateFormat("yyyy-MM-dd")
+g = graph.traversal()
+
+println "Vertices starting!!!"
+
+vCount = 0;
+
+new File("/home/prakhar/shared/indexCreationFiles/indexVertices.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { 
+	g.tx().commit(); System.gc(); vCount = 0;
+	
+}
+vCount++;
+a = graph.addVertex(T.label,'INDEX');a.property('id', p[0]);a.property('name', p[1]);
+}
+g.tx().commit(); System.gc();
+
+println "Vertices done!!!"
+
+
+
+
+prevID = "-1";
+comment = null;
+new File('/home/prakhar/shared/indexCreationFiles/indexEdges.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { 
+	g.tx().commit(); System.gc(); vCount = 0;
+	print "commitinge"
+} 
+vCount++;
+if(prevID != p[0]) {
+	comment = g.V().has('id',p[0]).hasLabel("INDEX").has("name", p[4]).next();
+	prevID = p[0];
+}
+person = g.V().has('id',p[1]).hasLabel("INDEX").has("name", p[4]).next();
+comment.addEdge("INDEX_EDGE", person, "min", df.parse(p[2]), "max", df.parse(p[3]));}
+g.tx().commit(); System.gc();
+
+
+println "edges done!!!"
+
+
+prevID = "-1";
+comment = null;
+new File('/home/prakhar/shared/indexCreationFiles/indexDataEdges.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { 
+	g.tx().commit(); System.gc(); vCount = 0;
+	print "commitingde"
+} 
+vCount++;
+if(prevID != p[0]) {
+	comment = g.V().has('id',p[0]).hasLabel("INDEX").has("name", p[4]).next();
+	prevID = p[0];
+}
+person = g.V().has('id',p[1]).hasLabel(p[2]).next();
+comment.addEdge("INDEX_DATA_EDGE", person, "val", df.parse(p[3]));}
+g.tx().commit(); System.gc();
+
+println "data edges done!!!"

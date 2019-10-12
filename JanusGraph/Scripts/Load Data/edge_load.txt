@@ -1,0 +1,274 @@
+graph = JanusGraphFactory.open('conf/janusgraph-berkeleyje-es.properties')
+df = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+dfb = new java.text.SimpleDateFormat("yyyy-MM-dd")
+g = graph.traversal()
+
+mgmt = graph.openManagement()
+idn = mgmt.getPropertyKey('id')
+mgmt.buildIndex('byIdComposite', Vertex.class).addKey(idn).buildCompositeIndex()
+mgmt.commit()
+mgmt.awaitGraphIndexStatus(graph, 'byIdComposite').call()
+mgmt = graph.openManagement()
+mgmt.updateIndex(mgmt.getGraphIndex("byIdComposite"), SchemaAction.REINDEX).get()
+mgmt.commit()
+
+
+mgmt = graph.openManagement()
+follow = mgmt.makeEdgeLabel('hasCreator').multiplicity(MANY2ONE).make()
+follow = mgmt.makeEdgeLabel('hasTag').multiplicity(MULTI).make()
+follow = mgmt.makeEdgeLabel('replyOf').multiplicity(MANY2ONE).make()
+follow = mgmt.makeEdgeLabel('containerOf').multiplicity(ONE2MANY).make()
+follow = mgmt.makeEdgeLabel('hasMember').multiplicity(MULTI).make()
+follow = mgmt.makeEdgeLabel('hasModerator').multiplicity(MANY2ONE).make()
+follow = mgmt.makeEdgeLabel('hasInterest').multiplicity(MULTI).make()
+follow = mgmt.makeEdgeLabel('knows').multiplicity(MULTI).make()
+follow = mgmt.makeEdgeLabel('likes').multiplicity(MULTI).make()
+follow = mgmt.makeEdgeLabel('studyAt').multiplicity(MANY2ONE).make()
+follow = mgmt.makeEdgeLabel('workAt').multiplicity(MANY2ONE).make()
+follow = mgmt.makeEdgeLabel('isPartOf').multiplicity(MANY2ONE).make()
+
+ht = mgmt.makeEdgeLabel('isLocatedIn').multiplicity(MULTI).make()
+ht = mgmt.makeEdgeLabel('hasType').multiplicity(MULTI).make()
+ht = mgmt.makeEdgeLabel('isSubclassOf').multiplicity(MULTI).make()
+
+eml = mgmt.makePropertyKey('email').dataType(String.class).cardinality(Cardinality.LIST).make()
+spk = mgmt.makePropertyKey('speaks').dataType(String.class).cardinality(Cardinality.LIST).make()
+
+
+spk = mgmt.makePropertyKey('joinDate').dataType(Date.class).cardinality(Cardinality.SINGLE).make()
+spk = mgmt.makePropertyKey('classYear').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+spk = mgmt.makePropertyKey('workFrom').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+mgmt.commit()
+
+vCount = 0;
+
+new File('/home/baadalservervm/social_network/comment_hasCreator_person_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('comment').next();
+person = g.V().has('id',p[1]).hasLabel('person').next();
+comment.addEdge("hasCreator", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/comment_hasTag_tag_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('comment').next();
+person = g.V().has('id',p[1]).hasLabel('tag').next();
+comment.addEdge("hasTag", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/comment_isLocatedIn_place_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('comment').next();
+person = g.V().has('id',p[1]).hasLabel('place').next();
+comment.addEdge("isLocatedIn", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/comment_replyOf_comment_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('comment').next();
+person = g.V().has('id',p[1]).hasLabel('comment').next();
+comment.addEdge("replyOf", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/comment_replyOf_post_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('comment').next();
+person = g.V().has('id',p[1]).hasLabel('post').next();
+comment.addEdge("replyOf", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/forum_containerOf_post_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('forum').next();
+person = g.V().has('id',p[1]).hasLabel('post').next();
+comment.addEdge("containerOf", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/forum_hasMember_person_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('forum').next();
+person = g.V().has('id',p[1]).hasLabel('person').next();
+comment.addEdge("hasMember", person, 'joinDate', df.parse(p[2]));}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/forum_hasModerator_person_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('forum').next();
+person = g.V().has('id',p[1]).hasLabel('person').next();
+comment.addEdge("hasModerator", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/forum_hasTag_tag_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('forum').next();
+person = g.V().has('id',p[1]).hasLabel('tag').next();
+comment.addEdge("hasTag", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/organisation_isLocatedIn_place_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('organisation').next();
+person = g.V().has('id',p[1]).hasLabel('place').next();
+comment.addEdge("isLocatedIn", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_email_emailaddress_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+comment.property(list, 'email', p[1]);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_hasInterest_tag_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('tag').next();
+comment.addEdge("hasInterest", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_isLocatedIn_place_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('place').next();
+comment.addEdge("isLocatedIn", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_knows_person_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('person').next();
+comment.addEdge("knows", person, 'creationDate', df.parse(p[2]));}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_likes_comment_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('comment').next();
+comment.addEdge("likes", person, 'creationDate', df.parse(p[2]));}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_likes_post_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('post').next();
+comment.addEdge("likes", person, 'creationDate', df.parse(p[2]));}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_speaks_language_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+comment.property(list, 'speaks', p[1]);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_studyAt_organisation_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('organisation').next();
+comment.addEdge("studyAt", person, 'classYear', p[2]);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/person_workAt_organisation_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('person').next();
+person = g.V().has('id',p[1]).hasLabel('organisation').next();
+comment.addEdge("workAt", person, 'workFrom', p[2]);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/place_isPartOf_place_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('place').next();
+person = g.V().has('id',p[1]).hasLabel('place').next();
+comment.addEdge("isPartOf", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/post_hasCreator_person_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('post').next();
+person = g.V().has('id',p[1]).hasLabel('person').next();
+comment.addEdge("hasCreator", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/post_hasTag_tag_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('post').next();
+person = g.V().has('id',p[1]).hasLabel('tag').next();
+comment.addEdge("hasTag", person);}
+g.tx().commit(); System.gc();
+
+
+
+
+
+
+new File('/home/baadalservervm/social_network/post_isLocatedIn_place_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('post').next();
+person = g.V().has('id',p[1]).hasLabel('place').next();
+comment.addEdge("isLocatedIn", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/tag_hasType_tagclass_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('tag').next();
+person = g.V().has('id',p[1]).hasLabel('tagclass').next();
+comment.addEdge("hasType", person);}
+g.tx().commit(); System.gc();
+
+new File('/home/baadalservervm/social_network/tagclass_isSubclassOf_tagclass_0_0.csv').eachLine{ 
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;} 
+vCount++;
+comment = g.V().has('id',p[0]).hasLabel('tagclass').next();
+person = g.V().has('id',p[1]).hasLabel('tagclass').next();
+comment.addEdge("isSubclassOf", person);}
+g.tx().commit(); System.gc();
+
+

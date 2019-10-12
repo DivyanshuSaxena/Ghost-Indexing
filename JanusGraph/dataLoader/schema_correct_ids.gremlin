@@ -1,0 +1,127 @@
+import org.janusgraph.core.JanusGraphFactory;
+import org.apache.commons.csv.*
+import java.util.Date;
+//if (args) {
+//    confFile = args[0]
+//}
+g = JanusGraphFactory.open ('/home/baadalservervm/janus/janusgraph-0.1.1-hadoop2/conf/janusgraph-cassandra-es.properties');
+gt = g.traversal();
+
+
+mgmt = g.openManagement();
+forum = mgmt.makeVertexLabel("forum").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+tagclass = mgmt.makeVertexLabel("tagclass").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+post = mgmt.makeVertexLabel("post").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+person = mgmt.makeVertexLabel("person").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("emails").dataType(String.class).cardinality(Cardinality.LIST).make();
+mgmt.commit();
+println "Finished creation emails "
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("speaksLanguage").dataType(String.class).cardinality(Cardinality.LIST).make();
+mgmt.commit();
+println "Finished creation speaksLanguage "
+
+
+mgmt = g.openManagement();
+organization = mgmt.makeVertexLabel("organization").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+comment = mgmt.makeVertexLabel("comment").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+place = mgmt.makeVertexLabel("place").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+tag = mgmt.makeVertexLabel("tag").make(); mgmt.commit()
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("id").dataType(Long.class).make();
+mgmt.buildIndex("id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
+mgmt.commit();
+println "Finished indexing  id "
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey('name').dataType(String.class).make();
+kee = mgmt.makePropertyKey('url').dataType(String.class).make();
+kee = mgmt.makePropertyKey('type').dataType(String.class).make();
+
+kee = mgmt.makePropertyKey('firstName').dataType(String.class).make();
+kee = mgmt.makePropertyKey('lastName').dataType(String.class).make();
+kee = mgmt.makePropertyKey('gender').dataType(String.class).make();
+kee = mgmt.makePropertyKey('birthday').dataType(Date.class).make();
+kee = mgmt.makePropertyKey('creationDate').dataType(Date.class).make();
+kee = mgmt.makePropertyKey('locationIP').dataType(String.class).make();
+kee = mgmt.makePropertyKey('browserUsed').dataType(String.class).make();
+
+
+kee = mgmt.makePropertyKey('imageFile').dataType(String.class).make();
+kee = mgmt.makePropertyKey('language').dataType(String.class).make();
+kee = mgmt.makePropertyKey('content').dataType(String.class).make();
+kee = mgmt.makePropertyKey('length').dataType(Integer.class).make();
+
+
+kee = mgmt.makePropertyKey('title').dataType(String.class).make();
+mgmt.commit();
+
+mgmt = g.openManagement(); hasCreator = mgmt.makeEdgeLabel("hasCreator").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); isLocatedIn = mgmt.makeEdgeLabel("isLocatedIn").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); replyOf = mgmt.makeEdgeLabel("replyOf").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); containerOf = mgmt.makeEdgeLabel("containerOf").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); hasMember = mgmt.makeEdgeLabel("hasMember").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); hasModerator = mgmt.makeEdgeLabel("hasModerator").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); hasTag = mgmt.makeEdgeLabel("hasTag").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); hasInterest = mgmt.makeEdgeLabel("hasInterest").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); knows = mgmt.makeEdgeLabel("knows").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); likes = mgmt.makeEdgeLabel("likes").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); studyAt = mgmt.makeEdgeLabel("studyAt").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); workAt = mgmt.makeEdgeLabel("workAt").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); isPartOf = mgmt.makeEdgeLabel("isPartOf").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); hasType = mgmt.makeEdgeLabel("hasType").multiplicity(MULTI).make(); mgmt.commit() 
+mgmt = g.openManagement(); isSubClassOf = mgmt.makeEdgeLabel("isSubClassOf").multiplicity(MULTI).make(); mgmt.commit() 
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("joinDate").dataType(Date.class).make();
+hasMember = mgmt.getEdgeLabel("hasMember");
+mgmt.buildEdgeIndex(hasMember, 'joinDate', Direction.OUT, Order.incr, kee);
+mgmt.commit();
+println "Finished indexing joinDate "
+
+mgmt = g.openManagement();
+knows = mgmt.getEdgeLabel("knows");
+likes = mgmt.getEdgeLabel("likes");
+mgmt.buildEdgeIndex(likes, 'creationDate', Direction.OUT, Order.incr, kee);
+mgmt.buildEdgeIndex(knows, 'creationDate', Direction.OUT, Order.incr, kee);
+mgmt.commit();
+println "Finished indexing creationDate "
+
+//mgmt = g.openManagement();
+//likes = mgmt.getEdgeLabel("likes");
+//mgmt.commit();
+//println "Finished indexing creationDate "
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("classYear").dataType(Integer.class).make();
+studyAt = mgmt.getEdgeLabel("studyAt");
+mgmt.buildEdgeIndex(studyAt, 'classYear', Direction.OUT, Order.incr, kee);
+mgmt.commit();
+println "Finished indexing classYear "
+
+mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("workFrom").dataType(Integer.class).make();
+workAt = mgmt.getEdgeLabel("workAt");
+mgmt.buildEdgeIndex(workAt, 'workFrom', Direction.OUT, Order.incr, kee);
+mgmt.commit();
+println "Finished indexing workFrom "
+
+g.close();
+
+System.exit(1);

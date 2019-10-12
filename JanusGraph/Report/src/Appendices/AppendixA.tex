@@ -1,0 +1,17 @@
+% % Appendix A
+
+% \chapter{How to run the Project} % Main appendix title
+
+% \label{AppendixA} % For referencing this appendix elsewhere, use \ref{AppendixA}
+
+% \section{Choice of Database}
+% We essentially deal with Graph databases for the purpose of creating index and running benchmark queries on it. We use JanusGraph //todo with Cassandra //todo DB as the storage backend and Elastic Search //todo as the indexing backend. The choice of Cassandra was based on the need for frequent writes as a part of testing, which is primarily what cassandra is optimized for. The indexing backend is used to directly compare the query timings using our in Graph index structure to the timings obtained using elastic search index. JanusGraph by deafult, uses Gremlin (from Apache Tinkerpop3 //todo ) as its query interface. JanusGraph is also an open source, community developed project. We also found that it to behaving a larger and fast growing community support and adoption.
+
+% \section{Getting up and running with the code base}
+
+% Please check the wiki from the github-repository which should have detailed instructions on how to get started with the setup of the java codebase. Access to the repository can be requested from our Advisor to the project.
+
+% \section{Loading Data}
+% \section{Build the (Ghost) Index Structure}
+% \section{Running queries from the codebase}
+% \section{Using the query rewrite framework}

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="987fcd9a-1c1d-46b7-9d7e-82eaf3faf3a2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/BPIndexQuery1.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/BPIndexQuery1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/IndexQuery1.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/IndexQuery1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query1.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query12.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query12.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query17.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query17.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query2.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Queries/Query2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Rewrite/SampleRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/Rewrite/SampleRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/main/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/Utilities/src/main/java/main/Example.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/00000000.jdb" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/00000000.jdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/je.config.csv" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/je.config.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/je.stat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/conf/db/berkeley/je.stat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GhostIndex/conf/local/janusgraph-cassandra-es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/GhostIndex/conf/local/janusgraph-cassandra-es.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/.indexEdges.csv.swp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/indexCreate" beforeDir="false" afterPath="$PROJECT_DIR$/IndexHandler/indexCreate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/indexDataEdges.csv" beforeDir="false" afterPath="$PROJECT_DIR$/IndexHandler/indexDataEdges.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/indexEdges.csv" beforeDir="false" afterPath="$PROJECT_DIR$/IndexHandler/indexEdges.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/indexVertices.csv" beforeDir="false" afterPath="$PROJECT_DIR$/IndexHandler/indexVertices.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IndexHandler/leafEdges.csv" beforeDir="false" afterPath="$PROJECT_DIR$/IndexHandler/leafEdges.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataLoader/loadit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/dataLoader/loadit.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataLoader/reader.gremlin" beforeDir="false" afterPath="$PROJECT_DIR$/dataLoader/reader.gremlin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataLoader/schema_mixed_indices.gremlin" beforeDir="false" afterPath="$PROJECT_DIR$/dataLoader/schema_mixed_indices.gremlin" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="jdkForImporter" value="1.8" />
+        <option name="lookForNested" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Q30fNtKqWhawuTs5kZCl3MWDGg" />
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GhostIndex" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/GhostIndex" />
+      <recent name="$PROJECT_DIR$/GhostIndex/Utilities" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Query1">
+    <configuration name="BPIndexQuery1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Queries.BPIndexQuery1" />
+      <module name="Utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GhostIndex" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Queries.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IndexQuery1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Queries.IndexQuery1" />
+      <module name="Utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GhostIndex" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Queries.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Query1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Queries.Query1" />
+      <module name="Utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GhostIndex" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Query17" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Queries.Query17" />
+      <module name="Utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GhostIndex" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Queries.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Query2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Queries.Query2" />
+      <module name="Utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GhostIndex" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Queries.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Query1" />
+      <item itemvalue="Application.Query2" />
+      <item itemvalue="Application.IndexQuery1" />
+      <item itemvalue="Application.BPIndexQuery1" />
+      <item itemvalue="Application.Query17" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.BPIndexQuery1" />
+        <item itemvalue="Application.Query17" />
+        <item itemvalue="Application.IndexQuery1" />
+        <item itemvalue="Application.Query2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="987fcd9a-1c1d-46b7-9d7e-82eaf3faf3a2" name="Default Changelist" comment="" />
+      <created>1566984074808</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566984074808</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

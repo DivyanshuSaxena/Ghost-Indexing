@@ -1,0 +1,23 @@
+graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')
+g = graph.traversal()
+
+println "Leaves starting!!!"
+
+vCount = 0;
+firstIter = 1;
+new File("leafEdges.csv").eachLine{
+    l->p=l.split("\\|");
+    if(vCount > 10000) { 
+    	g.tx().commit(); System.gc(); vCount = 0;
+    }
+    if (firstIter == 1) { 
+        a = g.V().has('index_id',p[0]).hasLabel("INDEX").has("name", p[2]).next();
+    }
+    vCount++;
+    prev = a;
+    a = g.V().has('index_id',p[1]).hasLabel("INDEX").has("name", p[2]).next();
+    prev.addEdge("NEXT_LEAF_EDGE", a);
+}
+g.tx().commit(); System.gc();
+
+println "Leaves done!!!"

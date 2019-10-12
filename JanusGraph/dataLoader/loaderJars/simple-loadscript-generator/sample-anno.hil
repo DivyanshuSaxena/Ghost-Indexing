@@ -1,0 +1,24 @@
+declare LocationType : set [
+	city:	string,
+	state:	string,
+	country:	string
+] @graphIgnore;
+declare Profile: set [
+	id : long,
+	name : string,
+	company : string,
+	age : int,
+	salary : int,
+	locations : LocationType,	
+	interests : set [
+		interest:	string
+	],
+	follower : [
+		id_follower:	string, 
+		name_follower: string @graphLink("CoCustomer","Customer","name"),
+		relationships: set [
+			relationship: string,
+			date : string
+		]
+	] @graphVertex (label="MyFollower", key="id_follower")
+] @graphVertex (label="Customer",key="id");

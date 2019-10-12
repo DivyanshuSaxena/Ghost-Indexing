@@ -1,0 +1,259 @@
+
+%----------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------
+
+\documentclass[
+11pt, % The default document font size, options: 10pt, 11pt, 12pt
+oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+english, % ngerman for German
+singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
+toctotoc, % Uncomment to add the main table of contents to the table of contents
+%parskip, % Uncomment to add space between paragraphs
+%nohyperref, % Uncomment to not load the hyperref package
+headsepline, % Uncomment to get a line under the header
+%chapterinoneline, % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, % Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+]{MastersDoctoralThesis} % The class file specifying the document structure
+
+\ProvidesClass{ieeeconf}[2004/1/15 revision V1.6b by Pradeep Misra]
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{mathpazo} % Use the Palatino font by default
+
+%\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\usepackage[numbers]{natbib}
+%\addbibresource{example.bib} % The filename of the bibliography
+
+\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\usepackage{titlesec}
+\titlespacing*{\section}
+{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+\titlespacing*{\subsection}
+{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+\titlespacing*{\paragraph}
+{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+\titlespacing*{\subparagraph}
+{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+%-----------------------------------------------------------------------------
+%	MARGIN SETTINGS
+%-----------------------------------------------------------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%-----------------------------------------------------------------------------
+%	THESIS INFORMATION
+%-----------------------------------------------------------------------------
+
+\thesistitle{Refining Index Storage in NoSQL Graph Databases} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\title{Refining Index Storage in NoSQL Graph Databases}
+\supervisor{Dr. Srikanta J. Bedathur} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+\degree{Bachelor of Technology} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\author{Mayank Rajoria \\Prakhar Gupta \\Prakhar Agrawal } % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+
+\subject{} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\keywords{} % Keywords for your thesis, this is not currently used anywhere in the template, print it elsewhere with \keywordnames
+\university{\href{http://www.iitd.ac.in}{Indian Institute of Technology, Delhi}} % Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\department{\href{http://www.cse.iitd.ac.in}{Department of Computer Science and Engineering}} % Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+ 
+% \group{\href{http://researchgroup.university.com}{Research Group Name}} % Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\faculty{\href{http://bedathur.net}{}} % Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+%-----------------------------------------------------------------------------
+%	TITLE PAGE
+%-----------------------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+\vspace*{.06\textheight}
+{\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
+\textsc{\Large B.Tech Project Thesis}\\[0.5cm] % Thesis type
+
+\HRule \\[0.4cm] % Horizontal line
+{\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
+\HRule \\[1.5cm] % Horizontal line
+ 
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+\href{}{\authorname} % Author name - remove the \href bracket to remove the link
+\end{flushleft}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+\href{}{\supname} % Supervisor name - remove the \href bracket to remove the link  
+\end{flushright}
+\end{minipage}\\[3cm]
+ 
+\vfill
+
+\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+\textit{in the}\\[0.4cm]
+DAIR\\Department of Computer Science and Engineering\\[2cm] % Research group name and department name
+ 
+\vfill
+
+{\large \today}\\[4cm] % Date
+%\includegraphics{Logo} % University/department logo - uncomment to place it
+ 
+\vfill
+\end{center}
+\end{titlepage}
+
+
+\cleardoublepage
+
+
+\begin{abstract}
+
+\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
+$\:$\\
+Graph databases such as Neo4j, JanusGraph/Titan etc. are increasingly becoming popular due to the flexible data model they provide. However, writing optimal queries on these databases using the dataflow query language, Gremlin, remains an interesting problem. In this project, we explore ways to optimize these Gremlin queries by exploiting the flexibility --viz., schema -- of the graph database.\\\\
+Specifically, we try to achieve this by storing the index structure as a part of the graph database itself (thus removing dependency on third party application like the elastic search or solr). We explore this approach towards the following four-fold objectives: (a) reduce the moving components from a graph database, (b) remove the application layer overheads in terms of using external applications like solr (c) offer flexibility in terms of index structures one can design and play with and (d) explore other unexplored ways of traversal e.g. traveling through index to data and then going up some other index to get cumulative number etc.
+
+\end{abstract}
+
+
+%-----------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Prints the main table of contents
+
+% \listoffigures % Prints the list of figures
+
+% \listoftables % Prints the list of tables
+
+%-----------------------------------------------------------------------------
+%	ABBREVIATIONS
+%-----------------------------------------------------------------------------
+
+% \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+
+% \textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere\\
+% \textbf{WSF} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or\\
+
+% \end{abbreviations}
+
+%-----------------------------------------------------------------------------
+%	THESIS CONTENT - CHAPTERS
+%-----------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+\setstretch{1.15}
+
+\include{Chapters/Chapter1}
+\include{Chapters/Chapter2}
+\include{Chapters/Chapter3}
+\include{Chapters/Chapter4}
+\include{Chapters/Chapter5}
+\include{Chapters/Chapter6}
+\include{Chapters/Chapter7}
+% \include{Chapters/Chapter6}
+
+%-----------------------------------------------------------------------------
+%	THESIS CONTENT - APPENDICES
+%-----------------------------------------------------------------------------
+
+\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+\include{Appendices/AppendixA}
+%\include{Appendices/AppendixB}
+%\include{Appendices/AppendixC}
+
+%-----------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%-----------------------------------------------------------------------------
+
+%\printbibliography[heading=bibintoc]
+
+%-----------------------------------------------------------------------------
+
+
+\begin{thebibliography}{99}
+
+\bibitem{benchmark} Benchmark: http://ldbcouncil.org/developer/snb
+\bibitem{ldbcQueries} SNB Queries Specifications: http://ldbc.github.io/ldbc\_snb\_docs/ldbc-snb-specification.pdf
+\bibitem{datagen} LDBC Data Generator: https://github.com/ldbc/ldbc\_snb\_datagen
+\bibitem{gremlin} Gremlin reference book: http://kelvinlawrence.net/book/Gremlin-Graph-Guide.html
+\bibitem{tinkerpop1} Tinkerpop Documentation: http://tinkerpop.apache.org/docs/current/reference/
+\bibitem{tinkerpop2} Tinkerpop Java Documentation: http://tinkerpop.apache.org/javadocs/current/core/
+\bibitem{book1} Towards Integrated Graph Algebra for Graph Pattern Matching with Gremlin: Harsh et al
+\bibitem{book2} The Gremlin Graph Traversal Machine and Language: Marko A. Rodriguez
+\bibitem{runtime} Query run times: https://docs.google.com/spreadsheets/d/1lSBP4IWh5VKFXzT6
+\\
+qyYzQJn\_R93dUtRdPldVc9AqR38/
+\bibitem{repo} Git Repository: https://github.com/Prakhar0409/Ghost-Index-in-Graph-DB
+\bibitem{GiST} Generalized Search Tree: http://db.cs.berkeley.edu/papers/vldb95-gist.pdf
+
+
+\end{thebibliography}
+
+
+\end{document}  
