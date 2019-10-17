@@ -30,7 +30,7 @@ fullqueryresults/
 queryresults/
 
 # Ignore log files
-Janusgraph/dataLoader/log/
+log/
 
 # Intellij Files
-Janusgraph/.idea/
+.idea/
