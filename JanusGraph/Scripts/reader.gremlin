@@ -178,7 +178,7 @@ cache_node = null;
 prev_val = -1;
 pre = System.nanoTime();
 
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/place_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/place_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'place');
     v.property('pl_id',csvrec.get(0).toLong())
@@ -197,7 +197,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed place #######\n'
 
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/person_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/person_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'person');
     v.property('p_id',csvrec.get(0).toLong())
@@ -239,7 +239,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed person #######\n'
 prev_val = -1;
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/organisation_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/organisation_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'organization');
     v.property('o_id',csvrec.get(0).toLong())
@@ -267,7 +267,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed organization #######\n'
 prev_val = -1;
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/post_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/post_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'post');
     v.property('po_id',csvrec.get(0).toLong())
@@ -308,7 +308,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed post #######\n'
 prev_val = -1;
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/comment_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/comment_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'comment');
     v.property('c_id',csvrec.get(0).toLong())
@@ -343,7 +343,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed comment #######\n'
 prev_val = -1;
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/forum_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/forum_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'forum');
     v.property('f_id',csvrec.get(0).toLong())
@@ -376,7 +376,7 @@ b_record = null;
 if(bridge.hasNext()){
     b_record = bridge.next();
 }*/
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/tag_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/tag_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'tag');
     pk = csvrec.get(0).toLong();
@@ -411,7 +411,7 @@ if(bridge.hasNext()){
     b_record = bridge.next();
 }
 */
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/tagclass_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/tagclass_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = g.addVertex(T.label,'tagclass');
     pk = csvrec.get(0).toLong();
@@ -441,7 +441,7 @@ println '###### Completed tagclass #######\n'
 
 
 
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/person_email_emailaddress_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/person_email_emailaddress_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = gt.V().has('p_id',csvrec.get(0).toLong()).next();
     try
@@ -460,7 +460,7 @@ g.tx().commit(); System.gc();
 
 println '###### Completed email #######\n'
 
-for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_2000/person_speaks_language_0_0.csv'))){
+for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('/home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/person_speaks_language_0_0.csv'))){
     if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
     v = gt.V().has('p_id',csvrec.get(0).toLong()).next();
     try

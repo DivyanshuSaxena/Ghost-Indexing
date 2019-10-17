@@ -16,30 +16,31 @@ public class PerformanceTester {
     public static void main(String[] argv) throws Exception {
 
         if(argv.length < 3){
-            System.out.println("Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> [<confFile>]");
-            System.out.println("Eg: java a.out IndexQuery1 1 1 [baadal/local/aryabhata]");
+            System.out.println("Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> [<confFile>]");
+            System.out.println("Eg: java a.out IndexQuery1 1 1 1000 [baadal/local/aryabhata]");
             return;
         }
 
         String queryClassName = argv[0];
         int query_numeric = Integer.parseInt(argv[1]);
         int skipLines = Integer.parseInt(argv[2]);
+        int dataset = Integer.parseInt(argv[3]);
 
         Class queryClass = Class.forName("Queries."+queryClassName);
         Queries.Query query = (Queries.Query) queryClass.newInstance();
-        if(argv.length > 3){
-            query.confFile = argv[3];
+        if(argv.length > 4){
+            query.confFile = argv[4];
         }
 
 
         PerformanceTester p = new PerformanceTester();
-        p.getPerformance(query,query_numeric, skipLines);
+        p.getPerformance(query, query_numeric, skipLines, dataset);
 
     }
 
-    public void getPerformance(Queries.Query query, int param_file, int skipParamsLines) throws Exception {
-        int averageOver = 4;
-        int skipFirstX = 2;
+    public void getPerformance(Queries.Query query, int param_file, int skipParamsLines, int dataset) throws Exception {
+        int averageOver = 2;
+        int skipFirstX = 1;
 
         String paramsDelimiter = "\\|";
         String queryParamsFolder = "substitution_parameters/";
@@ -52,7 +53,7 @@ public class PerformanceTester {
 
         //create query file path and result file path
         String csvFile = "substitution_parameters/bi_"+param_file+"_param.txt";
-        String resultFile = "queryresults/"+query.getClass().getSimpleName()+".csv";
+        String resultFile = "queryresults/"+query.getClass().getSimpleName()+"_"+dataset+".csv";
         clearFiles(resultFile, "full"+resultFile);
 
 

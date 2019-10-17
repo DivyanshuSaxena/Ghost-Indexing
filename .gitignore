@@ -21,3 +21,16 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Ignore all db folders
+db/
+
+# Ignore all result folders
+fullqueryresults/
+queryresults/
+
+# Ignore log files
+Janusgraph/dataLoader/log/
+
+# Intellij Files
+Janusgraph/.idea/
