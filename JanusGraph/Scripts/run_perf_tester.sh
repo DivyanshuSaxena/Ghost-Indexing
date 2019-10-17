@@ -32,7 +32,7 @@ for dataset in ${datasets[*]}; do
 	# Run Performance Tester for the given Query class
 	echo "Running ES Implementation for Query"
 	cd $3/GhostIndex
-	./perf_tester_cmd.sh Query$5 $5
+	./perf_tester_cmd.sh Query$5 $5 $dataset
 	cd $cwd
 
 	# Add BPlus Ghost Indexes
@@ -44,7 +44,7 @@ for dataset in ${datasets[*]}; do
 	# Run Performance Tester for the given Query class again
 	echo "Running GhostIndex Implementation for Query"
 	cd $3/GhostIndex
-	./perf_tester_cmd.sh BPIndexQuery$5 $5
+	./perf_tester_cmd.sh BPIndexQuery$5 $5 $dataset
 	cd $cwd
 
 	# Cleanup data, to prepare for next dataset
