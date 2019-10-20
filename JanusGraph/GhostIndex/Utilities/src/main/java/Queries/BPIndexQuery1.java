@@ -40,7 +40,7 @@ public class BPIndexQuery1 extends Query{
         graph = JanusGraphFactory.open("conf/"+confFile+"/janusgraph-cassandra-es.properties");
         GraphTraversalSource g = graph.traversal();
 
-        String indexName = "post_creationDate_index_bPlus_100";
+        String indexName = "post_creationDate_index_bPlus_2000";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
         String initDateVar = "2007-00-00T00:00:00.000+0000";

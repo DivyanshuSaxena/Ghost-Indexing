@@ -9,6 +9,7 @@ import org.janusgraph.core.JanusGraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class BPlusIndexRangeQuery {
     }
 
     private Vertex getIndexRoot(GraphTraversalSource g, String indexName){
+        System.out.println(indexName);
         return g.V().has("index_id", -1).hasLabel("SUPER_INDEX").out("SUPER_INDEX_EDGE").has("name",indexName).next();
 
 //        return  g.V().has("index_id", "0").hasLabel("INDEX").has("name", indexName).toList().get(0);

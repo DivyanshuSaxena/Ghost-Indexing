@@ -24,6 +24,7 @@ hs_err_pid*
 
 # Ignore all db folders
 db/
+sorted/
 
 # Ignore all result folders
 fullqueryresults/
@@ -34,3 +35,18 @@ log/
 
 # Intellij Files
 .idea/
+
+# Ignore Binaries
+indexCreate
+
+# Ignore files produced in execution
+JanusGraph/IndexHandler/indexDataEdges.csv
+JanusGraph/IndexHandler/indexEdges.csv
+JanusGraph/IndexHandler/indexVertices.csv
+JanusGraph/IndexHandler/leafEdges.csv
+JanusGraph/dataLoader/reader.gremlin
+
+# Ignore One time files
+JanusGraph/GhostIndex/perf_tester_cmd.sh
+JanusGraph/dataLoader/schema_mixed_indices.gremlin
+
