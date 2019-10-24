@@ -38,6 +38,7 @@ log/
 
 # Ignore Binaries
 indexCreate
+target/
 
 # Ignore files produced in execution
 JanusGraph/IndexHandler/indexDataEdges.csv

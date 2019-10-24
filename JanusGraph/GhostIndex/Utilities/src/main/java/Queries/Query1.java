@@ -45,8 +45,8 @@ public class Query1 extends Query{
         GraphTraversalSource g = graph.traversal();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        Date dateVar = new Date(date);//dateFormat.parse(date);
-        System.out.println("Date: " + dateVar);
+//        Date dateVar = new Date(date);//dateFormat.parse(date);
+//        System.out.println("Date: " + dateVar);
 
         long startTime = System.currentTimeMillis();
         /*
@@ -80,8 +80,6 @@ public class Query1 extends Query{
 //        System.out.println("Count: "+resultCount);
 
 
-
-
         System.out.println("===================="+date+"======================");
         System.out.println("DataSize: " + result.get(0).size());
         System.out.println("TotalTime: " + totalTime);
@@ -98,7 +96,7 @@ public class Query1 extends Query{
 
         QueryResult queryResult = new QueryResult();
         queryResult.setQueryName("Q1: ("+date+")");
-        queryResult.setResultCount(result.size());
+        queryResult.setResultCount(result.get(0).size());
         queryResult.setTimeToRun(totalTime);
         queryResult.setTimeToTraverseIndex(-1);
 //        queryResult.setResults(result);

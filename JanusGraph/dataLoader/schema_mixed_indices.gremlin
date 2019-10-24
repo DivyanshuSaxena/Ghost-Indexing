@@ -157,13 +157,13 @@ kee = mgmt.makePropertyKey('lastName').dataType(String.class).make();
 kee = mgmt.makePropertyKey('gender').dataType(String.class).make();
 
 kee = mgmt.makePropertyKey("birthday").dataType(Long.class).make();
-mgmt.buildIndex("birthday", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("birthdayIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 println "Finished indexing  person birthday "
 
 kee = mgmt.makePropertyKey('p_creationDate').dataType(Long.class).make();
-mgmt.buildIndex("p_creationDate", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("p_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 println "Finished indexing  person creationDate "
@@ -183,7 +183,7 @@ kee = mgmt.makePropertyKey('o_url').dataType(String.class).make();
 
 kee = mgmt.makePropertyKey('imageFile').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_creationDate').dataType(Long.class).make();
-mgmt.buildIndex("po_creationDate", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("po_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('po_locationIP').dataType(String.class).make();
@@ -194,12 +194,12 @@ mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('language').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_content').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_length').dataType(Integer.class).make();
-mgmt.buildIndex("po_length", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("po_lengthIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 
 kee = mgmt.makePropertyKey('c_creationDate').dataType(Long.class).make();
-mgmt.buildIndex("c_creationDate", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("c_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('c_locationIP').dataType(String.class).make();
@@ -215,7 +215,7 @@ mgmt = g.openManagement();
 
 kee = mgmt.makePropertyKey('title').dataType(String.class).make();
 kee = mgmt.makePropertyKey('f_creationDate').dataType(Long.class).make();
-mgmt.buildIndex("f_creationDate", Vertex.class).addKey(kee).buildMixedIndex("search");
+mgmt.buildIndex("f_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
 mgmt = g.openManagement();
 
