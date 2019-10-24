@@ -52,7 +52,7 @@ public class Query1 extends Query{
         /*
         * FIXME: Create index on creationDate of comments and include that in query
 //        * */
-        List<Map<Object, Object>> result = g.V().hasLabel("post")       //.hasLabel("post", "comment")
+        List<Map<Object, Object>> result = g.V() //.hasLabel("post", "comment")
                 .has("po_creationDate", P.lt(date))//.toList();
                 .group().by(it -> {
                     long value = ((Vertex) it).value("po_creationDate");

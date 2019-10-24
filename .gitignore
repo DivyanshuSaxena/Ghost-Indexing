@@ -48,5 +48,4 @@ JanusGraph/dataLoader/reader.gremlin
 
 # Ignore One time files
 JanusGraph/GhostIndex/perf_tester_cmd.sh
-JanusGraph/dataLoader/schema_mixed_indices.gremlin
 

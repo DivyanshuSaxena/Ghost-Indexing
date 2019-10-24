@@ -64,7 +64,7 @@ public class BPIndexQuery1 extends Query{
 //
         List<Map<Object, Object>> result = null;
         if(vertices.size() > 0) {
-            result = g.V(vertices).hasLabel("post")
+            result = g.V(vertices) //.hasLabel("post")
                     .group().by(it -> {
                         long value = ((Vertex) it).value("po_creationDate");
                         Date creationDate = new Date(value);
@@ -91,7 +91,7 @@ public class BPIndexQuery1 extends Query{
 //            for(int i=0;i<keys.length;i++) {
 //
 //                System.out.println(keys[i]);
-////                System.out.println(map.get(keys[i]));
+//                System.out.println(map.get(keys[i]));
 //                Map<Object, Object> yearMap = (Map<Object, Object>) map.get(keys[i]);
 //                Map<Object, Object> postMap = (Map<Object, Object>) yearMap.get("post");
 //                for(int j=0;j<=4;j++) {
