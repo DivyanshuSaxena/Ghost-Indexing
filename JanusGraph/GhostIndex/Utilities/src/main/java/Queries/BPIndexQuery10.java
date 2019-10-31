@@ -46,7 +46,7 @@ public class BPIndexQuery10 extends Query {
         System.out.println("tagName1 : " + tagName1);
         System.out.println("date1 : " + date1);
 
-        String indexName = "post_creationDate_index_bPlus_100";
+        String indexName = "post_creationDate_index_bPlus_2000";
         long dateMax1 = 1500354600000L;
 
         long startTime = System.currentTimeMillis();

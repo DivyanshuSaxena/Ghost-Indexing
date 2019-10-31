@@ -41,7 +41,7 @@ public class Query10 extends Query {
             tagName1 = params.get(0);
             date1 = Long.parseLong(params.get(1));
         }
-        Date dateVar1 = new Date(date1);
+//        Date dateVar1 = new Date(date1);
 
         System.out.println("tagName1 : " + tagName1);
         System.out.println("date1 : " + date1);
@@ -54,7 +54,7 @@ public class Query10 extends Query {
 
         List<Object> person2 =
                 g.V()
-                .has("po_creationDate", P.gt(dateVar1))//.limit(1000)
+                .has("po_creationDate", P.gt(date1))//.limit(1000)
                 .where(out("hasTag").has("t_name",tagName1))
                 .out("hasCreator").as("personsx")
                 .groupCount().by(select("personsx")).unfold().toList();
@@ -79,7 +79,7 @@ public class Query10 extends Query {
 
 
         long startTime1 = System.currentTimeMillis();
-        List<Vertex> person3 = g.V().has("po_creationDate", P.gt(dateVar1)).toList();
+        List<Vertex> person3 = g.V().has("po_creationDate", P.gt(date1)).toList();
 
         long endTime2  = System.currentTimeMillis();
         long totalTime2 = endTime2 - startTime1;
@@ -87,11 +87,14 @@ public class Query10 extends Query {
 
         graph.close();
         QueryResult queryResult = new QueryResult();
-        queryResult.setQueryName("Q10: ("+dateVar1 + "|" + tagName1 +")");
+        queryResult.setQueryName("Q10: ("+date1 + "|" + tagName1 +")");
         queryResult.setResultCount(person3.size());
         queryResult.setTimeToTraverseIndex(totalTime2);
         queryResult.setTimeToRun(totalTime);
 //        queryResult.setResults(result);
+
+        System.out.println("Total time: " + totalTime);
+
         return queryResult;
     }
 

@@ -122,8 +122,8 @@ public class BPlusIndexRangeQuery {
                 ret.add(outE.inVertex());
             }
         }
-        System.out.println("here");
-        System.out.println("size: "+ret.size());
+//        System.out.println("here");
+//        System.out.println("size: "+ret.size());
         return ret;
   
     }
