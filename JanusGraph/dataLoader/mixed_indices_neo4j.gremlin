@@ -1,0 +1,46 @@
+g = Neo4jGraph.open('/tmp/neo4j')
+gt = g.traversal();
+
+g.cypher("CREATE INDEX ON :INDEX(index_id)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :forum(f_id)")
+g.cypher("CREATE INDEX ON :tagclass(tc_id)")
+g.cypher("CREATE INDEX ON :post(po_id)")
+g.cypher("CREATE INDEX ON :person(p_id)")
+g.cypher("CREATE INDEX ON :organization(o_id)")
+g.cypher("CREATE INDEX ON :comment(c_id)")
+g.cypher("CREATE INDEX ON :place(pl_id)")
+g.cypher("CREATE INDEX ON :tag(t_id)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :person(birthday)")
+g.cypher("CREATE INDEX ON :person(p_creationDate)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :organization(o_name)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :post(po_creationDate)")
+g.cypher("CREATE INDEX ON :post(po_browserUsed)")
+g.cypher("CREATE INDEX ON :post(po_length)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :comment(c_creationDate)")
+g.cypher("CREATE INDEX ON :comment(c_browserUsed)")
+g.cypher("CREATE INDEX ON :comment(c_length)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :forum(f_creationDate)")
+g.cypher("CREATE INDEX ON :tag(t_name)")
+g.cypher("CREATE INDEX ON :tagclass(tc_name)")
+g.tx().commit()
+
+g.cypher("CREATE INDEX ON :hasMember(joinDate)")
+g.cypher("CREATE INDEX ON :likes(creationDate)")
+g.cypher("CREATE INDEX ON :knows(creationDate)")
+g.cypher("CREATE INDEX ON :studyAt(classYear)")
+g.cypher("CREATE INDEX ON :workAt(workFrom)")
+g.tx().commit()
+
+System.exit(1);
