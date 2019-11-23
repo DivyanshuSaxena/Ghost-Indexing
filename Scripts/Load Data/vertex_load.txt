@@ -1,0 +1,121 @@
+
+graph = JanusGraphFactory.open('conf/janusgraph-berkeleyje-es.properties')
+
+mgmt = graph.openManagement()
+forum = mgmt.makeVertexLabel('forum').make()
+mgmt.makePropertyKey('title').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+
+comment = mgmt.makeVertexLabel('comment').make()
+comment = mgmt.makeVertexLabel('place').make()
+mgmt.makePropertyKey('id').dataType(Long.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('creationDate').dataType(Date.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('locationIP').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('browserUsed').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('content').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('length').dataType(Integer.class).cardinality(Cardinality.SINGLE).make()
+
+
+org = mgmt.makeVertexLabel('organisation').make()
+mgmt.makePropertyKey('type').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('url').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+per = mgmt.makeVertexLabel('person').make()
+mgmt.makePropertyKey('firstName').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('lastName').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('gender').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('birthday').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+pst = mgmt.makeVertexLabel('post').make()
+
+
+
+mgmt.makePropertyKey('name').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+
+mgmt.makePropertyKey('imageFile').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+mgmt.makePropertyKey('language').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+comment = mgmt.makeVertexLabel('tag').make()
+comment = mgmt.makeVertexLabel('tagclass').make()
+
+mgmt.commit()
+
+df = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+dfb = new java.text.SimpleDateFormat("yyyy-MM-dd")
+
+g = graph.traversal()
+
+
+vCount = 0;
+
+new File("/home/baadalservervm/social_network/comment_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'comment');a.property('id', p[0]);a.property('creationDate', df.parse(p[1]));a.property('locationIP', p[2]);a.property('browserUsed', p[3]);a.property('content', p[4]);a.property('length', p[5]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/forum_0_0.csv").eachLine{
+l -> p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'forum');a.property('id', p[0]); a.property('creationDate', df.parse(p[2]));a.property('title', p[1]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/organisation_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'organisation');
+a.property('id', p[0]);a.property('type', p[1]);a.property('name', p[2]);a.property('url', p[3]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/person_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'person');a.property('id', p[0]);a.property('firstName', p[1]);a.property('lastName', p[2]);a.property('gender', p[3]);a.property('birthday', dfb.parse(p[4]));a.property('creationDate', df.parse(p[5]));a.property('locationIP', p[6]);a.property('browserUsed', p[7]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/place_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'place');a.property('id', p[0]);a.property('name', p[1]);a.property('url', p[2]);a.property('type', p[3]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/post_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'post');a.property('id', p[0]);a.property('imageFile', p[1]);a.property('creationDate', df.parse(p[2]));a.property('locationIP', p[3]);a.property('browserUsed', p[4]);a.property('language', p[5]);a.property('content', p[6]);a.property('length', p[7]);}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/tag_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'tag');
+a.property('id', p[0]);
+a.property('name', p[1]);
+a.property('url', p[2]);
+}
+g.tx().commit(); System.gc();
+
+new File("/home/baadalservervm/social_network/tagclass_0_0.csv").eachLine{
+l->p=l.split("\\|");
+if(vCount > 10000) { g.tx().commit(); System.gc(); vCount = 0;}
+vCount++;
+a = graph.addVertex(T.label,'tagclass');
+a.property('id', p[0]);
+a.property('name', p[1]);
+a.property('url', p[2]);
+}
+g.tx().commit(); System.gc();
+

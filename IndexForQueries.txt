@@ -1,0 +1,61 @@
+Queries
+/*
+* Index suggestions in the order of their quality
+*/
+
+BI/read queries
+
+Query1:
+    - range on "creationDate" of post/comments
+
+Query2:
+    - Range query on "creationDate" of post/comments 
+      or
+    - search on "place"
+
+Query3:
+    - Search query on "creationDate" of posts/comments (messages)
+
+Query4:
+    - search query on "name" of place(country)
+    or
+    - search query on "name" of TagClass
+
+Query5:
+    - search query on "name" of place (country)
+
+Query6:
+    - search query on "name" of tag
+
+Query7:
+    - search query on "name" of tag
+
+Query8:
+    - search query on "name" of tag
+
+Query9:
+    - seach query on "name" of tagClass
+    (also scope for cummulative things in number of people in forums)
+
+Query10:
+    - range query on "creationDate" of posts/comments (messages)
+    or/and?
+    - search query on "name" of tag
+
+Query11:
+    - search query on "name" of country (place)
+
+Query12:
+    - range query on "creationDate" of message (post/comment)
+
+Query13:
+    - search query on "name" of message (post/comment)
+
+Query14: (???)
+    - range query on "creationDate" of posts
+
+Query15:
+    - search query on "name" of the country (place)
+
+Query16:
+    - search query on "name" of the country (place)

@@ -1,0 +1,31 @@
+graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')                                                   
+g = graph.traversal()                                                                                                       
+                                                                                                                            
+mgmt = graph.openManagement()                                                                                               
+comment = mgmt.makeVertexLabel('INDEX').make()                                                                              
+comment = mgmt.makeVertexLabel('SUPER_INDEX').make()                                                                              
+                                                                                                                            
+tp = mgmt.makeEdgeLabel('INDEX_DATA_EDGE').multiplicity(MULTI).make()                                                       
+tp = mgmt.makeEdgeLabel('INDEX_EDGE').multiplicity(MULTI).make()                                                            
+tp = mgmt.makeEdgeLabel('SUPER_INDEX_EDGE').multiplicity(MULTI).make()                                                            
+tp = mgmt.makeEdgeLabel('NEXT_LEAF_EDGE').make()                                                            
+                                                                                                     
+//Attributes 'attribute' (attribute on which the index is created) and 'index_type' on edges SUPER_INDEX_EDGE                       
+spk = mgmt.makePropertyKey('attribute').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+spk = mgmt.makePropertyKey('index_type').dataType(String.class).cardinality(Cardinality.SINGLE).make()
+
+
+// spk = mgmt.makePropertyKey('name').dataType(String.class).cardinality(Cardinality.SINGLE).make()                         
+spk = mgmt.makePropertyKey('val').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+spk = mgmt.makePropertyKey('min').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+spk = mgmt.makePropertyKey('max').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+//spk = mgmt.makePropertyKey('index_id').dataType(Integer.class).cardinality(Cardinality.SINGLE).make()                             
+spk = mgmt.makePropertyKey('name').dataType(String.class).cardinality(Cardinality.SINGLE).make()                             
+                                                                                                                            
+mgmt.commit()
+
+a = graph.addVertex(T.label,'SUPER_INDEX')
+a.property('index_id', -1);
+g.tx().commit(); System.gc();
+
+System.exit(0)

@@ -1,0 +1,15 @@
+graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')                                                   
+g = graph.traversal()                                                                                                       
+                                                                                                                            
+mgmt = graph.openManagement()                                                                                               
+comment = mgmt.makeVertexLabel('INDEX').make()                                                                              
+                                                                                                                            
+tp = mgmt.makeEdgeLabel('INDEX_DATA_EDGE').multiplicity(MULTI).make()                                                       
+tp = mgmt.makeEdgeLabel('INDEX_EDGE').multiplicity(MULTI).make()                                                            
+                                                                                                                            
+// spk = mgmt.makePropertyKey('name').dataType(String.class).cardinality(Cardinality.SINGLE).make()                         
+spk = mgmt.makePropertyKey('val').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+spk = mgmt.makePropertyKey('min').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+spk = mgmt.makePropertyKey('max').dataType(Object.class).cardinality(Cardinality.SINGLE).make()                             
+                                                                                                                            
+mgmt.commit()

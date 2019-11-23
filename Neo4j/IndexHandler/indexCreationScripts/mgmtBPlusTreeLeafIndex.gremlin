@@ -1,0 +1,8 @@
+graph = JanusGraphFactory.open('/home/baadalservervm/janus/janusgraph-0.1.1-hadoop2/conf/janusgraph-cassandra-es.properties')                                                   
+                                                                                                                            
+mgmt = graph.openManagement()                                                                                               
+                                                                                                                            
+tp = mgmt.makeEdgeLabel('NEXT_LEAF_EDGE').make()                                                            
+                                                                                                                            
+mgmt.commit()
+System.exit(0)

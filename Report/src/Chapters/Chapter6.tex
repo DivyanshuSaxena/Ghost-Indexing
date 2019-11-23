@@ -1,0 +1,15 @@
+% Chapter Template
+
+% Chapter Template
+
+\chapter{Query Rewrite Framework} % Main chapter title
+
+\label{Chapter 6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+So far, we have seen that we are dependent on including Index tree traversal in the query. To compete with Elastic Search indexes, we must be able to seamlessly use our indexes in general gremlin queries. This creates the need to be able to automatically rewrite a gremlin query with index tree code so that we have a true proof of concept of the applicability of our indexes.
+
+\paragraph{Methodology}
+$\:$\\
+Our first task in the rewriting procedure is to identify part of the gremlin  query to be rewritten. For this, we break to query into a list of \textit{Traversal Steps} using the \textit{GremlinGroovyScriptingEngine}. We then look for \textit{HasStep} which lie immediately after some \textit{GraphStep} which have all vertices in the Graph. The key attribute of this \textit{HasStep} is identified. We then check whether there exists an index applicable for our given attribute. We thus need the metadata of the indexes. Here come handy the edges from the super-index to the index roots which have properies representing the metadata.
+\\\\
+Just looking at the first HasStep is not much meaningful. We should consider all consecutive HasSteps after the GraphStep for applying the index. To achieve this, we keep looking at the key attribute in all HasSteps till we find one on which we can use our index. After this, in the next consecutive \textit{.has()}, we only look for the presence of the same key attribute. All these HasStep collectively define a range of values within which the key attribute should be in the vertices of the result. We maitain 2 variables: $minVal$ and $maxVal$. Initiall these values are set to the extremes of the datatype of the key (so as to return all possible values i.e. full range). Every HasStep on the key shrinks this range. Finally, the output query has the GraphStep followed by the index traversal code for the range $[minVal, maxVal$] on the key attribute and the other HasSteps in the consecutive HasStep list and any other gremlin steps which may follow this list.
