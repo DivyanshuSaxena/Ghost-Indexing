@@ -27,6 +27,7 @@ public class Query4 extends Query {
 
     public static void main(String[] args) throws Exception {
         Query4 q = new Query4();
+        q.confFile = "local";
         q.runQuery(null);
 
         System.exit(0);
@@ -44,7 +45,7 @@ public class Query4 extends Query {
 
         if(params == null || params.size() <= 1) {
             tagClass = "OfficeHolder";
-            country = "Jordan";
+            country = "Egypt";
         } else {
             tagClass = params.get(0);
             country = params.get(1);
@@ -69,9 +70,9 @@ public class Query4 extends Query {
                     .map(it -> {
                         HashMap<String,Vertex> hm = (HashMap) it.get();
                         HashMap<String,String> hmNew = new HashMap<>();
-                        hm.put("personx", hm.get("personx").value("firstName"));
-                        hm.put("forumx", hm.get("forumx").value("title"));
-                        return hm;
+                        hmNew.put("personx", hm.get("personx").value("firstName"));
+                        hmNew.put("forumx", hm.get("forumx").value("title"));
+                        return hmNew;
                     })
                     .groupCount().by(select("personx","forumx"))
                     .toList();

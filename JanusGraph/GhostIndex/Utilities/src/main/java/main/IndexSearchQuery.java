@@ -48,7 +48,7 @@ public class IndexSearchQuery {
     }
 
     private Vertex getIndexRoot(GraphTraversalSource g, String indexName){
-        return  g.V().has("id", "0").hasLabel("INDEX").has("name", indexName).toList().get(0);
+        return  g.V().has("index_id", "0").hasLabel("INDEX").has("name", indexName).toList().get(0);
     }
 
     /*

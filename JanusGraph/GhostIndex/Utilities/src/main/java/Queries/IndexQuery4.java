@@ -23,6 +23,7 @@ public class IndexQuery4 extends Query{
     public static void main(String[] args) throws Exception {
 
         IndexQuery4 q = new IndexQuery4();
+        q.confFile = "local";
 
         q.runQuery(null);
 
@@ -40,8 +41,8 @@ public class IndexQuery4 extends Query{
         String indexName = "place_name_index";
 
         if(params == null || params.size() <= 1) {
-            tagClass = "Monarch";
-            country = "China";
+            tagClass = "OfficeHolder";
+            country = "Egypt";
         } else {
             tagClass = params.get(0);
             country = params.get(1);
@@ -51,6 +52,7 @@ public class IndexQuery4 extends Query{
 
         IndexSearchQuery irq = new IndexSearchQuery(g, indexName);
         Vertex vertex = irq.searchKey(g, country);
+        System.out.println(vertex);
 
         long endTime1   = System.currentTimeMillis();
         long totalTime1 = endTime1 - startTime;
@@ -66,9 +68,9 @@ public class IndexQuery4 extends Query{
                     .map(it -> {
                         HashMap<String,Vertex> hm = (HashMap) it.get();
                         HashMap<String,String> hmNew = new HashMap<>();
-                        hm.put("personx", hm.get("personx").value("firstName"));
-                        hm.put("forumx", hm.get("forumx").value("title"));
-                        return hm;
+                        hmNew.put("personx", hm.get("personx").value("firstName"));
+                        hmNew.put("forumx", hm.get("forumx").value("title"));
+                        return hmNew;
                     })
                     .groupCount().by(select("personx","forumx"))
                     .toList();
@@ -79,6 +81,7 @@ public class IndexQuery4 extends Query{
         long totalTime = endTime - startTime;
 
         graph.close();
+        System.out.println(tagClass + " | " + country);
 
 
         long resultCount = 0;

@@ -30,5 +30,54 @@ USING PERIODIC COMMIT 30000
 LOAD CSV FROM 'file:///home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/tagclass_0_0.csv' AS line
 CREATE (:tagclass { tc_id: toInteger(line[0]), tc_name: line[1], tc_url: line[2]});
 
+
+
+// Create indexes before running MATCH queries
+
+CREATE INDEX ON :forum(f_id)
+CREATE INDEX ON :forum(f_creationDate)
+
+CREATE INDEX ON :tagclass(tc_id)
+CREATE INDEX ON :tagclass(tc_name)
+
+CREATE INDEX ON :place(pl_id)
+CREATE INDEX ON :place(pl_name)
+
+CREATE INDEX ON :post(po_id)
+CREATE INDEX ON :post(po_creationDate)
+CREATE INDEX ON :post(po_browserUsed)
+CREATE INDEX ON :post(po_length)
+
+CREATE INDEX ON :person(p_id)
+CREATE INDEX ON :person(birthday)
+CREATE INDEX ON :person(p_creationDate)
+CREATE INDEX ON :person(p_browserUsed)
+
+CREATE INDEX ON :organization(o_id)
+CREATE INDEX ON :organization(o_name)
+
+CREATE INDEX ON :comment(c_id)
+CREATE INDEX ON :comment(c_creationDate)
+CREATE INDEX ON :comment(c_browserUsed)
+CREATE INDEX ON :comment(c_length)
+
+CREATE INDEX ON :tag(t_id)
+CREATE INDEX ON :tag(t_name)
+
+
+
 USING PERIODIC COMMIT 30000
-LOAD CSV FROM 'file:///home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/tagclass_0_0.csv' AS line
+LOAD CSV FROM 'file:///home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/person_email_emailaddress_0_0.csv' AS line
+MATCH (person) WHERE person.p_id = toInteger(line[0])
+SET person.emails = line[1]
+
+USING PERIODIC COMMIT 30000
+LOAD CSV FROM 'file:///home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/person_speaks_language_0_0.csv' AS line
+MATCH (person) WHERE person.p_id = toInteger(line[0])
+SET person.speaksLanguage = line[1]
+
+USING PERIODIC COMMIT 30000
+LOAD CSV FROM 'file:///home/divyanshu/Projects/BTP/ldbc_snb_datagen/social_network_1000/comment_hasCreator_person_0_0.csv' AS line
+MATCH (c:comment), (p:person) WHERE c.c_id = toInteger(line[0]) AND p.p_id = toInteger(line[1])
+CREATE (c)-[r:hasCreator]->(p)
+

@@ -41,11 +41,12 @@ indexCreate
 target/
 
 # Ignore files produced in execution
-JanusGraph/IndexHandler/indexDataEdges.csv
-JanusGraph/IndexHandler/indexEdges.csv
-JanusGraph/IndexHandler/indexVertices.csv
-JanusGraph/IndexHandler/leafEdges.csv
+indexDataEdges.csv
+indexEdges.csv
+indexVertices.csv
+leafEdges.csv
 JanusGraph/dataLoader/reader.gremlin
+Neo4j/dataLoader/reader.gremlin
 
 # Ignore One time files
 JanusGraph/GhostIndex/perf_tester_cmd.sh
