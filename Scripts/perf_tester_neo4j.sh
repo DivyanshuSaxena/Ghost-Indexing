@@ -21,7 +21,8 @@ for dataset in ${datasets[*]}; do
 
   export NEO4J_DATA_DIR=$2/social_network_neo_$dataset/
   cd $3/cypher/load_scripts
+  # Deletes previous data in Neo4J and rewrite the new dataset
   ./load-in-one-step.sh
 
   cd $4/queries
-  ./run_all_params.sh $5
+  ./run_all_params.sh $5 $4/../Janusgraph/GhostIndex $3/cypher/queries

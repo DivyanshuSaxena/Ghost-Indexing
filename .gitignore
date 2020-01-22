@@ -35,6 +35,7 @@ log/
 
 # Intellij Files
 .idea/
+.vscode/
 
 # Ignore Binaries
 indexCreate
@@ -47,7 +48,7 @@ indexVertices.csv
 leafEdges.csv
 JanusGraph/dataLoader/reader.gremlin
 Neo4j/dataLoader/reader.gremlin
+Neo4j/queries/*.txt
 
 # Ignore One time files
 JanusGraph/GhostIndex/perf_tester_cmd.sh
-
