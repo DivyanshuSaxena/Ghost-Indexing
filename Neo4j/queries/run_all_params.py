@@ -13,6 +13,8 @@ query = sys.argv[1]
 query_path = sys.argv[3]
 query_file = query_path + '/bi-' + query + '.cypher'
 
+num_tries = 3
+
 output_file = 'bi_' + query + '_neo_results.txt'
 of = open(output_file, 'w')
 of.write('Parameter,Count,Time\n')
@@ -58,18 +60,27 @@ for query_param in params:
   # Run the query
   cypher_shell = sys.argv[2] + ' -u ' + sys.argv[4] + ' -p ' + sys.argv[5]
 
-  start_time = time.time()
-  os.system(cypher_shell + ' < ' + os.getcwd() + '/temp.cypher > out.txt')
-  end_time = time.time()
-  print (end_time - start_time)
+  # Run each parameter for num_tries times
+  result_count = 0
+  average_time = 0
+  for i in range(num_tries):
+    start_time = time.time()
+    os.system(cypher_shell + ' < ' + os.getcwd() + '/temp.cypher > out.txt')
+    end_time = time.time()
+    average_time += (end_time - start_time)
 
-  count = 0
-  with open('out.txt') as f:
-    for line in f:
-      count += 1
+    count = 0
+    with open('out.txt') as f:
+      for line in f:
+        count += 1
+    if (result_count == 0):
+      result_count = count
+    elif (result_count != count):
+      print('Errored execution. Results count not matching')
+  average_time /= num_tries
 
   # Write in the final output file
-  of.write(query_param + ',' + str(count-1) + ',' + str(end_time - start_time) + '\n')
+  of.write(query_param + ',' + str(result_count-1) + ',' + str(average_time) + '\n')
 
 os.system('rm temp.cypher')
 os.system('rm out.txt')
