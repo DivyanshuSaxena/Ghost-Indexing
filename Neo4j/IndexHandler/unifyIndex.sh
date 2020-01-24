@@ -1,12 +1,23 @@
 #!/bin/bash
+# Arguments:
+# $1 : Label of vertex on which index is to be made
+# $2 : Index name
+# $3 : Branch size of B/BP Tree 
+# $4 : Column in csv on which index is to be made
+# $5 : Fullpath to the input csv
+# $6 : Whether the index is (date (D)/string (S)/integer (I)) type
+# $7 : Index Type (B/BP)
+# $8 : Attribute on which index is to be made
+# $9 : Fullpath to Neo4J Installation directory
+# $10 : Username to access Neo4J
+# $11 : Password to access Neo4J
 
-if [ "$JANUS_HOME" = "" ]; then
-    echo "JANUS_HOME not set"
-    exit 1
-fi
-
-if [ "$#" -ne 9 ]; then
-    echo "Usage: <script.sh> <label-of-vertex> <index-name> <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> <index-type(B-Tree(B)/B+Tree(BP))> <id-attribute-name> <attribute-name-to-index>" >&2
+if [ "$#" -ne 11 ]; then
+    echo "Usage: <script.sh> <label-of-vertex> <index-name> 
+    <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> 
+    <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> 
+    <index-type(B-Tree(B)/B+Tree(BP))> <attribute-name-to-index> 
+    <Neo4j Installation directory> <Neo4j username> <Neo4j password>" >&2
     exit 1
 fi
 
@@ -18,46 +29,22 @@ fi
 echo "[INFO]: Generating Index files";
 ./indexCreate $1 $2 $3 $4 $5 $6
 
-echo "[INFO]: csv files generated"
-#exit 0
+echo "[INFO]: csv files generated";
 
-PWD_ORIG=$(pwd)
-TYPE="string"
-if [ "$6" = "D" ]; then
-    TYPE="date"
-fi
-echo "__$PWD_ORIG"
-PWD_ORIG_STR="${PWD_ORIG//\//\\\/}"
-echo "--$PWD_ORIG_STR"
+# Generate the required ghost index files
+pwdir=$(pwd)
+pwdir_str="${pwdir//\//\\\/}"
+sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_index.cql
+sed -i 's/{ATTRIBUTE_NAME}/'$8'/g' add_ghost_index.cql
+sed -i 's/{INDEX_NAME}/'$2'/g' add_ghost_index.cql
+sed -i 's/{INDEX_TYPE}/'$7'/g' add_ghost_index.cql
 
-sed -i 's/indexVertices.csv/'"${PWD_ORIG_STR}"'\/indexVertices.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i 's/indexEdges.csv/'"${PWD_ORIG_STR}"'\/indexEdges.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i 's/indexDataEdges.csv/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-#echo "yo man ${TYPE} 0: $0 8: $8"
-sed -i "s/'id'/'$8'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'@ATTRIBUTE'/'$9'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'@INDEX_TYPE'/'$7'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-echo "bye man";
-sed -i 's/leafEdges.csv/'"${PWD_ORIG_STR}"'\/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
+# Modified cql files. Run ovr neo4j shell
+$9/bin/cypher-shell -u ${10} -p ${11} < add_ghost_index.cql
+echo "[INFO]: Ghost Indexes added";
 
-cd $JANUS_HOME
-echo ":load ${PWD_ORIG}/indexCreationScripts/read_frm_file_${TYPE}.gremlin" | bin/gremlin.sh
-
-if [ "$7" = "BP" ]; then
-    echo ":load ${PWD_ORIG}/indexCreationScripts/read_frm_file_leaves.gremlin" | bin/gremlin.sh
-fi
-
-
-### CLEAN UP
-cd $PWD_ORIG
-sed -i 's/'"${PWD_ORIG_STR}"'\/indexVertices.csv/indexVertices.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i 's/'"${PWD_ORIG_STR}"'\/indexEdges.csv/indexEdges.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i 's/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/indexDataEdges.csv/' indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'$8'/'id'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'$9'/'@ATTRIBUTE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'$7'/'@INDEX_TYPE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i 's/'"${PWD_ORIG_STR}"'\/leafEdges.csv/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
-
-echo "Cleanup done"
-
-#rm indexCreate *.csv
+# Clean up
+sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_index.cql
+sed -i 's/'$8'/{ATTRIBUTE_NAME}/g' add_ghost_index.cql
+sed -i 's/'$2'/{INDEX_NAME}/g' add_ghost_index.cql
+sed -i 's/'$7'/{INDEX_TYPE}/g' add_ghost_index.cql
