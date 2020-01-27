@@ -21,4 +21,4 @@ fi
 
 # Run python file to fire queries on the cypher shell (with respective parameters)
 echo "Starting all params execution"
-python run_all_params.py $1 $3 $5 $6 $7 $8
+python run_all_params.py $1 $3 $5 $6 $7 $8 $2

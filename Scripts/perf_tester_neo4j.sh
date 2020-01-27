@@ -37,9 +37,9 @@ for dataset in ${datasets[*]}; do
   ./run_all_params.sh $1 ${12}/../Janusgraph/GhostIndex ${11}/cypher/queries 0 neo4j ghost2019
 
   # Generate the ghost indexes
-  cd ${12}/IndexHandler
-  time ./unifyIndex.sh $2 $3_index_$6_$7 $7 $5 ${13} $4 $6 $3 $8 $9 neo4j ghost2019
+  # cd ${12}/IndexHandler
+  # time ./unifyIndex.sh $2 $3_index_$6_$7 $7 $5 ${13} $4 $6 $3 $8 $9 neo4j ghost2019
 
   # Run the Neo4J queries over custom-made ghost indexes
-  cd ${12}/queries
-  ./run_all_params.sh $1 ${12}/../Janusgraph/GhostIndex ${12}/ghost-queries 1 neo4j ghost2019
+  # cd ${12}/queries
+  # ./run_all_params.sh $1 ${12}/../Janusgraph/GhostIndex ${12}/ghost-queries 1 neo4j ghost2019
