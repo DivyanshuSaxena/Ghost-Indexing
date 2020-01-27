@@ -1,17 +1,26 @@
 # Takes the following command line arguments
 # 1: the query number which is to be fired
 # 2: the fullpath to the neo4j/bin/cypher-shell binary
-# 3: the path to the cypher/queries subfolder in ldbc_snb_implementations folder
-# 4: username for the cypher shell
-# 5: password for the cypher shell
+# 3: the path to the cypher/queries subfolder in ldbc_snb_implementations
+#    folder or the path of the ghost-queries folder in the parent directory
+# 4: Whether query has to be run from the lucene index (ldbc_snb, 0) or the
+#    new ghost query folder (1)
+# 5: username for the cypher shell
+# 6: password for the cypher shell
 
 import os
 import sys
 import time
 
 query = sys.argv[1]
+is_ghost = int(sys.argv[4])
 query_path = sys.argv[3]
-query_file = query_path + '/bi-' + query + '.cypher'
+
+if is_ghost == 1:
+  query_file = query_path + '/bi-ghost-' + query + '.cypher'
+else:
+  query_file = query_path + '/bi-' + query + '.cypher'
+print ('Reading from %s\n' %query_file)
 
 num_tries = 3
 
@@ -58,7 +67,7 @@ for query_param in params:
   tf.close()
 
   # Run the query
-  cypher_shell = sys.argv[2] + ' -u ' + sys.argv[4] + ' -p ' + sys.argv[5]
+  cypher_shell = sys.argv[2] + ' -u ' + sys.argv[5] + ' -p ' + sys.argv[6]
 
   # Run each parameter for num_tries times
   result_count = 0
