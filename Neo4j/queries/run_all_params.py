@@ -27,6 +27,8 @@ print ('Reading from %s\n' %query_file)
 num_tries = 3
 
 output_file = 'bi_' + query + '_neo_results.txt'
+if is_ghost == 1:
+  output_file = 'bi_' + query + '_ghost_results.txt'
 of = open(output_file, 'w')
 of.write('Parameter,Count,Time\n')
 

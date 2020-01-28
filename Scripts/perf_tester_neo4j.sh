@@ -16,7 +16,7 @@
 # $12 : Fullpath to Ghost-Indexing/Neo4j folder
 # $13 : Fullpath to the input csv
 
-datasets=( 1000 2500 4000 7500 )
+datasets=( 2500 )
 cwd=$(pwd)
 export NEO4J_HOME=$9
 export NEO4J_DB_DIR=$NEO4J_HOME/data/databases/graph.ghostdb  
@@ -28,7 +28,7 @@ for dataset in ${datasets[*]}; do
 	echo "--------------------------------------------------"
 
   export NEO4J_DATA_DIR=${10}/social_network_neo_$dataset/
-  cd ${11}/cypher/load_scripts
+  cd ${11}/cypher/load-scripts
   # Deletes previous data in Neo4J and rewrite the new dataset
   ./load-in-one-step.sh
 
@@ -43,3 +43,6 @@ for dataset in ${datasets[*]}; do
   # Run the Neo4J queries over custom-made ghost indexes
   # cd ${12}/queries
   # ./run_all_params.sh $1 ${12}/../Janusgraph/GhostIndex ${12}/ghost-queries 1 neo4j ghost2019
+done
+
+echo "Done"
