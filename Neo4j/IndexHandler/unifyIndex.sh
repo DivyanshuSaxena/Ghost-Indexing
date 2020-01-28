@@ -48,6 +48,6 @@ echo "[INFO]: Ghost Indexes added";
 # Clean up
 sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_index.cql
 sed -i 's/'$8'/{ATTRIBUTE_NAME}/g' add_ghost_index.cql
-sed -i 's/'$2'/{INDEX_NAME}/g' add_ghost_index.cql
 sed -i 's/'$7'/{INDEX_TYPE}/g' add_ghost_index.cql
+sed -i 's/'$2'/{INDEX_NAME}/g' add_ghost_index.cql
 sed -i 's/'$9'/{DATA_NODE}/g' add_ghost_index.cql

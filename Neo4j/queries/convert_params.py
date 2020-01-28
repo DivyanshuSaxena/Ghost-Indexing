@@ -30,7 +30,7 @@ for param in content:
   else:
     params.append(param)
 
-writefile = 'bi_'+query+'_neo_param.txt'
+writefile = './params/bi_'+query+'_neo_param.txt'
 with open(writefile, 'w') as f:
   f.write("%s\n" % header)
   for item in params:
