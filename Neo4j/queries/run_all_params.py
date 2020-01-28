@@ -7,6 +7,7 @@
 #    new ghost query folder (1)
 # 5: username for the cypher shell
 # 6: password for the cypher shell
+# 7: Parameter for which date conversion is to be made
 
 import os
 import sys
@@ -15,6 +16,7 @@ import time
 query = sys.argv[1]
 is_ghost = int(sys.argv[4])
 query_path = sys.argv[3]
+date_param = int(sys.argv[7])
 
 if is_ghost == 1:
   query_file = query_path + '/bi-ghost-' + query + '.cypher'
@@ -59,8 +61,12 @@ for query_param in params:
   # Write query params  
   paramlist = query_param.split('|')
   for index in range(len(paramlist)):
-    tf.write(':param ' + str(header[index])
+    if index == date_param:
+      tf.write(':param ' + str(header[index])
               + '=>' + str(paramlist[index]) + ';\n')
+    else:
+      tf.write(':param ' + str(header[index])
+              + '=>"' + str(paramlist[index]) + '";\n')
   
   # Write query content
   tf.write(query_content + ';\n')
@@ -73,9 +79,11 @@ for query_param in params:
   result_count = 0
   average_time = 0
   for i in range(num_tries):
+    print (query_param)
     start_time = time.time()
     os.system(cypher_shell + ' < ' + os.getcwd() + '/temp.cypher > out.txt')
     end_time = time.time()
+    print (query_param)
     average_time += (end_time - start_time)
 
     count = 0

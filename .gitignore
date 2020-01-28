@@ -46,6 +46,8 @@ indexDataEdges.csv
 indexEdges.csv
 indexVertices.csv
 leafEdges.csv
+temp.cypher
+out.txt
 JanusGraph/dataLoader/reader.gremlin
 Neo4j/dataLoader/reader.gremlin
 Neo4j/queries/*.txt
