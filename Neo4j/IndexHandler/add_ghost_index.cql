@@ -23,7 +23,7 @@ WITH i as i, line as line
 MATCH (n:{DATA_NODE}) WHERE n.id = toInteger(line[1])
 CREATE (i)-[r:index_data_edge {val: line[3]}]->(n);
 
-MATCH (root:index), (su:super_index) WHERE root.name = "{INDEX_NAME}" AND root.index_id = 0
+MATCH (root:index), (su:super_index) WHERE root.name = "{ATTRIBUTE_NAME}_index_{INDEX_TYPE}_2000" AND root.index_id = 0
 CREATE (su)-[r:super_index_edge {attribute: "{ATTRIBUTE_NAME}", index_type: "{INDEX_TYPE}"}]->(root);
 
 USING PERIODIC COMMIT 10000
