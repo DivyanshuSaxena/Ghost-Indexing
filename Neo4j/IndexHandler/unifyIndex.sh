@@ -28,7 +28,7 @@ if [ "$8" = "BP" ]; then
 fi
 
 echo "[INFO]: Generating Index files";
-./indexCreate post $3 $4 $5 $6 $7
+./indexCreate $2 $3 $4 $5 $6 $7
 
 echo "[INFO]: csv files generated";
 
@@ -36,18 +36,30 @@ echo "[INFO]: csv files generated";
 pwdir=$(pwd)
 pwdir_str="${pwdir//\//\\\/}"
 sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_index.cql
-sed -i 's/{ATTRIBUTE_NAME}/'$9'/g' add_ghost_index.cql
-sed -i 's/{INDEX_NAME}/'$3'/g' add_ghost_index.cql
-sed -i 's/{INDEX_TYPE}/'$8'/g' add_ghost_index.cql
 sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_index.cql
 
 # Modified cql files. Run ovr neo4j shell
 ${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_index.cql
 echo "[INFO]: Ghost Indexes added";
 
+sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_edges.cql
+sed -i 's/{ATTRIBUTE_NAME}/'$9'/g' add_ghost_edges.cql
+sed -i 's/{INDEX_NAME}/'$3'/g' add_ghost_edges.cql
+sed -i 's/{INDEX_TYPE}/'$8'/g' add_ghost_edges.cql
+sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_edges.cql
+
+# Modified cql files. Run ovr neo4j shell
+echo "[INFO]: Wait before starting ghost edges"
+sleep 5s
+${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_edges.cql
+echo "[INFO]: Ghost Edges added";
+
 # Clean up
 sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_index.cql
-sed -i 's/'$3'/{INDEX_NAME}/g' add_ghost_index.cql
-sed -i 's/'$9'/{ATTRIBUTE_NAME}/g' add_ghost_index.cql
-sed -i 's/'$8'/{INDEX_TYPE}/g' add_ghost_index.cql
 sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_index.cql
+
+sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_edges.cql
+sed -i 's/'$3'/{INDEX_NAME}/g' add_ghost_edges.cql
+sed -i 's/'$9'/{ATTRIBUTE_NAME}/g' add_ghost_edges.cql
+sed -i 's/'$8'/{INDEX_TYPE}/g' add_ghost_edges.cql
+sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_edges.cql

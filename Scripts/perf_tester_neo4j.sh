@@ -27,7 +27,7 @@ if [ "$#" -ne 14 ]; then
   exit 1
 fi
 
-datasets=( 1000 )
+datasets=( 1000 2500 4000 7500 )
 cwd=$(pwd)
 export NEO4J_HOME=${11}
 export NEO4J_DB_DIR=$NEO4J_HOME/data/databases/graph.ghostdb  
@@ -42,6 +42,11 @@ for dataset in ${datasets[*]}; do
   cd ${13}/cypher/load-scripts
   # Deletes previous data in Neo4J, rewrites the new dataset and start Neo4j
   ./load-in-one-step.sh
+
+  # Sleep and wait for Neo4j to start
+  echo "Wait for Neo4j to start"
+  sleep 5s
+  echo "Waited for 5s. Hopefully, Neo4j started"
 
   # Run the Neo4J queries over Lucene Indexes
   cd ${14}/queries
