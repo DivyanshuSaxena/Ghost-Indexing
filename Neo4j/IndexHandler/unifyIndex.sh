@@ -49,8 +49,9 @@ sed -i 's/{INDEX_TYPE}/'$8'/g' add_ghost_edges.cql
 sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_edges.cql
 
 # Modified cql files. Run ovr neo4j shell
-echo "[INFO]: Wait before starting ghost edges"
-sleep 5s
+echo "[INFO]: Wait for 1 minute before starting ghost edges"
+sleep 60s
+echo "[INFO]: Starting Ghost Edges"
 ${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_edges.cql
 echo "[INFO]: Ghost Edges added";
 
