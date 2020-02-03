@@ -299,8 +299,8 @@ int main(int argc, char** argv) {
     char dataInpType = argv[6][0];
     
     if (dataInpType == 'D') {
-        minVal = "1990-01-01T01:01:01.000+0000";
-        maxVal = "2018-01-01T01:01:01.000+0000";
+        minVal = "19900101010101000";
+        maxVal = "20180101010101000";
     }
     else if (dataInpType == 'S') {
         minVal = " ";

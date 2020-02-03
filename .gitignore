@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+# Compiled Python files
+*.pyc
+
 # Log file
 *.log
 

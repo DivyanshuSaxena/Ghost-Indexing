@@ -4,7 +4,7 @@
 */
 :param min=>19890101010101000;
 MATCH (n:super_index) WITH n AS super 
-MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'post_creationDate_index_bPlus_2000' WITH n as root 
+MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'creationDate_index_BP_2000' WITH n as root 
 MATCH (root)-[r:index_edge]->(n) WHERE NOT (r.min > $date OR r.max < $min) WITH n as leaf_nodes
 MATCH (leaf_nodes)-[r:index_data_edge]->(n) WHERE (r.val < $date AND r.val >= $min) WITH n as message
 WITH count(message) AS totalMessageCountInt

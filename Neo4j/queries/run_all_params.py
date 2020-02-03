@@ -3,26 +3,25 @@
 #  
 # Takes the following command line arguments
 # 1: the query number which is to be fired
-# 2: the parameter for which date conversion is to be made
-# 3: the dataset size on which the query has been run
-# 4: Whether query has to be run from the lucene index (ldbc_snb, 0) or the
+# 2: the dataset size on which the query has been run
+# 3: Whether query has to be run from the lucene index (ldbc_snb, 0) or the
 #    new ghost query folder (1)
-# 5: the fullpath to the neo4j/bin/cypher-shell binary
-# 6: the path to the cypher/queries subfolder in ldbc_snb_implementations
+# 4: the fullpath to the neo4j/bin/cypher-shell binary
+# 5: the path to the cypher/queries subfolder in ldbc_snb_implementations
 #    folder or the path of the ghost-queries folder in the parent directory
-# 7: username for the cypher shell
-# 8: password for the cypher shell
+# 6: username for the cypher shell
+# 7: password for the cypher shell
 
 import os
 import sys
 import time
+from utils import config_parser
 
 query = sys.argv[1]
-is_ghost = int(sys.argv[4])
-date_param = int(sys.argv[2])
+is_ghost = int(sys.argv[3])
 
-query_path = sys.argv[6]
-dataset = sys.argv[3]
+query_path = sys.argv[5]
+dataset = sys.argv[2]
 
 results_folder = './results/'
 params_folder = './params/'
@@ -64,6 +63,9 @@ content = [x.strip() for x in content]
 header = content[0].split('|')
 params = content[1:]
 
+# Parse the config file to know which parameters are date
+date_params = config_parser.read_section(query, section='QUERY')
+
 for query_param in params:
   print (query_param)
 
@@ -74,7 +76,7 @@ for query_param in params:
   # Write query params  
   paramlist = query_param.split('|')
   for index in range(len(paramlist)):
-    if index == date_param:
+    if date_params[index+1] != 'S':
       tf.write(':param ' + str(header[index])
               + '=>' + str(paramlist[index]) + ';\n')
     else:
@@ -86,7 +88,7 @@ for query_param in params:
   tf.close()
 
   # Run the query
-  cypher_shell = sys.argv[5] + ' -u ' + sys.argv[7] + ' -p ' + sys.argv[8]
+  cypher_shell = sys.argv[4] + ' -u ' + sys.argv[6] + ' -p ' + sys.argv[7]
 
   # Run each parameter for num_tries times
   result_count = 0
