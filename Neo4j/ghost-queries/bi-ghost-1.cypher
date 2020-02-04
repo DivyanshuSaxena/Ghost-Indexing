@@ -7,8 +7,8 @@ MATCH (n:super_index) WITH n AS super
 MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'creationDate_index_BP_2000' WITH n as root 
 MATCH (root)-[r:index_edge]->(n) WHERE NOT (r.min > $date OR r.max < $min) WITH n as leaf_nodes
 MATCH (leaf_nodes)-[r:index_data_edge]->(n) WHERE (r.val < $date AND r.val >= $min) WITH n as message
-WITH count(message) AS totalMessageCountInt
-WITH toFloat(totalMessageCountInt) AS totalMessageCount
+WITH message, count(message) AS totalMessageCountInt
+WITH message, toFloat(totalMessageCountInt) AS totalMessageCount
 MATCH (message)
 WHERE message.content IS NOT NULL
 WITH
