@@ -53,8 +53,8 @@ for dataset in ${datasets[*]}; do
 
   # Generate the ghost indexes
   cd ${13}/IndexHandler
-  echo "time ./unifyIndex.sh $2 $3 $4_index_$7_$8 $8 $6 ${11}/social_network_neo_$dataset/$9 $5 $7 $4 ${10} neo4j ghost2019"
-  time ./unifyIndex.sh $2 $3 $4_index_$7_$8 $8 $6 ${11}/social_network_neo_$dataset/$9 $5 $7 $4 ${10} neo4j ghost2019
+  echo "time ./unifyIndex.sh $2 $3 $3_$4_$7_$8 $8 $6 ${11}/social_network_neo_$dataset/$9 $5 $7 $4 ${10} neo4j ghost2019"
+  time ./unifyIndex.sh $2 $3 $3_$4_$7_$8 $8 $6 ${11}/social_network_neo_$dataset/$9 $5 $7 $4 ${10} neo4j ghost2019
 
   # Run the Neo4J queries over custom-made ghost indexes
   cd ${13}/queries

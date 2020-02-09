@@ -7,7 +7,7 @@
 */
 :param max=>20150101010101000;
 MATCH (n:super_index) WITH n AS super 
-MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'creationDate_index_BP_2000' WITH n as root 
+MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'Post_creationDate_BP_2000' WITH n as root 
 MATCH (root)-[r:index_edge]->(n) WHERE NOT (r.min > $max OR r.max < $date) WITH n as leaf_nodes
 MATCH (leaf_nodes)-[r:index_data_edge]->(n) WHERE (r.val < $max AND r.val >= $date) WITH n as message
 WITH message
