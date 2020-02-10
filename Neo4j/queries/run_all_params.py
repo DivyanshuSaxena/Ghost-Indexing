@@ -6,11 +6,12 @@
 # 2: the dataset size on which the query has been run
 # 3: Whether query has to be run from the lucene index (ldbc_snb, 0) or the
 #    new ghost query folder (1)
-# 4: the fullpath to the neo4j/bin/cypher-shell binary
-# 5: the path to the cypher/queries subfolder in ldbc_snb_implementations
+# 4: Batch size for clearing the cache
+# 5: the fullpath to the neo4j/ installation directory
+# 6: the path to the cypher/queries subfolder in ldbc_snb_implementations
 #    folder or the path of the ghost-queries folder in the parent directory
-# 6: username for the cypher shell
-# 7: password for the cypher shell
+# 7: username for the cypher shell
+# 8: password for the cypher shell
 
 import os
 import sys
@@ -19,12 +20,14 @@ from utils import config_parser
 
 query = sys.argv[1]
 is_ghost = int(sys.argv[3])
-
-query_path = sys.argv[5]
+batch_size = int(sys.argv[4])
+query_path = sys.argv[6]
 dataset = sys.argv[2]
 
 results_folder = './results/'
 params_folder = './params/'
+neo4j_bin = sys.argv[5] + '/bin/neo4j'
+cypher_shell = sys.argv[5] + '/bin/cypher-shell'
 
 if is_ghost == 1:
   query_file = query_path + '/bi-ghost-' + query + '.cypher'
@@ -66,6 +69,8 @@ params = content[1:]
 # Parse the config file to know which parameters are date
 date_params = config_parser.read_section(query, section='QUERY')
 
+# Maintain counter for implementing batches
+counter = 0
 for query_param in params:
   print (query_param)
 
@@ -88,7 +93,7 @@ for query_param in params:
   tf.close()
 
   # Run the query
-  cypher_shell = sys.argv[4] + ' -u ' + sys.argv[6] + ' -p ' + sys.argv[7]
+  cypher_shell = cypher_shell + ' -u ' + sys.argv[7] + ' -p ' + sys.argv[8]
 
   # Run each parameter for num_tries times
   result_count = 0
@@ -111,6 +116,12 @@ for query_param in params:
       print('Errored execution. Results count not matching')
 
   average_time /= num_tries
+  
+  counter += 1
+  if (counter % batch_size == 0):
+    os.system(neo4j_bin + ' restart')
+    print("Restarting Neo4j -> Wait for 5sec before resuming")
+    time.sleep(5)
 
   # Write in the final output file
   of.write(query_param + ',' + str(result_count-1) + ',' + 
