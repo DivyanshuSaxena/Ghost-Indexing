@@ -115,13 +115,13 @@ for query_param in params:
     elif (result_count != count):
       print('Errored execution. Results count not matching')
 
-  average_time /= num_tries
+  average_time = (average_time - cold_start_time)/(num_tries - 1)
   
   counter += 1
   if (counter % batch_size == 0):
     os.system(neo4j_bin + ' restart')
-    print("Restarting Neo4j -> Wait for 5sec before resuming")
-    time.sleep(5)
+    print("Restarting Neo4j -> Wait for 20sec before resuming")
+    time.sleep(20)
 
   # Write in the final output file
   of.write(query_param + ',' + str(result_count-1) + ',' + 
