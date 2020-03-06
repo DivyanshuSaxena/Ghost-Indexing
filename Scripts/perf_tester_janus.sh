@@ -3,7 +3,7 @@
 # Script to run the Performance Tester class in GhostIndex/Utilities project
 # Arguments:
 # $1 : Fullpath to Janusgraph Installation directory
-# $2 : Fullpath to ldbc_snb_datagen folder [Note: All datasets must be mentioned as social_network_janus<number>]
+# $2 : Fullpath to ldbc_snb_datagen folder [Note: All datasets must be mentioned as social_network_janus_<number>]
 # $3 : Fullpath to Ghost-Indexing/Janusgraph folder
 # $4 : Fan-out factor for BPlus index to be created
 # $5 : Query number for which the test is to be run
@@ -26,7 +26,7 @@ for dataset in ${datasets[*]}; do
 	# Load Data for current dataset
 	echo "Loading dataset onto Janusgraph"
 	cd $3/dataLoader
-	time ./loadit.sh $2/social_network_$dataset $3/dataLoader/sorted $1/bin
+	time ./loadit.sh $2/social_network_janus_$dataset $3/dataLoader/sorted $1/bin
 	cd $cwd
 
 	# Run Performance Tester for the given Query class
@@ -38,7 +38,7 @@ for dataset in ${datasets[*]}; do
 	# Add BPlus Ghost Indexes
 	echo "Building Index"
 	cd $3/IndexHandler
-	time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus$dataset/post_0_0.csv D BP po_id po_creationDate
+	time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus_$dataset/post_0_0.csv D BP po_id po_creationDate
 	cd $cwd
 
 	# Run Performance Tester for the given Query class again
