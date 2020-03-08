@@ -59,4 +59,4 @@ Neo4j/queries/params/
 Neo4j/queries/results/
 
 # Ignore One time files
-JanusGraph/GhostIndex/perf_tester_cmd.sh
+# JanusGraph/GhostIndex/perf_tester_cmd.sh
