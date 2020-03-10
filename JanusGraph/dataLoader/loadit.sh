@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if (( $# != 3 )); then
-    echo 'Usage: ./loadit.sh <source> <dest> <path_to_gremlin.sh>\n';
+if (( $# != 4 )); then
+    echo 'Usage: ./loadit.sh <source> <dest> <path_to_gremlin.sh> <whether_loading_in_distributed_setting>\n';
     exit -1;
 fi
 
@@ -46,12 +46,25 @@ echo 'Sorting done';
 echo '============';
 echo 'Schema creation commands generation'
 
-$3/gremlin.sh < schema_mixed_indices.gremlin
+if [[ $4 -gt 0 ]]
+then
+    $3/gremlin.sh < schema_mixed_indices_dist.gremlin
+else
+    $3/gremlin.sh < schema_mixed_indices.gremlin
+fi
 
 echo 'Schema creation complete';
 echo '========================';
 echo 'Reading data and loading it';
 
+if [[ $4 -gt 0 ]]
+then
+    config="g = JanusGraphFactory.open ('$3/../conf/janusgraph-cassandra-es.properties');"
+else
+    config="g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift')
+                    .set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch')
+                    .set('index.search.hostname', '10.17.5.53').open();"
+fi
 
 echo "
 import org.janusgraph.core.JanusGraphFactory;
@@ -62,7 +75,7 @@ import org.apache.commons.csv.*
 //if (args) {
 //    confFile = args[0]
 //}
-g = JanusGraphFactory.open ('$3/../conf/janusgraph-cassandra-es.properties');
+$config
 gt = g.traversal();
 
 m2mFlag = 0;

@@ -1,4 +1,4 @@
-graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')
+@CONFIG
 g = graph.traversal()
 
 println "Vertices starting!!!"

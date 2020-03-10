@@ -5,8 +5,8 @@ if [ "$JANUS_HOME" = "" ]; then
     exit 1
 fi
 
-if [ "$#" -ne 9 ]; then
-    echo "Usage: <script.sh> <label-of-vertex> <index-name> <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> <index-type(B-Tree(B)/B+Tree(BP))> <id-attribute-name> <attribute-name-to-index>" >&2
+if [ "$#" -ne 10 ]; then
+    echo "Usage: <script.sh> <label-of-vertex> <index-name> <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> <index-type(B-Tree(B)/B+Tree(BP))> <id-attribute-name> <attribute-name-to-index> <indexing_in_distributed_setting (0/1)>" >&2
     exit 1
 fi
 
@@ -20,6 +20,13 @@ echo "[INFO]: Generating Index files";
 
 echo "[INFO]: csv files generated"
 #exit 0
+
+CONFIG="graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')"
+if [[ ${10} -gt 0 ]]; then
+    CONFIG="graph = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift')
+                    .set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch')
+                    .set('index.search.hostname', '10.17.5.53').open();"
+fi
 
 PWD_ORIG=$(pwd)
 TYPE="string"
@@ -37,8 +44,10 @@ sed -i 's/indexDataEdges.csv/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/' indexCrea
 sed -i "s/'id'/'$8'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'@ATTRIBUTE'/'$9'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'@INDEX_TYPE'/'$7'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
+sed -i "s/'@CONFIG'/'${CONFIG}'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 echo "bye man";
 sed -i 's/leafEdges.csv/'"${PWD_ORIG_STR}"'\/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
+sed -i "s/'@CONFIG'/'${CONFIG}'/" indexCreationScripts/read_frm_file_leaves.gremlin
 
 cd $JANUS_HOME
 echo ":load ${PWD_ORIG}/indexCreationScripts/read_frm_file_${TYPE}.gremlin" | bin/gremlin.sh
@@ -56,7 +65,9 @@ sed -i 's/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/indexDataEdges.csv/' indexCrea
 sed -i "s/'$8'/'id'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'$9'/'@ATTRIBUTE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'$7'/'@INDEX_TYPE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
+sed -i "s/'${CONFIG}'/'@CONFIG'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i 's/'"${PWD_ORIG_STR}"'\/leafEdges.csv/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
+sed -i "s/'${CONFIG}'/'@CONFIG'/" indexCreationScripts/read_frm_file_leaves.gremlin
 
 echo "Cleanup done"
 
