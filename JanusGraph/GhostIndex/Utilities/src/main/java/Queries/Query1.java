@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.group;
 
-public class Query1 extends Query{
+public class Query1 extends Query {
     private static final Logger LOGGER = LoggerFactory.getLogger(Query1.class);
 
     public static void main(String[] args) throws Exception {
@@ -33,27 +33,36 @@ public class Query1 extends Query{
 
     public QueryResult runQuery(List<String> params) throws ParseException {
         long date = 0;
-        if(params == null || params.size() == 0){
-//            date = 1316025000000L;
+        int distributed = 0;
+        if (params == null || params.size() == 0) {
+            // date = 1316025000000L;
             date = 1332354600000L;
-        }else{
+            distributed = 0;
+        } else {
             date = Long.parseLong(params.get(0));
+            distributed = Integer.parseInt(params.get(1));
         }
 
-
-        graph = JanusGraphFactory.open("conf/"+confFile+"/janusgraph-cassandra-es.properties");
+        if (distributed == 1) {
+            graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
+                    .set("storage.hostname", "10.17.5.53").set("index.search.backend", "elasticsearch")
+                    .set("index.search.hostname", "10.17.5.53").open();
+        } else {
+            graph = JanusGraphFactory.open("conf/" + confFile + "/janusgraph-cassandra-es.properties");
+        }
         GraphTraversalSource g = graph.traversal();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//        Date dateVar = new Date(date);//dateFormat.parse(date);
-//        System.out.println("Date: " + dateVar);
+        // Date dateVar = new Date(date);//dateFormat.parse(date);
+        // System.out.println("Date: " + dateVar);
 
         long startTime = System.currentTimeMillis();
         /*
-        * FIXME: Create index on creationDate of comments and include that in query
-//        * */
-        List<Map<Object, Object>> result = g.V() //.hasLabel("post", "comment")
-                .has("po_creationDate", P.lt(date))//.toList();
+         * FIXME: Create index on creationDate of comments and include that in query //
+         * *
+         */
+        List<Map<Object, Object>> result = g.V() // .hasLabel("post", "comment")
+                .has("po_creationDate", P.lt(date))// .toList();
                 .group().by(it -> {
                     long value = ((Vertex) it).value("po_creationDate");
                     Date creationDate = new Date(value);
@@ -71,38 +80,33 @@ public class Query1 extends Query{
                     }
                 }))).toList();
 
-
-        long endTime  = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 
-//        Long resultCount = g.V()                        //.hasLabel("post", "comment")
-//                .has("po_creationDate", P.lt(dateVar)).count().next();
-//        System.out.println("Count: "+resultCount);
+        // Long resultCount = g.V() //.hasLabel("post", "comment")
+        // .has("po_creationDate", P.lt(dateVar)).count().next();
+        // System.out.println("Count: "+resultCount);
 
-
-        System.out.println("===================="+date+"======================");
+        System.out.println("====================" + date + "======================");
         System.out.println("DataSize: " + result.get(0).size());
         System.out.println("TotalTime: " + totalTime);
 
-//        long resultCount = g.V().hasLabel("post")                        //.hasLabel("post", "comment")
-//                        .has("po_creationDate", P.lte(dateVar)).count().next();
+        // long resultCount = g.V().hasLabel("post") //.hasLabel("post", "comment")
+        // .has("po_creationDate", P.lte(dateVar)).count().next();
 
-//        System.out.println("Count: " + result);
-//            for (Map map : result) {
-//                System.out.println("map: " + map);
-//            }
+        // System.out.println("Count: " + result);
+        // for (Map map : result) {
+        // System.out.println("map: " + map);
+        // }
         System.out.println("==========================================");
         graph.close();
 
         QueryResult queryResult = new QueryResult();
-        queryResult.setQueryName("Q1: ("+date+")");
+        queryResult.setQueryName("Q1: (" + date + ")");
         queryResult.setResultCount(result.get(0).size());
         queryResult.setTimeToRun(totalTime);
         queryResult.setTimeToTraverseIndex(-1);
-//        queryResult.setResults(result);
+        // queryResult.setResults(result);
         return queryResult;
     }
 }
-
-
-
