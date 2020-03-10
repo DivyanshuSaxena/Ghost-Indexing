@@ -5,7 +5,7 @@ println "Leaves starting!!!"
 
 vCount = 0;
 firstIter = 1;
-new File("/home/divyanshu/Projects/BTP/Ghost-Indexing/Janusgraph/IndexHandler/leafEdges.csv").eachLine{
+new File("/leafEdges.csv").eachLine{
     l->p=l.split("\\|");
     if(vCount > 10000) { 
     	g.tx().commit(); System.gc(); vCount = 0;

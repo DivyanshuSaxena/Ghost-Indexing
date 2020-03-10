@@ -13,6 +13,7 @@
 # Make sure to edit perf_tester_cmd.sh accordingly.
 
 datasets=( 1000 2500 4000 7500 10000 )
+#datasets=( 1000 )
 cwd=$(pwd)
 
 for dataset in ${datasets[*]}; do

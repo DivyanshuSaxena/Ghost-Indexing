@@ -7,6 +7,8 @@ fi
 
 date;
 
+echo "$1 $2"
+mkdir -p $2
 sort -t'|' -k2 -n $1/place_isPartOf_place_0_0.csv > $2/place_isPartOf_place_0_0.csv  
 sort -t'|' -k1 -n $1/person_workAt_organisation_0_0.csv > $2/person_workAt_organisation_0_0.csv 
 sort -t'|' -k1 -n $1/person_studyAt_organisation_0_0.csv > $2/person_studyAt_organisation_0_0.csv 
