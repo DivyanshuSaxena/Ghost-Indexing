@@ -1,9 +1,7 @@
 import org.janusgraph.core.JanusGraphFactory;
 import org.apache.commons.csv.*
 
-g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift')
-                    .set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch')
-                    .set('index.search.hostname', '10.17.5.53').open();
+g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53').open();
 gt = g.traversal();
 
 
