@@ -15,8 +15,9 @@ public class PerformanceTester {
 
     public static void main(String[] argv) throws Exception {
 
-        if(argv.length < 3){
-            System.out.println("Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> [<confFile>]");
+        if (argv.length < 3) {
+            System.out.println(
+                    "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> [<confFile>]");
             System.out.println("Eg: java a.out IndexQuery1 1 1 1000 [baadal/local/aryabhata]");
             return;
         }
@@ -25,56 +26,57 @@ public class PerformanceTester {
         int query_numeric = Integer.parseInt(argv[1]);
         int skipLines = Integer.parseInt(argv[2]);
         int dataset = Integer.parseInt(argv[3]);
+        String distributed = argv[4];
 
-        Class queryClass = Class.forName("Queries."+queryClassName);
+        Class queryClass = Class.forName("Queries." + queryClassName);
         Queries.Query query = (Queries.Query) queryClass.newInstance();
-        if(argv.length > 4){
-            query.confFile = argv[4];
+        if (argv.length > 5) {
+            query.confFile = argv[5];
         }
 
-
         PerformanceTester p = new PerformanceTester();
-        p.getPerformance(query, query_numeric, skipLines, dataset);
+        p.getPerformance(query, query_numeric, skipLines, dataset, distributed);
 
     }
 
-    public void getPerformance(Queries.Query query, int param_file, int skipParamsLines, int dataset) throws Exception {
+    public void getPerformance(Queries.Query query, int param_file, int skipParamsLines, int dataset,
+            String distributed) throws Exception {
         int averageOver = 2;
         int skipFirstX = 1;
 
         String paramsDelimiter = "\\|";
         String queryParamsFolder = "substitution_parameters/";
 
-        //get the class name to locate the QueryXX.csv file
+        // get the class name to locate the QueryXX.csv file
         String className = query.getClass().getSimpleName();
-        if(className.startsWith("Index")){
+        if (className.startsWith("Index")) {
             className = className.substring(5);
         }
 
-        //create query file path and result file path
-        String csvFile = "substitution_parameters/bi_"+param_file+"_param.txt";
-        String resultFile = "queryresults/"+query.getClass().getSimpleName()+"_"+dataset+".csv";
-        clearFiles(resultFile, "full"+resultFile);
-
+        // create query file path and result file path
+        String csvFile = "substitution_parameters/bi_" + param_file + "_param.txt";
+        String resultFile = "queryresults/" + query.getClass().getSimpleName() + "_" + dataset + ".csv";
+        clearFiles(resultFile, "full" + resultFile);
 
         PerformanceTester pt = new PerformanceTester();
-        ArrayList<ArrayList<String>> parameters = pt.readParameters(csvFile,paramsDelimiter, skipParamsLines);
+        ArrayList<ArrayList<String>> parameters = pt.readParameters(csvFile, paramsDelimiter, skipParamsLines);
 
         QueryResult queryResult;
         long totalIters = averageOver + skipFirstX;
         int paramNum = 1;
-        for (ArrayList params : parameters) {
+        for (ArrayList<String> params : parameters) {
+            params.add(distributed);
             ArrayList<QueryResult> allResults = new ArrayList<>();
 
-            for(int i=0;i<totalIters;i++) {
+            for (int i = 0; i < totalIters; i++) {
                 try {
                     queryResult = query.runQuery(params);
                     System.out.println("a run: " + paramNum + "/" + i + ": " + queryResult.getTimeToRun());
-                    if(i>=skipFirstX) {
+                    if (i >= skipFirstX) {
                         allResults.add(queryResult);
                     }
-                }catch(JanusGraphException e){
-                    System.out.println("[EXCEPTION]: "+e.getMessage());
+                } catch (JanusGraphException e) {
+                    System.out.println("[EXCEPTION]: " + e.getMessage());
                     query.graph.close();
                     i--;
                 }
@@ -82,14 +84,14 @@ public class PerformanceTester {
 
             paramNum++;
 
-            //write averaged results for this set of parameters
+            // write averaged results for this set of parameters
             pt.writeResultsPartial(resultFile, allResults);
-            //write all results for this set of parameters
-            pt.writeFullResultsPartial("full"+resultFile, allResults);
+            // write all results for this set of parameters
+            pt.writeFullResultsPartial("full" + resultFile, allResults);
         }
     }
 
-    //deletes the old result files
+    // deletes the old result files
     private static void clearFiles(String resultFile, String s) {
         File r = new File(resultFile);
         r.delete();
@@ -98,29 +100,31 @@ public class PerformanceTester {
     }
 
     /*
-    * Format: Count-meanQueryTime-stdDevQueryTime-medianQueryTime-meanIndexRunTime-stddevIndexRunTime-medianIndexRunTime
-    * */
+     * Format: Count-meanQueryTime-stdDevQueryTime-medianQueryTime-meanIndexRunTime-
+     * stddevIndexRunTime-medianIndexRunTime
+     */
     public void writeResultsPartial(String resultFile, ArrayList<QueryResult> results) throws IOException {
-        FileWriter writer = new FileWriter(resultFile,true);
-//        writer.write(result.resultCount+" "+result.getTimeToRun()+"\n");
+        FileWriter writer = new FileWriter(resultFile, true);
+        // writer.write(result.resultCount+" "+result.getTimeToRun()+"\n");
 
         Statistics stats = new Statistics(results);
-        if(!results.isEmpty()) {
-            writer.write(results.get(0).resultCount + " " + stats.getMeanQueryRunTime() + " " + stats.getStdDevQueryRunTime() + " " + stats.getMedianQueryRunTime() + " " +
-                    stats.getMeanIndexRunTime() + " " + stats.getStdDevIndexRunTime() + " " + stats.getMedianIndexRunTime() + " "
-                    +"\n");
+        if (!results.isEmpty()) {
+            writer.write(
+                    results.get(0).resultCount + " " + stats.getMeanQueryRunTime() + " " + stats.getStdDevQueryRunTime()
+                            + " " + stats.getMedianQueryRunTime() + " " + stats.getMeanIndexRunTime() + " "
+                            + stats.getStdDevIndexRunTime() + " " + stats.getMedianIndexRunTime() + " " + "\n");
         }
         writer.close();
     }
 
     public void writeFullResultsPartial(String resultFile, ArrayList<QueryResult> results) throws IOException {
         FileWriter writer = new FileWriter(resultFile, true);
-        //RESULT COUNT --------TIME TO RUN1 -------------TIME TO RUN2
-        if(results.size()>0){
-            writer.write(""+results.get(0).getResultCount());
+        // RESULT COUNT --------TIME TO RUN1 -------------TIME TO RUN2
+        if (results.size() > 0) {
+            writer.write("" + results.get(0).getResultCount());
         }
-        for (QueryResult qr : results){
-            writer.write(" "+qr.getTimeToRun());
+        for (QueryResult qr : results) {
+            writer.write(" " + qr.getTimeToRun());
         }
         writer.write("\n");
 
@@ -130,12 +134,12 @@ public class PerformanceTester {
     public void writeFullResults(String resultFile, ArrayList<ArrayList<QueryResult>> allResults) throws IOException {
         FileWriter writer = new FileWriter(resultFile);
 
-        for (ArrayList<QueryResult> results: allResults) {
-            if(results.size()>0){
-                writer.write(""+results.get(0).getResultCount());
+        for (ArrayList<QueryResult> results : allResults) {
+            if (results.size() > 0) {
+                writer.write("" + results.get(0).getResultCount());
             }
-            for (QueryResult qr : results){
-                writer.write(" "+qr.getTimeToRun());
+            for (QueryResult qr : results) {
+                writer.write(" " + qr.getTimeToRun());
             }
             writer.write("\n");
 
@@ -146,13 +150,13 @@ public class PerformanceTester {
     public void writeResults(String resultFile, List<QueryResult> results) throws IOException {
         FileWriter writer = new FileWriter(resultFile);
 
-        for (QueryResult result: results) {
-            writer.write(result.resultCount+" "+result.getTimeToRun()+"\n");
+        for (QueryResult result : results) {
+            writer.write(result.resultCount + " " + result.getTimeToRun() + "\n");
         }
         writer.close();
     }
 
-    public ArrayList<ArrayList<String>> readParameters(String csvFile, String delimiter, int skipLines){
+    public ArrayList<ArrayList<String>> readParameters(String csvFile, String delimiter, int skipLines) {
 
         BufferedReader br = null;
         String line = "";
@@ -160,20 +164,20 @@ public class PerformanceTester {
         ArrayList<ArrayList<String>> parameters = new ArrayList<>();
 
         int skipped = 0;
-//        int hop = 25;
+        // int hop = 25;
         try {
             br = new BufferedReader(new FileReader(csvFile));
-//            int curline = 0;
+            // int curline = 0;
             while ((line = br.readLine()) != null) {
-                if(skipped<skipLines) {
+                if (skipped < skipLines) {
                     skipped++;
-                }else {
-//                    if(curline%hop != 0) {
-//                        continue;
-//                    }
+                } else {
+                    // if(curline%hop != 0) {
+                    // continue;
+                    // }
                     String[] params = line.split(delimiter);
                     parameters.add(new ArrayList<String>(Arrays.asList(params)));
-//                    curline++;
+                    // curline++;
                 }
             }
 
