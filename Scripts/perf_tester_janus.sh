@@ -23,7 +23,12 @@ for dataset in ${datasets[*]}; do
 	echo "--------------------------------------------------"
 
 	# Start Janusgraph
-	$1/bin/janusgraph.sh start
+	if [[ $6 -gt 0 ]]; then
+		echo "Running for distributed setting"
+		$1/bin/gremlin-server.sh start
+	else
+		$1/bin/janusgraph.sh start
+	fi
 
 	# Load Data for current dataset
 	echo "Loading dataset onto Janusgraph"
@@ -52,6 +57,11 @@ for dataset in ${datasets[*]}; do
 	# Cleanup data, to prepare for next dataset
 	echo "Performance test completed for dataset: "$dataset
 	echo "--------------------------------------------------"
-	$1/bin/janusgraph.sh stop
+	if [[ $6 -gt -0 ]]; then
+		echo "Running for distributed setting"
+		$1/bin/gremlin-server.sh stop
+	else
+		$1/bin/janusgraph.sh stop
+	fi
 	echo "y" | $1/bin/janusgraph.sh clean
 done
