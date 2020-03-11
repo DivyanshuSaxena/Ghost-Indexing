@@ -1,0 +1,16 @@
+graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift").set("storage.hostname", "10.17.5.53").set("index.search.backend", "elasticsearch").set("index.search.hostname", "10.17.5.53:9210").open()
+g = graph.traversal()
+
+println "Removing Index Substructures"
+
+// Remove Index Vertices
+g.V().hasLabel("INDEX").drop()
+g.tx().commit()
+
+// Remove Index related Edges
+g.E().hasLabel("SUPER_INDEX_EDGE").drop()
+g.E().hasLabel("INDEX_EDGE").drop()
+g.E().hasLabel("INDEX_DATA_EDGE").drop()
+g.tx().commit()
+
+println "Removed Indexes"
