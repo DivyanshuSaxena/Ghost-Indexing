@@ -61,7 +61,7 @@ if [[ $4 -gt 0 ]]
 then
     config="g = JanusGraphFactory.open ('$3/../conf/janusgraph-cassandra-es.properties');"
 else
-    config="g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53').open();"
+    config="g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53:9210').open();"
 fi
 
 echo "
