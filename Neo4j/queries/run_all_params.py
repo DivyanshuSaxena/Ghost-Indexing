@@ -35,7 +35,8 @@ else:
   query_file = query_path + '/bi-' + query + '.cypher'
 print ('Reading from %s\n' %query_file)
 
-num_tries = 3
+cold_tries = 2
+num_tries = 5
 
 output_file = results_folder + 'bi_' + query + '_neo_results_' + dataset + '.txt'
 if is_ghost == 1:
@@ -109,19 +110,20 @@ for query_param in params:
       for line in f:
         count += 1
 
-    if i == 0:
-      cold_start_time = (end_time - start_time)
+    if i < cold_tries:
+      cold_start_time += (end_time - start_time)
       result_count = count
     elif (result_count != count):
       print('Errored execution. Results count not matching')
 
-  average_time = (average_time - cold_start_time)/(num_tries - 1)
+  average_time = (average_time - cold_start_time)/(num_tries - cold_tries)
+  cold_start_time = cold_start_time/cold_tries
   
   counter += 1
   if (counter % batch_size == 0):
     os.system(neo4j_bin + ' restart')
-    print("Restarting Neo4j -> Wait for 20sec before resuming")
-    time.sleep(20)
+    print("Restarting Neo4j -> Wait for 1min before resuming")
+    time.sleep(60)
 
   # Write in the final output file
   of.write(query_param + ',' + str(result_count-1) + ',' + 
