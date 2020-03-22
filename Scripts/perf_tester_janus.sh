@@ -57,9 +57,10 @@ for dataset in ${datasets[*]}; do
 	# Cleanup data, to prepare for next dataset
 	echo "Performance test completed for dataset: "$dataset
 	echo "--------------------------------------------------"
-	if [[ $6 -gt -0 ]]; then
+	if [[ $6 -gt 0 ]]; then
 		echo "Running for distributed setting"
-		$1/bin/gremlin-server.sh stop
+		$1/bin/gremlin.sh < remove_cassandra_data.gremlin
+		./remove_es_indexes_dist.sh
 	else
 		$1/bin/janusgraph.sh stop
 	fi
