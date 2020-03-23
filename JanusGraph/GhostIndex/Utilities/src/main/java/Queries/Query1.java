@@ -43,7 +43,8 @@ public class Query1 extends Query {
             distributed = Integer.parseInt(params.get(1));
         }
 
-        if (distributed == 1) {
+    	if (distributed == 1) {
+	        System.out.println("DISTRIBUTED SETTING");
             graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
                     .set("storage.hostname", "10.17.5.53").set("index.search.backend", "elasticsearch")
                     .set("index.search.hostname", "10.17.5.53").open();

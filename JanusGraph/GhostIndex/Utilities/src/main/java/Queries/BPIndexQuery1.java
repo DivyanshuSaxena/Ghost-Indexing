@@ -30,14 +30,23 @@ public class BPIndexQuery1 extends Query{
 
     public QueryResult runQuery(List<String> params) throws ParseException {
         long date = 0;
+        int distributed = 0;
         if(params == null || params.size() == 0){
             date = 1332354600000L;
         }else{
             date = Long.parseLong(params.get(0));
+            distributed = Integer.parseInt(params.get(0));
         }
 
         System.out.println(new Date(date));
-        graph = JanusGraphFactory.open("conf/"+confFile+"/janusgraph-cassandra-es.properties");
+        if (distributed == 1) {
+            System.out.println("DISTRIBUTED SETTING");
+            graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
+                    .set("storage.hostname", "10.17.5.53").set("index.search.backend", "elasticsearch")
+                    .set("index.search.hostname", "10.17.5.53").open();
+        } else {
+            graph = JanusGraphFactory.open("conf/" + confFile + "/janusgraph-cassandra-es.properties");
+        }
         GraphTraversalSource g = graph.traversal();
 
         String indexName = "post_creationDate_index_bPlus_2000";
