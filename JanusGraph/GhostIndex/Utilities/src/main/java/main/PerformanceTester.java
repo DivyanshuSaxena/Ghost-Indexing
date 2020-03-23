@@ -15,10 +15,10 @@ public class PerformanceTester {
 
     public static void main(String[] argv) throws Exception {
 
-        if (argv.length < 3) {
+        if (argv.length < 5) {
             System.out.println(
-                    "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> [<confFile>]");
-            System.out.println("Eg: java a.out IndexQuery1 1 1 1000 [baadal/local/aryabhata]");
+                    "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> <distributed or not> [<confFile>]");
+            System.out.println("Eg: java a.out IndexQuery1 1 1 1000 1 [baadal/local/aryabhata]");
             return;
         }
 

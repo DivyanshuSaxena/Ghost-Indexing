@@ -48,6 +48,7 @@ echo 'Schema creation commands generation'
 
 if [[ $4 -gt 0 ]]
 then
+    echo "DISTRIBUTED SETTING"
     $3/gremlin.sh < schema_mixed_indices_dist.gremlin
 else
     $3/gremlin.sh < schema_mixed_indices.gremlin
@@ -59,9 +60,10 @@ echo 'Reading data and loading it';
 
 if [[ $4 -gt 0 ]]
 then
-    config="g = JanusGraphFactory.open ('$3/../conf/janusgraph-cassandra-es.properties');"
-else
+    echo "DISTRIBUTED SETTING"
     config="g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53:9210').open();"
+else
+    config="g = JanusGraphFactory.open ('$3/../conf/janusgraph-cassandra-es.properties');"
 fi
 
 echo "
