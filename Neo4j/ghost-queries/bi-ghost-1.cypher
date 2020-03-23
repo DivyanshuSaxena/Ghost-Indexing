@@ -3,14 +3,15 @@
   :param { date: 20110721220000000 }
 */
 :param min=>19890101010101000;
-MATCH (n:super_index) WITH n AS super 
-MATCH (super)-[r:super_index_edge]-(n:index) WHERE n.name = 'Post_creationDate_BP_2000' WITH n as root 
-MATCH (root)-[r:index_edge]->(n) WHERE NOT (r.min > $date OR r.max < $min) WITH n as leaf_nodes
-MATCH (leaf_nodes)-[r:index_data_edge]->(n) WHERE (r.val < $date AND r.val >= $min) WITH n as message
-WITH message, count(message) AS totalMessageCountInt
-WITH message, toFloat(totalMessageCountInt) AS totalMessageCount
-MATCH (message)
-WHERE message.content IS NOT NULL
+MATCH
+  (root:index)-[r1:index_edge]->(leaf_node),
+  (leaf_node)-[r2:index_data_edge]->(n)
+WHERE
+  root.name = 'Post_creationDate_BP_2000' AND
+  (r1.min < $date AND r1.max > $min) AND
+  (r2.val < $date AND r2.val >= $min) AND
+  n.content IS NOT NULL
+WITH n AS message, toFloat(count(n)) AS totalMessageCount
 WITH
   totalMessageCount,
   message,
