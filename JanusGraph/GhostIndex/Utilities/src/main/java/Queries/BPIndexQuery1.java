@@ -43,7 +43,7 @@ public class BPIndexQuery1 extends Query{
             System.out.println("DISTRIBUTED SETTING");
             graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
                     .set("storage.hostname", "10.17.5.53").set("index.search.backend", "elasticsearch")
-                    .set("index.search.hostname", "10.17.5.53").open();
+                    .set("index.search.hostname", "10.17.5.53:9210").open();
         } else {
             graph = JanusGraphFactory.open("conf/" + confFile + "/janusgraph-cassandra-es.properties");
         }
