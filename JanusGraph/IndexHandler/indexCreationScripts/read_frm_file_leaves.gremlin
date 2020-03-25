@@ -5,7 +5,7 @@ println "Leaves starting!!!"
 
 vCount = 0;
 firstIter = 1;
-new File("/leafEdges.csv").eachLine{
+new File("leafEdges.csv").eachLine{
     l->p=l.split("\\|");
     if(vCount > 10000) { 
     	g.tx().commit(); System.gc(); vCount = 0;

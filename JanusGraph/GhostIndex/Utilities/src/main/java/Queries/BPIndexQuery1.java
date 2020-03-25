@@ -35,7 +35,7 @@ public class BPIndexQuery1 extends Query{
             date = 1332354600000L;
         }else{
             date = Long.parseLong(params.get(0));
-            distributed = Integer.parseInt(params.get(0));
+            distributed = Integer.parseInt(params.get(1));
         }
 
         System.out.println(new Date(date));

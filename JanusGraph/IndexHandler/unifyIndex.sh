@@ -42,10 +42,10 @@ sed -i 's/indexDataEdges.csv/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/' indexCrea
 sed -i "s/'id'/'$8'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'@ATTRIBUTE'/'$9'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'@INDEX_TYPE'/'$7'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'@CONFIG'/'${CONFIG}'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
+sed -i "s/@CONFIG/${CONFIG}/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 echo "bye man";
 sed -i 's/leafEdges.csv/'"${PWD_ORIG_STR}"'\/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
-sed -i "s/'@CONFIG'/'${CONFIG}'/" indexCreationScripts/read_frm_file_leaves.gremlin
+sed -i "s/@CONFIG/${CONFIG}/" indexCreationScripts/read_frm_file_leaves.gremlin
 
 cd $JANUS_HOME
 echo ":load ${PWD_ORIG}/indexCreationScripts/read_frm_file_${TYPE}.gremlin" | bin/gremlin.sh
@@ -63,10 +63,10 @@ sed -i 's/'"${PWD_ORIG_STR}"'\/indexDataEdges.csv/indexDataEdges.csv/' indexCrea
 sed -i "s/'$8'/'id'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'$9'/'@ATTRIBUTE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i "s/'$7'/'@INDEX_TYPE'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
-sed -i "s/'${CONFIG}'/'@CONFIG'/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
+sed -i "s/${CONFIG}/@CONFIG/" indexCreationScripts/read_frm_file_${TYPE}.gremlin
 sed -i 's/'"${PWD_ORIG_STR}"'\/leafEdges.csv/leafEdges.csv/' indexCreationScripts/read_frm_file_leaves.gremlin
-sed -i "s/'${CONFIG}'/'@CONFIG'/" indexCreationScripts/read_frm_file_leaves.gremlin
+sed -i "s/${CONFIG}/@CONFIG/" indexCreationScripts/read_frm_file_leaves.gremlin
 
 echo "Cleanup done"
 
-#rm indexCreate *.csv
+rm indexCreate *.csv
