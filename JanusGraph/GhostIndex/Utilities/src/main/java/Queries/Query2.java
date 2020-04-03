@@ -61,8 +61,8 @@ public class Query2 extends Query {
         if (distributed == 1) {
             graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
                     .set("storage.hostname", "10.17.5.53")
-                    .set("storage.cassandra.thrift.frame_size_mb", "60")
-                    .set("storage.cassandra.thrift.max_message_size_mb", "61")
+                    .set("storage.cassandra.thrift.frame_size_mb", 60)
+                    .set("storage.cassandra.thrift.max_message_size_mb", 61)
                     .set("index.search.backend", "elasticsearch")
                     .set("index.search.hostname", "10.17.5.53:9210").open();
         } else {
