@@ -57,7 +57,7 @@ public class Query12 extends Queries.Query {
         // SimpleDateFormat dateFormat = new
         // SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
-        Date dateVar = new Date(date);
+        // Date dateVar = new Date(date);
 
         long startTime = System.currentTimeMillis();
 
@@ -73,7 +73,7 @@ public class Query12 extends Queries.Query {
         // }).toList();
 
         List<Vertex> result = g.V()// .hasLabel("post")
-                .has("po_creationDate", P.gte(dateVar))// .limit(400)
+                .has("po_creationDate", P.gte(date))// .limit(400)
                 .toList();
         // .as("messagesx")
         // .where(in("likes").count().is(P.gt(likeThreshold))).toList();
