@@ -27,23 +27,37 @@ public class IndexQuery12 extends Query{
     }
 
     public QueryResult runQuery(List<String> params) throws ParseException {
-        String date = "2010-11-02T20:16:15.144+0000";
-
-        if (params != null && params.size() > 0){
-            date = params.get(0);
-        }
-
-        graph = JanusGraphFactory.open("conf/"+confFile+"/janusgraph-cassandra-es.properties");
-        GraphTraversalSource g = graph.traversal();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        String maxDate = "2015-08-02T20:16:15.144+0000";
+        Long date = 1312137000000L;
         long likeThreshold = 10;
+        int distributed = 0;
+
+        if (params != null && params.size() > 0) {
+            date = Long.parseLong(params.get(0));
+            likeThreshold = Integer.parseInt(params.get(1));
+            distributed = Integer.parseInt(params.get(2));
+        }
+        System.out.println(date + " | " + likeThreshold);
+
+        if (distributed == 1) {
+            graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
+                    .set("storage.hostname", "10.17.5.53")
+                    .set("storage.cassandra.frame-size-mb", 60)
+                    .set("index.search.backend", "elasticsearch")
+                    .set("index.search.hostname", "10.17.5.53:9210").open();
+        } else {
+            graph = JanusGraphFactory.open("conf/" + confFile + "/janusgraph-cassandra-es.properties");
+        }
+        GraphTraversalSource g = graph.traversal();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+
+        // Date dateVar = new Date(date);
+
+        String maxDate = "2015-08-02T20:16:15.144+0000";
 
         long startTime = System.currentTimeMillis();
 
         IndexRangeQuery irq = new IndexRangeQuery();
-        ArrayList<Vertex> vertices = irq.searchRange(g, dateFormat.parse(date), dateFormat.parse(maxDate), "post_creationDate_index100");
+        ArrayList<Vertex> vertices = irq.searchRange(g, date, dateFormat.parse(maxDate), "Post_creationDate_BP_2000");
 
         long endTime1   = System.currentTimeMillis();
         long totalTime1 = endTime1 - startTime;
@@ -65,9 +79,7 @@ public class IndexQuery12 extends Query{
 
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-
         graph.close();
-
 
         System.out.println("==========================================");
         System.out.println("TotalTime: "+ totalTime);
@@ -80,7 +92,8 @@ public class IndexQuery12 extends Query{
         queryResult.setQueryName("Q12: ("+params+")");
         queryResult.setResultCount(result.size());
         queryResult.setTimeToRun(totalTime);
-        queryResult.setResults(result);
+        queryResult.setTimeToTraverseIndex(totalTime1);
+//        queryResult.setResults(result);
 
         return queryResult;
     }
