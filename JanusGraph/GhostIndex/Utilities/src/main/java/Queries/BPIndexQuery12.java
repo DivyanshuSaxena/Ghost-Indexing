@@ -57,8 +57,8 @@ public class BPIndexQuery12 extends Query{
 
         long startTime = System.currentTimeMillis();
 
-        BPlusIndexRangeQuery irq = new BPlusIndexRangeQuery(g, "Post_creationDate_BP_2000");
-        ArrayList<Vertex> vertices = irq.searchRange(date, dateFormat.parse(maxDate));
+        BPlusIndexRangeQuery irq = new BPlusIndexRangeQuery(g, "post_creationDate_index_bPlus_2000");
+        ArrayList<Vertex> vertices = irq.searchRange(new Date(date), dateFormat.parse(maxDate));
 
         long endTime1   = System.currentTimeMillis();
         long totalTime1 = endTime1 - startTime;

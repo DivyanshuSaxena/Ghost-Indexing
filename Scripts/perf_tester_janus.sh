@@ -13,8 +13,8 @@
 # This makes use of GhostIndex/perf_tester_cmd.sh which is the command that Intelliij uses for running Utilities.main.PerformanceTester
 # Make sure to edit perf_tester_cmd.sh accordingly.
 
-datasets=( 1000 2500 4000 7500 )
-#datasets=( 1000 )
+#datasets=( 1000 2500 4000 7500 )
+datasets=( 1000 )
 cwd=$(pwd)
 
 for dataset in ${datasets[*]}; do
@@ -45,6 +45,7 @@ for dataset in ${datasets[*]}; do
 	# Add BPlus Ghost Indexes
 	echo "Building Index"
 	cd $3/IndexHandler
+	echo "time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus_$dataset/post_0_0.csv D BP po_id po_creationDate $6"
 	time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus_$dataset/post_0_0.csv D BP po_id po_creationDate $6
 	cd $cwd
 

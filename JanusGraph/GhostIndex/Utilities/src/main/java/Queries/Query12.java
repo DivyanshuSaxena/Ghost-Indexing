@@ -72,7 +72,7 @@ public class Query12 extends Queries.Query {
         // return (Long) ((Map.Entry) it.get()).getValue() > likeThreshold;
         // }).toList();
 
-        List<Vertex> result = g.V()// .hasLabel("post")
+        List<Vertex> result = g.V().hasLabel("post")
                 .has("po_creationDate", P.gte(date))// .limit(400)
         	.as("messagesx")
         	.where(in("likes").count().is(P.gt(likeThreshold))).toList();
