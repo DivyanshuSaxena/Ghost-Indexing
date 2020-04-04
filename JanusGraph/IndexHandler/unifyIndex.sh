@@ -21,7 +21,7 @@ echo "[INFO]: Generating Index files";
 echo "[INFO]: csv files generated"
 #exit 0
 
-CONFIG="graph = JanusGraphFactory.open('conf/janusgraph-cassandra-es.properties')"
+CONFIG="graph = JanusGraphFactory.open('conf\/janusgraph-cassandra-es.properties')"
 if [[ ${10} -gt 0 ]]; then
     CONFIG="graph = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53:9210').open();"
 fi
