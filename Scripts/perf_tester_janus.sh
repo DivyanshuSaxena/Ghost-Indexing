@@ -13,8 +13,8 @@
 # This makes use of GhostIndex/perf_tester_cmd.sh which is the command that Intelliij uses for running Utilities.main.PerformanceTester
 # Make sure to edit perf_tester_cmd.sh accordingly.
 
-#datasets=( 1000 2500 4000 7500 )
-datasets=( 1000 )
+datasets=( 1000 2500 4000 7500 )
+#datasets=( 1000 )
 cwd=$(pwd)
 
 for dataset in ${datasets[*]}; do
