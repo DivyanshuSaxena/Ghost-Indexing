@@ -35,32 +35,32 @@ echo "[INFO]: csv files generated";
 # Generate the required ghost index files
 pwdir=$(pwd)
 pwdir_str="${pwdir//\//\\\/}"
-sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_index.cql
-sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_index.cql
+sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_index_$7.cql
+sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_index_$7.cql
 
 # Modified cql files. Run ovr neo4j shell
-${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_index.cql
+${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_index_$7.cql
 echo "[INFO]: Ghost Indexes added";
 
-sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_edges.cql
-sed -i 's/{ATTRIBUTE_NAME}/'$9'/g' add_ghost_edges.cql
-sed -i 's/{INDEX_NAME}/'$3'/g' add_ghost_edges.cql
-sed -i 's/{INDEX_TYPE}/'$8'/g' add_ghost_edges.cql
-sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_edges.cql
+sed -i 's/{INDEXHANDLER_DIR}/file:\/\/'"${pwdir_str}"'/g' add_ghost_edges_$7.cql
+sed -i 's/{ATTRIBUTE_NAME}/'$9'/g' add_ghost_edges_$7.cql
+sed -i 's/{INDEX_NAME}/'$3'/g' add_ghost_edges_$7.cql
+sed -i 's/{INDEX_TYPE}/'$8'/g' add_ghost_edges_$7.cql
+sed -i 's/{DATA_NODE}/'$1'/g' add_ghost_edges_$7.cql
 
 # Modified cql files. Run ovr neo4j shell
 echo "[INFO]: Wait for 1 minute before starting ghost edges"
 sleep 60s
 echo "[INFO]: Starting Ghost Edges"
-${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_edges.cql
+${10}/bin/cypher-shell -u ${11} -p ${12} < add_ghost_edges_$7.cql
 echo "[INFO]: Ghost Edges added";
 
 # Clean up
-sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_index.cql
-sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_index.cql
+sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_index_$7.cql
+sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_index_$7.cql
 
-sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_edges.cql
-sed -i 's/'$3'/{INDEX_NAME}/g' add_ghost_edges.cql
-sed -i 's/'$9'/{ATTRIBUTE_NAME}/g' add_ghost_edges.cql
-sed -i 's/'$8'/{INDEX_TYPE}/g' add_ghost_edges.cql
-sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_edges.cql
+sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_edges_$7.cql
+sed -i 's/'$3'/{INDEX_NAME}/g' add_ghost_edges_$7.cql
+sed -i 's/'\"$9\"'/"{ATTRIBUTE_NAME}"/g' add_ghost_edges_$7.cql
+sed -i 's/'$8'/{INDEX_TYPE}/g' add_ghost_edges_$7.cql
+sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_edges_$7.cql

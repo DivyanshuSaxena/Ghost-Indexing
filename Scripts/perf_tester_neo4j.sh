@@ -28,6 +28,7 @@ if [ "$#" -ne 14 ]; then
 fi
 
 datasets=( 1000 2500 4000 7500 )
+#datasets=( 1000 )
 cwd=$(pwd)
 export NEO4J_HOME=${11}
 export NEO4J_DB_DIR=$NEO4J_HOME/data/databases/graph.ghostdb  
