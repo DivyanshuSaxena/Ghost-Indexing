@@ -53,6 +53,7 @@ temp.cypher
 out.txt
 *temp*
 *swp
+*bak*
 
 JanusGraph/dataLoader/reader.gremlin
 Neo4j/dataLoader/reader.gremlin

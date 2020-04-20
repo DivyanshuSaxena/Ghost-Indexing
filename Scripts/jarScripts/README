@@ -1,6 +1,0 @@
-Process:
-1. First create sorted runs of edge files by using do-sort.sh on the LDBC directory
-2. Run schema.gremlin to create the required schema and indexes
-3. Run reader.gremlin which will start loading from the LDBC csv files
-
-NOTE: the directory names in the schema and reader gremlin scripts have to be modified to point to the appropriate locations
