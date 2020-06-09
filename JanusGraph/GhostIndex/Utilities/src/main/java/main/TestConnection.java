@@ -9,7 +9,6 @@ import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.zookeeper.data.Id;
 import org.janusgraph.core.*;
 import org.janusgraph.core.attribute.Geo;
 import org.janusgraph.core.attribute.Geoshape;

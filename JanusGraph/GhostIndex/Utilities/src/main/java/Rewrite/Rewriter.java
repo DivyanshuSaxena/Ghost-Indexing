@@ -1,7 +1,6 @@
 package Rewrite;
 
 import groovy.transform.Sortable;
-import org.apache.lucene.search.Sort;
 import org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import org.apache.tinkerpop.gremlin.groovy.jsr223.GroovyTranslator;
 import org.apache.tinkerpop.gremlin.process.traversal.Step;

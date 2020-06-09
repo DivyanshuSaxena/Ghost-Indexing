@@ -9,7 +9,6 @@ import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.provider.certpath.Vertex;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
