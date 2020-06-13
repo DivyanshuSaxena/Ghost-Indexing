@@ -1,4 +1,4 @@
-// Query 1 (LDBC SNB BI Database) using ES Indexes
+// Query 1 (LDBC SNB BI Database) using Ghost Indexes
 // 
 // Params:
 // date: used by Query 1
@@ -9,6 +9,7 @@ import main.QueryResult;
 
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
@@ -19,12 +20,12 @@ import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 
-public class Query1 extends BaseQuery {
+public class BIndexQuery1 extends BaseQuery {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting Query1 execution.");
 
-        Query1 q = new Query1();
+        BIndexQuery1 q = new BIndexQuery1();
         q.confFile = "local";
         JanusGraph graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
                 .set("index.search.backend", "elasticsearch").open();
@@ -37,8 +38,8 @@ public class Query1 extends BaseQuery {
     public QueryResult runQuery(GraphTraversalSource g, List<String> params) throws ParseException {
         long date = 0;
         int numTries = 0;
+
         if (params == null || params.size() == 0) {
-            // date = 1316025000000L;
             date = 1332354600000L;
             numTries = 3;
         } else {
@@ -55,10 +56,13 @@ public class Query1 extends BaseQuery {
             long startTime = System.currentTimeMillis();
             /*
              * FIXME: Create index on creationDate of comments and include that in query //
-             * *
+             *
              */
-            List result = g.V() // .hasLabel("post", "comment")
-                    .has("po_creationDate", P.lt(date)).has("po_length", P.gt(0)).group().by(item -> {
+            List result = g.V().has("index_id", -1).out().has("name", "post_creationDate_index_bPlus_2000")
+                    .repeat(
+                        __.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV()
+                    ).until(__.outE("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE")
+                    .has("val", P.lte(date)).inV().has("po_length", P.gt(0)).group().by(item -> {
                         long value = ((Vertex) item).value("po_creationDate");
                         Date creationDate = new Date(value);
                         return creationDate.getYear() + 1900;
@@ -85,7 +89,7 @@ public class Query1 extends BaseQuery {
 
         averageTime = averageTime/(numTries - 1);
         QueryResult queryResult = new QueryResult();
-        queryResult.setQueryName("Q1: (" + date + ")");
+        queryResult.setQueryName("BQ1: (" + date + ")");
         queryResult.setResultCount(resultSize);
         queryResult.setColdStartTime(coldStartTime);
         queryResult.setWarmCacheTime(averageTime);

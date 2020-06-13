@@ -1,15 +1,14 @@
 package main;
 
-import Queries.*;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphException;
+import org.janusgraph.core.JanusGraphFactory;
 
-import javax.management.Query;
 import java.io.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PerformanceTester {
 
@@ -29,7 +28,7 @@ public class PerformanceTester {
         String distributed = argv[4];
 
         Class queryClass = Class.forName("Queries." + queryClassName);
-        Queries.Query query = (Queries.Query) queryClass.newInstance();
+        Queries.BaseQuery query = (Queries.BaseQuery) queryClass.newInstance();
         if (argv.length > 5) {
             query.confFile = argv[5];
         }
@@ -39,73 +38,74 @@ public class PerformanceTester {
 
     }
 
-    public void getPerformance(Queries.Query query, int param_file, int skipParamsLines, int dataset,
+    public void getPerformance(Queries.BaseQuery query, int param_file, int skipParamsLines, int dataset,
             String distributed) throws Exception {
-        int averageOver = 2;
-        int skipFirstX = 1;
-
         String paramsDelimiter = "\\|";
-        String queryParamsFolder = "substitution_parameters/";
-
-        // get the class name to locate the QueryXX.csv file
-        String className = query.getClass().getSimpleName();
-        if (className.startsWith("Index")) {
-            className = className.substring(5);
-        }
 
         // create query file path and result file path
-        String csvFile = "substitution_parameters/bi_" + param_file + "_param.txt";
-        String resultFile = "queryresults/" + query.getClass().getSimpleName() + "_" + dataset + ".csv";
-        clearFiles(resultFile, "full" + resultFile);
+        String csvFile = "../substitution_parameters/bi_" + param_file + "_param.txt";
+        String resultFile = "../queryresults/" + query.getClass().getSimpleName() + "_" + dataset + ".csv";
+        clearFiles(resultFile);
 
         PerformanceTester pt = new PerformanceTester();
         ArrayList<ArrayList<String>> parameters = pt.readParameters(csvFile, paramsDelimiter, skipParamsLines);
 
         QueryResult queryResult;
-        long totalIters = averageOver + skipFirstX;
         int paramNum = 1;
+        int averageOver = 2;
+        int isDistributed = Integer.parseInt(distributed);
+
         for (ArrayList<String> params : parameters) {
-            params.add(distributed);
+            String numTries = "3";
+            params.add(numTries);
             ArrayList<QueryResult> allResults = new ArrayList<>();
 
-            for (int i = 0; i < totalIters; i++) {
+            for (int iters = 0; iters < averageOver; iters++) {
+                JanusGraph graph;
+                if (isDistributed == 1) {
+                    System.out.println("DISTRIBUTED SETTING");
+                    graph = JanusGraphFactory.build().set("storage.backend", "cassandrathrift")
+                            .set("storage.hostname", "10.17.5.53").set("storage.cassandra.frame-size-mb", 60)
+                            .set("index.search.backend", "elasticsearch")
+                            .set("index.search.hostname", "10.17.5.53:9210").open();
+                } else {
+                    graph = JanusGraphFactory.open("../conf/janusgraph-cassandra-es.properties");
+                }
+                GraphTraversalSource g = graph.traversal();
+
                 try {
-                    queryResult = query.runQuery(params);
-                    System.out.println("a run: " + paramNum + "/" + i + ": " + queryResult.getTimeToRun());
-                    if (i >= skipFirstX) {
-                        allResults.add(queryResult);
-                    }
+                    queryResult = query.runQuery(g, params);
+                    System.out.println("a run: " + paramNum + "/" + iters + ": " + queryResult.getWarmCacheTime());
+                    allResults.add(queryResult);
                 } catch (JanusGraphException e) {
                     System.out.println("[EXCEPTION]: " + e.getMessage());
                     query.graph.close();
-                    i--;
+                    iters--;
                 }
-            }
 
+                graph.close();
+            }
             paramNum++;
 
             // write averaged results for this set of parameters
             pt.writeResultsPartial(resultFile, allResults);
-            // write all results for this set of parameters
-            pt.writeFullResultsPartial("full" + resultFile, allResults);
         }
     }
 
-    // deletes the old result files
-    private static void clearFiles(String resultFile, String s) {
+    // Deletes the old result files
+    private static void clearFiles(String resultFile) {
         File r = new File(resultFile);
-        r.delete();
-        r = new File(s);
         r.delete();
     }
 
     /*
-     * Format: Count-meanQueryTime-stdDevQueryTime-medianQueryTime-meanIndexRunTime-
-     * stddevIndexRunTime-medianIndexRunTime
+     * Format:
+     * Count-meanColdStartTime-meanQueryTime-stdDevQueryTime-medianQueryTime-
+     * meanIndexRunTime- stddevIndexRunTime-medianIndexRunTime
      */
     public void writeResultsPartial(String resultFile, ArrayList<QueryResult> results) throws IOException {
         FileWriter writer = new FileWriter(resultFile, true);
-        // writer.write(result.resultCount+" "+result.getTimeToRun()+"\n");
+        // writer.write(result.resultCount+" "+result.getWarmCacheTime()+"\n");
 
         Statistics stats = new Statistics(results);
         if (!results.isEmpty()) {
@@ -117,41 +117,11 @@ public class PerformanceTester {
         writer.close();
     }
 
-    public void writeFullResultsPartial(String resultFile, ArrayList<QueryResult> results) throws IOException {
-        FileWriter writer = new FileWriter(resultFile, true);
-        // RESULT COUNT --------TIME TO RUN1 -------------TIME TO RUN2
-        if (results.size() > 0) {
-            writer.write("" + results.get(0).getResultCount());
-        }
-        for (QueryResult qr : results) {
-            writer.write(" " + qr.getTimeToRun());
-        }
-        writer.write("\n");
-
-        writer.close();
-    }
-
-    public void writeFullResults(String resultFile, ArrayList<ArrayList<QueryResult>> allResults) throws IOException {
-        FileWriter writer = new FileWriter(resultFile);
-
-        for (ArrayList<QueryResult> results : allResults) {
-            if (results.size() > 0) {
-                writer.write("" + results.get(0).getResultCount());
-            }
-            for (QueryResult qr : results) {
-                writer.write(" " + qr.getTimeToRun());
-            }
-            writer.write("\n");
-
-        }
-        writer.close();
-    }
-
     public void writeResults(String resultFile, List<QueryResult> results) throws IOException {
         FileWriter writer = new FileWriter(resultFile);
 
         for (QueryResult result : results) {
-            writer.write(result.resultCount + " " + result.getTimeToRun() + "\n");
+            writer.write(result.resultCount + " " + result.getWarmCacheTime() + "\n");
         }
         writer.close();
     }

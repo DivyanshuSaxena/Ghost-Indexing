@@ -1,0 +1,19 @@
+// ES Indexes Gremlin Queries
+
+// Query 1
+g.V().has("po_creationDate",P.lt(date)).has("po_length",P.gt(0)).group().by(
+  {it->L:{
+    creationDate=new Date(it.value("po_creationDate"));
+    return creationDate.year+1900;
+  }}
+).by(
+  groupCount().by(
+    values("po_length").choose(
+      is(P.lt(40)),constant("0"),choose(
+        is(P.lt(80)),constant("1"),choose(
+          is(P.lt(160)),constant("2"),constant("3")
+        )
+      )
+    )
+  )
+)
