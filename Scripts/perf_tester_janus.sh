@@ -13,9 +13,13 @@
 # This makes use of GhostIndex/perf_tester_cmd.sh which is the command that Intelliij uses for running Utilities.main.PerformanceTester
 # Make sure to edit perf_tester_cmd.sh accordingly.
 
-datasets=( 1000 2500 4000 7500 )
+datasets=(1000 2500 4000 7500)
 #datasets=( 1000 )
 cwd=$(pwd)
+
+# Compile the project
+cd $3/GhostIndex/Utilities
+mvn compile
 
 for dataset in ${datasets[*]}; do
 	echo "=================================================="
@@ -38,8 +42,8 @@ for dataset in ${datasets[*]}; do
 
 	# Run Performance Tester for the given Query class
 	echo "Running ES Implementation for Query"
-	cd $3/GhostIndex
-	./perf_tester_cmd.sh Query$5 $5 $dataset $6
+	cd $3/GhostIndex/Utilities
+	mvn exec:java -Dexec.mainClass=main.PerformanceTester -Dexec.args="Query$5 $5 1 $dataset $6 local"
 	cd $cwd
 
 	# Add BPlus Ghost Indexes
@@ -51,8 +55,8 @@ for dataset in ${datasets[*]}; do
 
 	# Run Performance Tester for the given Query class again
 	echo "Running GhostIndex Implementation for Query"
-	cd $3/GhostIndex
-	./perf_tester_cmd.sh BPIndexQuery$5 $5 $dataset $6
+	cd $3/GhostIndex/Utilities
+	mvn exec:java -Dexec.mainClass=main.PerformanceTester -Dexec.args="BIndexQuery$5 $5 1 $dataset $6 local"
 	cd $cwd
 
 	# Cleanup data, to prepare for next dataset
