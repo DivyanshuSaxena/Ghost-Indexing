@@ -63,7 +63,7 @@ public class Statistics {
         double temp = 0;
         for (QueryResult a : data)
             temp += (a.getWarmCacheTime() - mean) * (a.getWarmCacheTime() - mean);
-        return temp / (size - 1);
+        return temp / size;
     }
 
     double getVarianceIndexRunTime() {
@@ -71,13 +71,13 @@ public class Statistics {
         double temp = 0;
         for (QueryResult a : data)
             temp += (a.getTimeToTraverseIndex() - mean) * (a.getTimeToTraverseIndex() - mean);
-        return temp / (size - 1);
+        return temp / size;
     }
 
     double getStdDevQueryRunTime() {
         return Math.sqrt(getVarianceQueryRunTime());
     }
-
+    
     double getStdDevIndexRunTime() {
         return Math.sqrt(getVarianceIndexRunTime());
     }

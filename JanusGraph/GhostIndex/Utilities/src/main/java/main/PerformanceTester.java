@@ -8,6 +8,8 @@ import org.janusgraph.core.JanusGraphFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class PerformanceTester {
@@ -50,17 +52,28 @@ public class PerformanceTester {
         PerformanceTester pt = new PerformanceTester();
         ArrayList<ArrayList<String>> parameters = pt.readParameters(csvFile, paramsDelimiter, skipParamsLines);
 
+        // Utilized for shuffling
+        ArrayList<Integer> indexList = new ArrayList<>();
+        for (int i = 0; i < parameters.size(); i++) {
+            indexList.add(i);
+        }
+        ArrayList<ArrayList<String>> sortedParams = (ArrayList<ArrayList<String>>) parameters.clone();
+
         QueryResult queryResult;
         int paramNum = 1;
         int averageOver = 2;
         int isDistributed = Integer.parseInt(distributed);
 
-        for (ArrayList<String> params : parameters) {
-            String numTries = "3";
-            params.add(numTries);
-            ArrayList<QueryResult> allResults = new ArrayList<>();
+        // Shuffle parameters and store query results in the HashMap
+        HashMap<Integer, ArrayList<QueryResult>> allResults = new HashMap<>();
+        for (int iters = 0; iters < averageOver; iters++) {
+            // Shuffle Paramaters
+            Collections.shuffle(indexList);
+            for (int paramIndex : indexList) {
+                ArrayList<String> params = sortedParams.get(paramIndex);
+                String numTries = "3";
+                params.add(numTries);
 
-            for (int iters = 0; iters < averageOver; iters++) {
                 JanusGraph graph;
                 if (isDistributed == 1) {
                     System.out.println("DISTRIBUTED SETTING");
@@ -76,7 +89,14 @@ public class PerformanceTester {
                 try {
                     queryResult = query.runQuery(g, params);
                     System.out.println("a run: " + paramNum + "/" + iters + ": " + queryResult.getWarmCacheTime());
-                    allResults.add(queryResult);
+                    // Add the query result instance to the Dictionary
+                    if (allResults.containsKey(paramIndex)) {
+                        allResults.get(paramIndex).add(queryResult);
+                    } else {
+                        ArrayList<QueryResult> qr = new ArrayList<>();
+                        qr.add(queryResult);
+                        allResults.put(paramIndex, qr);
+                    }
                 } catch (JanusGraphException e) {
                     System.out.println("[EXCEPTION]: " + e.getMessage());
                     query.graph.close();
@@ -86,9 +106,13 @@ public class PerformanceTester {
                 graph.close();
             }
             paramNum++;
+        }
 
+        // Gather results for a single parameter and put in the file
+        for (int paramIndex : indexList) {
             // write averaged results for this set of parameters
-            pt.writeResultsPartial(resultFile, allResults);
+            ArrayList<QueryResult> paramResults = allResults.get(paramIndex);
+            pt.writeResultsPartial(resultFile, paramResults);
         }
     }
 
@@ -105,14 +129,12 @@ public class PerformanceTester {
      */
     public void writeResultsPartial(String resultFile, ArrayList<QueryResult> results) throws IOException {
         FileWriter writer = new FileWriter(resultFile, true);
-        // writer.write(result.resultCount+" "+result.getWarmCacheTime()+"\n");
-
         Statistics stats = new Statistics(results);
         if (!results.isEmpty()) {
-            writer.write(
-                    results.get(0).resultCount + " " + stats.getMeanQueryRunTime() + " " + stats.getStdDevQueryRunTime()
-                            + " " + stats.getMedianQueryRunTime() + " " + stats.getMeanIndexRunTime() + " "
-                            + stats.getStdDevIndexRunTime() + " " + stats.getMedianIndexRunTime() + " " + "\n");
+            writer.write(results.get(0).resultCount + " " + stats.getMeanColdStartTime() + " "
+                    + stats.getMeanQueryRunTime() + " " + stats.getStdDevQueryRunTime() + " "
+                    + stats.getMedianQueryRunTime() + " " + stats.getMeanIndexRunTime() + " "
+                    + stats.getStdDevIndexRunTime() + " " + stats.getMedianIndexRunTime() + " " + "\n");
         }
         writer.close();
     }

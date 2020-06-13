@@ -20,19 +20,19 @@ public class QueryResult extends Object {
     }
 
     /*
+     * @deprecated
+     */
+    public long getTimeToRun() {
+        return this.getWarmCacheTime();
+    }
+
+    /*
      * Time in ms for which the complete query
      * 
      * @deprecated
      */
     public void setTimeToRun(long timeToRun) {
-        this.setColdStartTime(timeToRun);
-    }
-
-    /*
-     * @deprecated
-     */
-    public long getTimeToRun() {
-        return this.getWarmCacheTime();
+        this.setWarmCacheTime(timeToRun);
     }
 
     public long getColdStartTime() {
@@ -40,7 +40,7 @@ public class QueryResult extends Object {
     }
 
     /*
-     * Time in ms for which the complete query
+     * Time in ms for which the complete query runs at first start of the graph
      */
     public void setColdStartTime(long timeToRun) {
         this.coldStartTime = timeToRun;
@@ -86,6 +86,6 @@ public class QueryResult extends Object {
 
     @Override
     public String toString() {
-        return resultCount + " : " + warmCacheTime;
+        return resultCount + " : " + coldStartTime + ", " + warmCacheTime;
     }
 }
