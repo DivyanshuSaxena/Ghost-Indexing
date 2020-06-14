@@ -27,43 +27,43 @@ spk = mgmt.makePropertyKey('name').dataType(String.class).cardinality(Cardinalit
 
 mgmt.commit()
 
-
-mgmt = g.openManagement();
-forum = mgmt.makeVertexLabel("forum").make(); mgmt.commit()
-mgmt = g.openManagement();
-kee = mgmt.makePropertyKey("f_id").dataType(Long.class).make();
-mgmt.buildIndex("f_id", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-println "Finished indexing  f_id "
-
 mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("index_id").dataType(Long.class).make();
 mgmt.buildIndex("index_id", Vertex.class).addKey(kee).buildCompositeIndex();
 mgmt.commit();
 println "Finished indexing  index id "
 
+mgmt = g.openManagement();
+forum = mgmt.makeVertexLabel("forum").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
+kee = mgmt.makePropertyKey("f_id").dataType(Long.class).make();
+mgmt.buildIndex("f_id", Vertex.class).addKey(kee).buildCompositeIndex();
+mgmt.commit();
+println "Finished indexing  f_id "
 
 mgmt = g.openManagement();
-tagclass = mgmt.makeVertexLabel("tagclass").make(); mgmt.commit()
-mgmt = g.openManagement();
+tagclass = mgmt.makeVertexLabel("tagclass").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("tc_id").dataType(Long.class).make();
 mgmt.buildIndex("tc_id", Vertex.class).addKey(kee).buildCompositeIndex();
 mgmt.commit();
 println "Finished indexing  tc_id "
 
-
 mgmt = g.openManagement();
-post = mgmt.makeVertexLabel("post").make(); mgmt.commit()
-mgmt = g.openManagement();
+post = mgmt.makeVertexLabel("post").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("po_id").dataType(Long.class).make();
 mgmt.buildIndex("po_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
 println "Finished indexing  po_id "
 
-
 mgmt = g.openManagement();
-person = mgmt.makeVertexLabel("person").make(); mgmt.commit()
-mgmt = g.openManagement();
+person = mgmt.makeVertexLabel("person").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("p_id").dataType(Long.class).make();
 mgmt.buildIndex("p_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
@@ -71,17 +71,18 @@ println "Finished indexing  p_id "
 
 mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("emails").dataType(String.class).cardinality(Cardinality.LIST).make();
-mgmt.commit();
+// mgmt.commit();
 println "Finished creation emails "
 
-mgmt = g.openManagement();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("speaksLanguage").dataType(String.class).cardinality(Cardinality.LIST).make();
 mgmt.commit();
 println "Finished creation speaksLanguage "
 
 mgmt = g.openManagement();
-organization = mgmt.makeVertexLabel("organization").make(); mgmt.commit()
-mgmt = g.openManagement();
+organization = mgmt.makeVertexLabel("organization").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("o_id").dataType(Long.class).make();
 mgmt.buildIndex("o_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
@@ -89,16 +90,18 @@ println "Finished indexing  o_id "
 
 
 mgmt = g.openManagement();
-comment = mgmt.makeVertexLabel("comment").make(); mgmt.commit()
-mgmt = g.openManagement();
+comment = mgmt.makeVertexLabel("comment").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("c_id").dataType(Long.class).make();
 mgmt.buildIndex("c_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
 println "Finished indexing  c_id "
 
 mgmt = g.openManagement();
-place = mgmt.makeVertexLabel("place").make(); mgmt.commit()
-mgmt = g.openManagement();
+place = mgmt.makeVertexLabel("place").make();
+// mgmt.commit()
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("pl_id").dataType(Long.class).make();
 mgmt.buildIndex("pl_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
@@ -106,13 +109,13 @@ println "Finished indexing  pl_id "
 
 
 mgmt = g.openManagement();
-tag = mgmt.makeVertexLabel("tag").make(); mgmt.commit()
-mgmt = g.openManagement();
+tag = mgmt.makeVertexLabel("tag").make();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("t_id").dataType(Long.class).make();
 mgmt.buildIndex("t_id", Vertex.class).addKey(kee).unique().buildCompositeIndex();
 mgmt.commit();
 println "Finished indexing  t_id "
-
 
 /*
 def void createIndex(String indexName, Class class, bool isMixed, org.janusgraph.graphdb.database.management.ManagementSystem mgmt){
@@ -136,101 +139,92 @@ def void createIndex(String indexName, Class class, bool isMixed, org.janusgraph
 }
 */
 
-
-
 mgmt = g.openManagement();
-
-// place and indices
-
 kee = mgmt.makePropertyKey('pl_name').dataType(String.class).make();
 mgmt.buildIndex("pl_name", Vertex.class).addKey(kee).buildCompositeIndex();
 mgmt.commit();
-mgmt = g.openManagement();
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('pl_url').dataType(String.class).make();
 kee = mgmt.makePropertyKey('pl_type').dataType(String.class).make();
-
 
 //person
 kee = mgmt.makePropertyKey('firstName').dataType(String.class).make();
 kee = mgmt.makePropertyKey('lastName').dataType(String.class).make();
 kee = mgmt.makePropertyKey('gender').dataType(String.class).make();
-
 kee = mgmt.makePropertyKey("birthday").dataType(Long.class).make();
 mgmt.buildIndex("birthdayIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
-mgmt = g.openManagement();
-println "Finished indexing  person birthday "
+println "Finished indexing person birthday "
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('p_creationDate').dataType(Long.class).make();
 mgmt.buildIndex("p_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
-mgmt = g.openManagement();
-println "Finished indexing  person creationDate "
+println "Finished indexing person creationDate "
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('p_locationIP').dataType(String.class).make();
 kee = mgmt.makePropertyKey('p_browserUsed').dataType(String.class).make();
 mgmt.buildIndex("p_browserUsed", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 
 kee = mgmt.makePropertyKey('o_type').dataType(String.class).make();
 kee = mgmt.makePropertyKey('o_name').dataType(String.class).make();
 mgmt.buildIndex("o_name", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('o_url').dataType(String.class).make();
+mgmt.commit();
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('imageFile').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_creationDate').dataType(Long.class).make();
 mgmt.buildIndex("po_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('po_locationIP').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_browserUsed').dataType(String.class).make();
 mgmt.buildIndex("po_browserUsed", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('language').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_content').dataType(String.class).make();
 kee = mgmt.makePropertyKey('po_length').dataType(Integer.class).make();
 mgmt.buildIndex("po_lengthIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
 mgmt.commit();
-mgmt = g.openManagement();
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('c_creationDate').dataType(Long.class).make();
 mgmt.buildIndex("c_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('c_locationIP').dataType(String.class).make();
 kee = mgmt.makePropertyKey('c_browserUsed').dataType(String.class).make();
 mgmt.buildIndex("c_browserUsed", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('c_content').dataType(String.class).make();
 kee = mgmt.makePropertyKey('c_length').dataType(Integer.class).make();
 mgmt.buildIndex("c_length", Vertex.class).addKey(kee).buildCompositeIndex();
 mgmt.commit();
-mgmt = g.openManagement();
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('title').dataType(String.class).make();
 kee = mgmt.makePropertyKey('f_creationDate').dataType(Long.class).make();
 mgmt.buildIndex("f_creationDateIndex", Vertex.class).addKey(kee).buildMixedIndex("search");
-mgmt.commit();
-mgmt = g.openManagement();
-
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('t_name').dataType(String.class).make();
 mgmt.buildIndex("t_name", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('t_url').dataType(String.class).make();
+mgmt.commit();
 
+mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('tc_name').dataType(String.class).make();
 mgmt.buildIndex("tc_name", Vertex.class).addKey(kee).buildCompositeIndex();
-mgmt.commit();
-mgmt = g.openManagement();
+// mgmt.commit();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey('tc_url').dataType(String.class).make();
-
 mgmt.commit();
 
 
@@ -280,23 +274,20 @@ mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("classYear").dataType(Integer.class).make();
 studyAt = mgmt.getEdgeLabel("studyAt");
 mgmt.buildEdgeIndex(studyAt, 'classYear', Direction.OUT, Order.incr, kee);
-mgmt.commit();
+// mgmt.commit();
 println "Finished indexing classYear "
 
-mgmt = g.openManagement();
+// mgmt = g.openManagement();
 kee = mgmt.makePropertyKey("workFrom").dataType(Integer.class).make();
 workAt = mgmt.getEdgeLabel("workAt");
 mgmt.buildEdgeIndex(workAt, 'workFrom', Direction.OUT, Order.incr, kee);
 mgmt.commit();
 println "Finished indexing workFrom "
 
-
 a = g.addVertex(T.label,'SUPER_INDEX')
 a.property('index_id', -1);
 gt.tx().commit();
 println "Created Super Index";
-
-
 
 g.close();
 

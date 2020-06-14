@@ -70,4 +70,5 @@ for dataset in ${datasets[*]}; do
 		$1/bin/janusgraph.sh stop
 	fi
 	echo "y" | $1/bin/janusgraph.sh clean
+	sleep 10s
 done
