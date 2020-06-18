@@ -109,9 +109,9 @@ public class PerformanceTester {
         }
 
         // Gather results for a single parameter and put in the file
-        for (int paramIndex : indexList) {
+        for (int index = 0; index < sortedParams.size(); index++) {
             // write averaged results for this set of parameters
-            ArrayList<QueryResult> paramResults = allResults.get(paramIndex);
+            ArrayList<QueryResult> paramResults = allResults.get(index);
             pt.writeResultsPartial(resultFile, paramResults);
         }
     }
