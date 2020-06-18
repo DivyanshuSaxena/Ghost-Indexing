@@ -1,4 +1,4 @@
-// Query 12 (LDBC SNB BI Dataset) using ES Indexes
+// Query 12 (LDBC SNB BI Dataset) using Ghost Indexes
 // 
 // Params:
 // date: used by Query 12
@@ -17,12 +17,12 @@ import org.janusgraph.core.JanusGraphFactory;
 import java.text.ParseException;
 import java.util.List;
 
-public class Query12 extends BaseQuery {
+public class BIndexQuery12 extends BaseQuery {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting Query12 execution.");
 
-        Query12 q = new Query12();
+        BIndexQuery12 q = new BIndexQuery12();
         q.confFile = "local";
         JanusGraph graph = JanusGraphFactory.open("../conf/janusgraph-cassandra-es.properties");
         GraphTraversalSource g = graph.traversal();
@@ -53,18 +53,9 @@ public class Query12 extends BaseQuery {
         for (int it = 0; it < numTries; it++) {
             long startTime = System.currentTimeMillis();
 
-            // This code below works too!! but the one below
-            // uses "where" clause and is much smaller!
-
-            // List<Object> result = g.V().hasLabel("post")
-            // .has("creationDate", P.gt(dateVar1)).limit(100).as("messagesx")
-            // .in("likes")
-            // .groupCount().by(select("messagesx"))
-            // .unfold().filter(it -> {
-            // return (Long) ((Map.Entry) it.get()).getValue() > likeThreshold;
-            // }).toList();
-
-            List<Vertex> result = g.V().has("po_creationDate", P.gte(date))
+            List<Vertex> result = g.V().has("index_id", -1).out().has("name", "post_creationDate_index_bPlus_2000")
+                    .repeat(__.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV())
+                    .until(__.out("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV()
                     .where(__.inE("likes").count().is(P.gt(likeThreshold))).toList();
 
             long endTime = System.currentTimeMillis();

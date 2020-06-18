@@ -1,28 +1,31 @@
-// Query 12 (LDBC SNB BI Dataset) using ES Indexes
+// Query 4 (LDBC SNB BI Dataset) using ES Indexes
 // 
 // Params:
-// date: used by Query 12
-// likeThreshold: used by Query 12
+// tagClass: used by Query 4
+// country: used by Query 4
 // numTries: Number of tries to run the parameter in a single graph instance
 package Queries;
 
 import main.QueryResult;
+
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
-public class Query12 extends BaseQuery {
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.select;
+
+public class BIndexQuery4 extends BaseQuery {
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Starting Query12 execution.");
+        System.out.println("Starting Query4 execution.");
 
-        Query12 q = new Query12();
+        BIndexQuery4 q = new BIndexQuery4();
         q.confFile = "local";
         JanusGraph graph = JanusGraphFactory.open("../conf/janusgraph-cassandra-es.properties");
         GraphTraversalSource g = graph.traversal();
@@ -32,16 +35,16 @@ public class Query12 extends BaseQuery {
     }
 
     public QueryResult runQuery(GraphTraversalSource g, List<String> params) throws ParseException {
-        long date = 0;
-        long likeThreshold = 10;
+        String tagClass = "";
+        String country = "";
         int numTries = 0;
-        if (params == null || params.size() == 0) {
-            date = 1311273000000L;
-            likeThreshold = 400;
+        if (params == null || params.size() <= 1) {
+            tagClass = "OfficeHolder";
+            country = "Egypt";
             numTries = 3;
         } else {
-            date = Long.parseLong(params.get(0));
-            likeThreshold = Integer.parseInt(params.get(1));
+            tagClass = params.get(0);
+            country = params.get(1);
             numTries = Integer.parseInt(params.get(2));
         }
 
@@ -53,19 +56,13 @@ public class Query12 extends BaseQuery {
         for (int it = 0; it < numTries; it++) {
             long startTime = System.currentTimeMillis();
 
-            // This code below works too!! but the one below
-            // uses "where" clause and is much smaller!
-
-            // List<Object> result = g.V().hasLabel("post")
-            // .has("creationDate", P.gt(dateVar1)).limit(100).as("messagesx")
-            // .in("likes")
-            // .groupCount().by(select("messagesx"))
-            // .unfold().filter(it -> {
-            // return (Long) ((Map.Entry) it.get()).getValue() > likeThreshold;
-            // }).toList();
-
-            List<Vertex> result = g.V().has("po_creationDate", P.gte(date))
-                    .where(__.inE("likes").count().is(P.gt(likeThreshold))).toList();
+            List<Map<Object, Long>> result = g.V().has("index_id", -1).out().has("name", "tagclass_bTree_20")
+                    .repeat(__.outE("INDEX_EDGE").has("min", P.lte(tagClass)).has("max", P.gte(tagClass)).inV())
+                    .until(__.out("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE").has("val", P.eq(tagClass)).inV()
+                    .in("hasType").in("hasTag").as("postx").in("containerOf").as("forumx", "forumx_title")
+                    .out("hasModerator").as("personx").out("isLocatedIn").out("isPartOf").has("pl_name", country)
+                    .select("forumx", "forumx_title", "postx", "personx").groupCount()
+                    .by(select("personx", "forumx", "forumx_title").by("p_id").by("f_id").by("title")).toList();
 
             long endTime = System.currentTimeMillis();
             long totalTime = endTime - startTime;
@@ -75,17 +72,17 @@ public class Query12 extends BaseQuery {
             } else {
                 averageTime += totalTime;
             }
-            resultSize = result.size();
+            resultSize = result.get(0).size();
 
-            System.out.println("============" + date + "|" + likeThreshold + "============");
-            System.out.println("DataSize: " + result.size());
+            System.out.println("============" + tagClass + "|" + country + "============");
+            System.out.println("DataSize: " + result.get(0).size());
             System.out.println("TotalTime: " + totalTime);
             System.out.println("==========================================");
         }
 
         averageTime = averageTime / (numTries - 1);
         QueryResult queryResult = new QueryResult();
-        queryResult.setQueryName("Q12: (" + params + ")");
+        queryResult.setQueryName("Q4: (" + params + ")");
         queryResult.setResultCount(resultSize);
         queryResult.setColdStartTime(coldStartTime);
         queryResult.setWarmCacheTime(averageTime);

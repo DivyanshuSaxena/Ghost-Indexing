@@ -58,18 +58,18 @@ public class BIndexQuery1 extends BaseQuery {
              * FIXME: Create index on creationDate of comments and include that in query //
              *
              */
-            List result = g.V().has("index_id", -1).out().has("name", "post_creationDate_index_bPlus_2000")
-                    .repeat(
-                        __.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV()
-                    ).until(__.outE("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE")
-                    .has("val", P.lte(date)).inV().has("po_length", P.gt(0)).group().by(item -> {
+            List<Object> result = g.V().has("index_id", -1).out()
+                    .has("name", "post_creationDate_index_bPlus_2000")
+                    .repeat(__.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV())
+                    .until(__.outE("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV()
+                    .has("po_length", P.gt(0)).group().by(item -> {
                         long value = ((Vertex) item).value("po_creationDate");
                         Date creationDate = new Date(value);
                         return creationDate.getYear() + 1900;
                     })
                     .by(groupCount().by(values("po_length").choose(is(P.lt(40)), constant("0"),
                             choose(is(P.lt(80)), constant("1"), choose(is(P.lt(160)), constant("2"), constant("3"))))))
-                    .toList();
+                    .unfold().toList();
 
             long endTime = System.currentTimeMillis();
             long totalTime = endTime - startTime;
@@ -87,7 +87,7 @@ public class BIndexQuery1 extends BaseQuery {
             System.out.println("==========================================");
         }
 
-        averageTime = averageTime/(numTries - 1);
+        averageTime = averageTime / (numTries - 1);
         QueryResult queryResult = new QueryResult();
         queryResult.setQueryName("BQ1: (" + date + ")");
         queryResult.setResultCount(resultSize);

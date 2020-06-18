@@ -17,3 +17,23 @@ g.V().has("po_creationDate",P.lt(date)).has("po_length",P.gt(0)).group().by(
     )
   )
 )
+
+// Query 4
+g.V().has("pl_name", country).in("isPartOf").in("isLocatedIn").as(
+  "personx"
+).in("hasModerator").as(
+  "forumx", "forumx_title"
+).out("containerOf").as(
+  "postx"
+).out("hasTag").out("hasType").has("tc_name", tagClass).select(
+  "forumx", "forumx_title", "postx", "personx"
+).groupCount().by(
+  select("personx", "forumx", "forumx_title").by("p_id").by("f_id").by("title")
+)
+
+// Query 12
+g.V().has("po_creationDate", P.gte(date)).where(
+  __.inE("likes").count().is(
+    P.gt(likeThreshold)
+  )
+)

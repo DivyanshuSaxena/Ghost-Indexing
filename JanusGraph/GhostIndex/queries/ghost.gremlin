@@ -1,23 +1,61 @@
 // Ghost Indexes Gremlin Queries
 
 // Query 1
-g.V().has('index_id', -1).out().has(
-  "name", "post_creationDate_index_bPlus_2000").outE('INDEX_EDGE').not(
-      __.has('min', P.gte(date))
-    ).inV().outE('INDEX_DATA_EDGE').has(
-      'val', P.lte(date)).inV().has("po_length",P.gt(0)).group().by(
-        {it->L:{
-          creationDate=new Date(it.value("po_creationDate"));
-          return creationDate.year+1900;
-        }}
-      ).by(
-        groupCount().by(
-          values("po_length").choose(
-            is(P.lt(40)),constant("0"),choose(
-              is(P.lt(80)),constant("1"),choose(
-                is(P.lt(160)),constant("2"),constant("3")
-              )
-            )
-          )
+g.V().has("index_id", -1).out().has(
+  "name", "post_creationDate_index_bPlus_2000"
+).repeat(
+  __.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV()
+).until(
+  __.out("INDEX_EDGE").count().is(0)
+).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV().has(
+  "po_length",P.gt(0)
+).group().by(
+  {it->L:{
+    creationDate=new Date(it.value("po_creationDate"));
+    return creationDate.year+1900;
+  }}
+).by(
+  groupCount().by(
+    values("po_length").choose(
+      is(P.lt(40)),constant("0"),choose(
+        is(P.lt(80)),constant("1"),choose(
+          is(P.lt(160)),constant("2"),constant("3")
         )
       )
+    )
+  )
+)
+
+// Query 4
+g.V().has("index_id", -1).out().has(
+  "name", "tagclass_bTree_20"
+).repeat(
+  __.outE("INDEX_EDGE").has("min", P.lte(tagClass)).has("max", P.gte(tagClass)).inV()
+).until(
+  __.out("INDEX_EDGE").count().is(0)
+).outE("INDEX_DATA_EDGE").has(
+  "val", eq(tagClass)
+).inV().in("hasType").in("hasTag").as(
+  "postx"
+).in("containerOf").as(
+  "forumx", "forumx_title"
+).out("hasModerator").as(
+  "personx"
+).out("isLocatedIn").out("isPartOf").has("pl_name", country).select(
+  "forumx", "forumx_title", "postx", "personx"
+).groupCount().by(
+  select("personx", "forumx", "forumx_title").by("p_id").by("f_id").by("title")
+)
+
+// Query 12
+g.V().has("index_id", -1).out().has(
+  "name", "post_creationDate_index_bPlus_2000"
+).repeat(
+  __.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV()
+).until(
+  __.out("INDEX_EDGE").count().is(0)
+).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV().where(
+  __.inE("likes").count().is(
+    P.gt(likeThreshold)
+  )
+)
