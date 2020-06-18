@@ -37,7 +37,7 @@ sed -i "s|indexEdges.csv|${PWD_STR}/indexEdges.csv|" indexCreationScripts/read_f
 sed -i "s|indexDataEdges.csv|${PWD_STR}/indexDataEdges.csv|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|\"id\"|\"$8\"|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|@ATTRIBUTE|$9|" indexCreationScripts/read_from_file_${TYPE}.gremlin
-sed -i "s|@INDEX_TYPE|$7|" indexCreationScripts/read_from_file_${TYPE}.gremlin
+sed -i "s|\"@INDEX_TYPE\"|\"$7\"|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|@CONFIG|${CONFIG}|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|leafEdges.csv|${PWD_STR}/leafEdges.csv|" indexCreationScripts/read_from_file_leaves.gremlin
 sed -i "s|@CONFIG|${CONFIG}|" indexCreationScripts/read_from_file_leaves.gremlin
@@ -57,7 +57,7 @@ sed -i "s|${PWD_STR}/indexEdges.csv|indexEdges.csv|" indexCreationScripts/read_f
 sed -i "s|${PWD_STR}/indexDataEdges.csv|indexDataEdges.csv|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|\"$8\"|\"id\"|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|$9|@ATTRIBUTE|" indexCreationScripts/read_from_file_${TYPE}.gremlin
-sed -i "s|$7|@INDEX_TYPE|" indexCreationScripts/read_from_file_${TYPE}.gremlin
+sed -i "s|\"$7\"|\"@INDEX_TYPE\"|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|${CONFIG}|@CONFIG|" indexCreationScripts/read_from_file_${TYPE}.gremlin
 sed -i "s|${PWD_STR}/leafEdges.csv|leafEdges.csv|" indexCreationScripts/read_from_file_leaves.gremlin
 sed -i "s|${CONFIG}|@CONFIG|" indexCreationScripts/read_from_file_leaves.gremlin
