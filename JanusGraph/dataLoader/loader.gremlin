@@ -67,7 +67,7 @@ def boolean readBridge (final JanusGraph g, final String bridgeFile,
     cache_node = null
     node_map = new HashMap<Long, CacheVertex>()
     for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter (delimiterChar as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote (quoteChar as char).parse (new FileReader (bridgeFile)) ) {
-        if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { 
+        if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { 
             g.tx().commit(); System.gc();
             println 'line:'+csvrec.getRecordNumber()
         }
@@ -144,7 +144,7 @@ prev_val = -1
 pre = System.nanoTime()
 
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/place_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'place')
         v.property('pl_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -163,7 +163,7 @@ g.tx().commit(); System.gc();
 println '###### Completed place #######\n'
 
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/person_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'person')
         v.property('p_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -205,7 +205,7 @@ g.tx().commit(); System.gc();
 println '###### Completed person #######\n'
 prev_val = -1
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/organisation_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'organization')
         v.property('o_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -233,7 +233,7 @@ g.tx().commit(); System.gc();
 println '###### Completed organization #######\n'
 prev_val = -1
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/post_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'post')
         v.property('po_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -274,7 +274,7 @@ g.tx().commit(); System.gc();
 println '###### Completed post #######\n'
 prev_val = -1
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/comment_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'comment')
         v.property('c_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -309,7 +309,7 @@ g.tx().commit(); System.gc();
 println '###### Completed comment #######\n'
 prev_val = -1
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/forum_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'forum')
         v.property('f_id', csvrec.get(0).toLong())
     if (csvrec.get(1).trim()) {
@@ -342,7 +342,7 @@ if(bridge.hasNext()){
     b_record = bridge.next();
 }*/
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/tag_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'tag')
     pk = csvrec.get(0).toLong()
         v.property('t_id', pk)
@@ -370,7 +370,7 @@ g.tx().commit(); System.gc();
 println '###### Completed tag #######\n'
 
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/tagclass_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = g.addVertex(T.label, 'tagclass')
     pk = csvrec.get(0).toLong()
         v.property('tc_id', pk)
@@ -387,7 +387,7 @@ g.tx().commit(); System.gc();
 println '###### Completed tagclass #######\n'
 
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/person_email_emailaddress_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = gt.V().has('p_id', csvrec.get(0).toLong()).next()
     try
     {
@@ -406,7 +406,7 @@ g.tx().commit(); System.gc();
 println '###### Completed email #######\n'
 
 for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter ('|' as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote('¡' as char).parse(new FileReader ('@DIR/person_speaks_language_0_0.csv'))){
-    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 50000 == 0) { g.tx().commit(); System.gc(); }
+    if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { g.tx().commit(); System.gc(); }
         v = gt.V().has('p_id', csvrec.get(0).toLong()).next()
     try
     {
@@ -429,30 +429,30 @@ println 'Nodes Loading time: ' + exec_time * 1.0 / 1E6
 
 pre = System.nanoTime()
 
-readBridge (g, '@SDIR/comment_hasCreator_person_0_0.csv', 'comment', 'c_id', 'person', 'p_id', 'hasCreator', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/comment_isLocatedIn_place_0_0.csv', 'comment', 'c_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/comment_replyOf_comment_0_0.csv', 'comment', 'c_id', 'comment', 'c_id', 'replyOf', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/comment_replyOf_post_0_0.csv', 'comment', 'c_id', 'post', 'po_id', 'replyOf', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/forum_containerOf_post_0_0.csv', 'forum', 'f_id', 'post', 'po_id', 'containerOf', '|', '¡', false, '', false, 50000, 0, 0)
-readBridge (g, '@SDIR/forum_hasMember_person_0_0.csv', 'forum', 'f_id', 'person', 'p_id', 'hasMember', '|', '¡', true, 'joinDate', true, 50000, 0, 1)
+readBridge (g, '@SDIR/comment_hasCreator_person_0_0.csv', 'comment', 'c_id', 'person', 'p_id', 'hasCreator', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/comment_isLocatedIn_place_0_0.csv', 'comment', 'c_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/comment_replyOf_comment_0_0.csv', 'comment', 'c_id', 'comment', 'c_id', 'replyOf', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/comment_replyOf_post_0_0.csv', 'comment', 'c_id', 'post', 'po_id', 'replyOf', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/forum_containerOf_post_0_0.csv', 'forum', 'f_id', 'post', 'po_id', 'containerOf', '|', '¡', false, '', false, 30000, 0, 0)
+readBridge (g, '@SDIR/forum_hasMember_person_0_0.csv', 'forum', 'f_id', 'person', 'p_id', 'hasMember', '|', '¡', true, 'joinDate', true, 30000, 0, 1)
 
-readBridge (g, '@SDIR/forum_hasModerator_person_0_0.csv', 'forum', 'f_id', 'person', 'p_id', 'hasModerator', '|', '¡', false, '', false, 50000, 1, 0)
+readBridge (g, '@SDIR/forum_hasModerator_person_0_0.csv', 'forum', 'f_id', 'person', 'p_id', 'hasModerator', '|', '¡', false, '', false, 30000, 1, 0)
 
-readBridge (g, '@SDIR/forum_hasTag_tag_0_0.csv', 'forum', 'f_id', 'tag', 't_id', 'hasTag', '|', '¡', false, '', false, 50000, 0, 1)
-readBridge (g, '@SDIR/organisation_isLocatedIn_place_0_0.csv', 'organization', 'o_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/person_hasInterest_tag_0_0.csv', 'person', 'p_id', 'tag', 't_id', 'hasInterest', '|', '¡', false, '', false, 50000, 0, 1)
-readBridge (g, '@SDIR/person_isLocatedIn_place_0_0.csv', 'person', 'p_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/person_knows_person_0_0.csv', 'person', 'p_id', 'person', 'p_id', 'knows', '|', '¡', true, 'creationDate', true, 50000, 0, 1)
-readBridge (g, '@SDIR/person_likes_comment_0_0.csv', 'person', 'p_id', 'comment', 'c_id', 'likes', '|', '¡', true, 'creationDate', true, 50000, 1, 1)
-readBridge (g, '@SDIR/person_likes_post_0_0.csv', 'person', 'p_id', 'post', 'po_id', 'likes', '|', '¡', true, 'creationDate', true, 50000, 1, 1)
-readBridge (g, '@SDIR/person_studyAt_organisation_0_0.csv', 'person', 'p_id', 'organization', 'o_id', 'studyAt', '|', '¡', true, 'classYear', false, 50000, 1, 1)
-readBridge (g, '@SDIR/person_workAt_organisation_0_0.csv', 'person', 'p_id', 'organization', 'o_id', 'workAt', '|', '¡', true, 'workFrom', false, 50000, 1, 1)
-readBridge (g, '@SDIR/place_isPartOf_place_0_0.csv', 'place', 'pl_id', 'place', 'pl_id', 'isPartOf', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/post_hasCreator_person_0_0.csv', 'post', 'po_id', 'person', 'p_id', 'hasCreator', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/post_hasTag_tag_0_0.csv', 'post', 'po_id', 'tag', 't_id', 'hasTag', '|', '¡', false, '', false, 50000, 0, 1)
-readBridge (g, '@SDIR/post_isLocatedIn_place_0_0.csv', 'post', 'po_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 50000, 1, 0)
-readBridge (g, '@SDIR/tag_hasType_tagclass_0_0.csv', 'tag', 't_id', 'tagclass', 'tc_id', 'hasType', '|', '¡', false, '', false, 50000, 0, 1)
-readBridge (g, '@SDIR/tagclass_isSubclassOf_tagclass_0_0.csv', 'tagclass', 'tc_id', 'tagclass', 'tc_id', 'isSubClassOf', '|', '¡', false, '', false, 50000, 1, 1)
+readBridge (g, '@SDIR/forum_hasTag_tag_0_0.csv', 'forum', 'f_id', 'tag', 't_id', 'hasTag', '|', '¡', false, '', false, 30000, 0, 1)
+readBridge (g, '@SDIR/organisation_isLocatedIn_place_0_0.csv', 'organization', 'o_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/person_hasInterest_tag_0_0.csv', 'person', 'p_id', 'tag', 't_id', 'hasInterest', '|', '¡', false, '', false, 30000, 0, 1)
+readBridge (g, '@SDIR/person_isLocatedIn_place_0_0.csv', 'person', 'p_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/person_knows_person_0_0.csv', 'person', 'p_id', 'person', 'p_id', 'knows', '|', '¡', true, 'creationDate', true, 30000, 0, 1)
+readBridge (g, '@SDIR/person_likes_comment_0_0.csv', 'person', 'p_id', 'comment', 'c_id', 'likes', '|', '¡', true, 'creationDate', true, 30000, 1, 1)
+readBridge (g, '@SDIR/person_likes_post_0_0.csv', 'person', 'p_id', 'post', 'po_id', 'likes', '|', '¡', true, 'creationDate', true, 30000, 1, 1)
+readBridge (g, '@SDIR/person_studyAt_organisation_0_0.csv', 'person', 'p_id', 'organization', 'o_id', 'studyAt', '|', '¡', true, 'classYear', false, 30000, 1, 1)
+readBridge (g, '@SDIR/person_workAt_organisation_0_0.csv', 'person', 'p_id', 'organization', 'o_id', 'workAt', '|', '¡', true, 'workFrom', false, 30000, 1, 1)
+readBridge (g, '@SDIR/place_isPartOf_place_0_0.csv', 'place', 'pl_id', 'place', 'pl_id', 'isPartOf', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/post_hasCreator_person_0_0.csv', 'post', 'po_id', 'person', 'p_id', 'hasCreator', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/post_hasTag_tag_0_0.csv', 'post', 'po_id', 'tag', 't_id', 'hasTag', '|', '¡', false, '', false, 30000, 0, 1)
+readBridge (g, '@SDIR/post_isLocatedIn_place_0_0.csv', 'post', 'po_id', 'place', 'pl_id', 'isLocatedIn', '|', '¡', false, '', false, 30000, 1, 0)
+readBridge (g, '@SDIR/tag_hasType_tagclass_0_0.csv', 'tag', 't_id', 'tagclass', 'tc_id', 'hasType', '|', '¡', false, '', false, 30000, 0, 1)
+readBridge (g, '@SDIR/tagclass_isSubclassOf_tagclass_0_0.csv', 'tagclass', 'tc_id', 'tagclass', 'tc_id', 'isSubClassOf', '|', '¡', false, '', false, 30000, 1, 1)
 
 exec_time = System.nanoTime() - pre
 println 'Edge Loading time: ' + exec_time * 1.0 / 1E6
