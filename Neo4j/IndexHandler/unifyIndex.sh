@@ -61,6 +61,7 @@ sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_index_$7.cql
 
 sed -i 's/file:\/\/'$pwdir_str'/{INDEXHANDLER_DIR}/g' add_ghost_edges_$7.cql
 sed -i 's/'$3'/{INDEX_NAME}/g' add_ghost_edges_$7.cql
-sed -i 's/'\"$9\"'/"{ATTRIBUTE_NAME}"/g' add_ghost_edges_$7.cql
+sed -i 's/'$9'/{ATTRIBUTE_NAME}/g' add_ghost_edges_$7.cql
 sed -i 's/'$8'/{INDEX_TYPE}/g' add_ghost_edges_$7.cql
 sed -i 's/'$1'/{DATA_NODE}/g' add_ghost_edges_$7.cql
+echo "[INFO]: Cleanup done"

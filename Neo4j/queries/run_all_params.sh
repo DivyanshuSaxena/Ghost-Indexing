@@ -9,8 +9,9 @@
 # $5 : Fullpath to the neo4j/ installation directory
 # $6 : Fullpath to the Janusgraph/GhostIndex folder
 # $7 : Fullpath to the cypher/queries subfolder in ldbc_snb_implementations folder
-# $8 : Username for the cypher shell
-# $9 : Password for the cypher shell
+# $8 : Cache size under which Neo4J is running
+# $9 : Username for the cypher shell
+# $10 : Password for the cypher shell
 
 if [ -e './params/bi_'$1'_neo_param.txt' ]
 then
@@ -22,4 +23,4 @@ fi
 
 # Run python file to fire queries on the cypher shell (with respective parameters)
 echo "Starting all params execution"
-python run_all_params.py $1 $2 $3 $4 $5 $7 $8 $9
+python run_all_params.py $1 $2 $3 $4 $5 $7 $8 $9 ${10}

@@ -10,21 +10,30 @@
 # 5: the fullpath to the neo4j/ installation directory
 # 6: the path to the cypher/queries subfolder in ldbc_snb_implementations
 #    folder or the path of the ghost-queries folder in the parent directory
-# 7: username for the cypher shell
-# 8: password for the cypher shell
+# 7: page cache size used by neo4j
+# 8: username for the cypher shell
+# 9: password for the cypher shell
 
 import os
 import sys
 import time
 from utils import config_parser
 
+if len(sys.argv) != 10:
+  print ('Command line arguments incorrect. Check documentation for help.')
+  sys.exit(0)
+
 query = sys.argv[1]
+dataset = sys.argv[2]
 is_ghost = int(sys.argv[3])
 batch_size = int(sys.argv[4])
 query_path = sys.argv[6]
-dataset = sys.argv[2]
+cache_size = sys.argv[7]
 
-results_folder = './results/'
+results_folder = './results/' + cache_size + '/'
+if not os.path.exists(results_folder):
+  os.makedirs(results_folder)
+
 params_folder = './params/'
 neo4j_bin = sys.argv[5] + '/bin/neo4j'
 cypher_shell = sys.argv[5] + '/bin/cypher-shell'
@@ -94,7 +103,7 @@ for query_param in params:
   tf.close()
 
   # Run the query
-  cypher_shell = cypher_shell + ' -u ' + sys.argv[7] + ' -p ' + sys.argv[8]
+  cypher_shell = cypher_shell + ' -u ' + sys.argv[8] + ' -p ' + sys.argv[9]
 
   # Run each parameter for num_tries times
   result_count = 0
