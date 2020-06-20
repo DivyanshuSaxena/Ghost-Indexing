@@ -67,7 +67,7 @@ def boolean readBridge (final JanusGraph g, final String bridgeFile,
     cache_node = null
     node_map = new HashMap<Long, CacheVertex>()
     for (final CSVRecord csvrec : CSVFormat.DEFAULT.withDelimiter (delimiterChar as char).withIgnoreEmptyLines().withAllowMissingColumnNames().withQuote (quoteChar as char).parse (new FileReader (bridgeFile)) ) {
-        if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 30000 == 0) { 
+        if (csvrec.getRecordNumber() > 0 & csvrec.getRecordNumber() % 15000 == 0) { 
             g.tx().commit(); System.gc();
             println 'line:'+csvrec.getRecordNumber()
         }

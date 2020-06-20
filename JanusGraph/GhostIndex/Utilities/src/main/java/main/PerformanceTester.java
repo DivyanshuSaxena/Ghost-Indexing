@@ -16,9 +16,9 @@ public class PerformanceTester {
 
     public static void main(String[] argv) throws Exception {
 
-        if (argv.length < 5) {
+        if (argv.length < 6) {
             System.out.println(
-                    "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> <distributed or not> [<confFile>]");
+                    "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> <distributed or not> <isGhost> [<confFile>]");
             System.out.println("Eg: java a.out IndexQuery1 1 1 1000 1 [baadal/local/aryabhata]");
             return;
         }
@@ -28,6 +28,7 @@ public class PerformanceTester {
         int skipLines = Integer.parseInt(argv[2]);
         int dataset = Integer.parseInt(argv[3]);
         String distributed = argv[4];
+        int isGhost = argv[5];
 
         Class queryClass = Class.forName("Queries." + queryClassName);
         Queries.BaseQuery query = (Queries.BaseQuery) queryClass.newInstance();
@@ -82,7 +83,10 @@ public class PerformanceTester {
                             .set("index.search.backend", "elasticsearch")
                             .set("index.search.hostname", "10.17.5.53:9210").open();
                 } else {
-                    graph = JanusGraphFactory.open("../conf/janusgraph-cassandra-es.properties");
+                    if (isGhost == 1)
+                        graph = JanusGraphFactory.open("../conf/janusgraph/janusgraph-cassandra-es." + dataset + ".g.properties");
+                    else
+                        graph = JanusGraphFactory.open("../conf/janusgraph/janusgraph-cassandra-es." + dataset + ".properties");
                 }
                 GraphTraversalSource g = graph.traversal();
 

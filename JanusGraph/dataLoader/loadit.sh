@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if (( $# != 4 )); then
-    echo 'Usage: ./loadit.sh <source> <dest> <path_to_gremlin.sh> <whether_loading_in_distributed_setting>\n';
+if (( $# != 5 )); then
+    echo 'Usage: ./loadit.sh <source> <dest> <path_to_gremlin.sh> <dataset_size> <whether_loading_in_distributed_setting>\n';
     exit -1;
 fi
 
@@ -47,8 +47,8 @@ echo '============';
 echo 'Schema creation commands generation'
 
 PWD=$(pwd)
-CONFIG="g = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/janusgraph-cassandra-es.properties');"
-if [[ $4 -gt 0 ]]
+CONFIG="g = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/janusgraph/janusgraph-cassandra-es.$4.properties');"
+if [[ $5 -gt 0 ]]
 then
     echo "DISTRIBUTED SETTING"
     CONFIG="g = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53:9210').open();"

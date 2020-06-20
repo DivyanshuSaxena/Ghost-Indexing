@@ -5,8 +5,8 @@ if [ "$JANUS_HOME" = "" ]; then
     exit 1
 fi
 
-if [ "$#" -ne 10 ]; then
-    echo "Usage: <script.sh> <label-of-vertex> <index-name> <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> <index-type(B-Tree(B)/B+Tree(BP))> <id-attribute-name> <attribute-name-to-index> <indexing_in_distributed_setting (0/1)>" >&2
+if [ "$#" -ne 11 ]; then
+    echo "Usage: <script.sh> <label-of-vertex> <index-name> <min-no-of-child-in-bTree> <column-no.-in-csv-to-index-on> <input-csv> <index-key-datatype(Date(D)/String(S)/Int(I))> <index-type(B-Tree(B)/B+Tree(BP))> <id-attribute-name> <attribute-name-to-index> <indexing_in_distributed_setting (0/1)> <dataset-size>" >&2
     exit 1
 fi
 
@@ -21,7 +21,7 @@ echo "[INFO]: Generating Index files";
 echo "[INFO]: csv files generated"
 #exit 0
 
-CONFIG="graph = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/janusgraph-cassandra-es.properties');"
+CONFIG="graph = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/janusgraph/janusgraph-cassandra-es.${11}.g.properties');"
 if [[ ${10} -gt 0 ]]; then
     CONFIG="graph = JanusGraphFactory.build().set('storage.backend', 'cassandrathrift').set('storage.hostname', '10.17.5.53').set('index.search.backend', 'elasticsearch').set('index.search.hostname', '10.17.5.53:9210').open();"
 fi
