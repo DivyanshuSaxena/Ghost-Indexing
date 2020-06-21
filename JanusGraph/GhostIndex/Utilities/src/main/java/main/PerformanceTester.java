@@ -19,7 +19,7 @@ public class PerformanceTester {
         if (argv.length < 6) {
             System.out.println(
                     "Usage: java a.out <queryClassName(only the endclassname)> <param_number> <skiplines> <dataset> <distributed or not> <isGhost> [<confFile>]");
-            System.out.println("Eg: java a.out IndexQuery1 1 1 1000 1 [baadal/local/aryabhata]");
+            System.out.println("Eg: java a.out IndexQuery1 1 1 1000 1 0 [baadal/local/aryabhata]");
             return;
         }
 
@@ -28,21 +28,21 @@ public class PerformanceTester {
         int skipLines = Integer.parseInt(argv[2]);
         int dataset = Integer.parseInt(argv[3]);
         String distributed = argv[4];
-        int isGhost = argv[5];
+        int isGhost = Integer.parseInt(argv[5]);
 
         Class queryClass = Class.forName("Queries." + queryClassName);
         Queries.BaseQuery query = (Queries.BaseQuery) queryClass.newInstance();
-        if (argv.length > 5) {
-            query.confFile = argv[5];
+        if (argv.length > 6) {
+            query.confFile = argv[6];
         }
 
         PerformanceTester p = new PerformanceTester();
-        p.getPerformance(query, query_numeric, skipLines, dataset, distributed);
+        p.getPerformance(query, query_numeric, skipLines, dataset, distributed, isGhost);
 
     }
 
     public void getPerformance(Queries.BaseQuery query, int param_file, int skipParamsLines, int dataset,
-            String distributed) throws Exception {
+            String distributed, int isGhost) throws Exception {
         String paramsDelimiter = "\\|";
 
         // create query file path and result file path
