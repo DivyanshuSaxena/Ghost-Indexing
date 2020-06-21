@@ -1,4 +1,5 @@
 # Read the results and calculate statistics for a given query
+# Writes the statistics in file stats_<query>_<cache>.csv
 # 
 # Takes the following command line arguments
 # 1: the query number for which the statistics are to be calculated
@@ -9,6 +10,7 @@ import sys
 
 query = sys.argv[1]
 cache_size = sys.argv[2]
+stats_file = './results/stats_' + query + '_' + cache_size + '.csv'
 
 results_folder = './results/' + cache_size + '/'
 datasets = ["1000", "2500", "4000", "7500"]
@@ -51,8 +53,12 @@ for dataset in datasets:
   cold_speedup[dataset] = average_cold_speedup
   warm_speedup[dataset] = average_warm_speedup
 
-# Output on the console
+# Write in file and output on the console
 print("Cache size: " + cache_size)
-for dataset in datasets:
-  print("Dataset " + str(dataset) + ": "+ str(cold_speedup[dataset]) + 
-        " " + str(warm_speedup[dataset]))
+with open(stats_file, 'w') as f:
+  f.write('Dataset, Cold Speedup, Warm Speedup\n')
+  for dataset in datasets:
+    f.write(str(dataset) + ', ' + str(cold_speedup[dataset]) + ', ' + 
+            str(warm_speedup[dataset]) + '\n')
+    print("Dataset " + str(dataset) + ": "+ str(cold_speedup[dataset]) + 
+          " " + str(warm_speedup[dataset]))
