@@ -62,6 +62,10 @@ for dataset in ${datasets[*]}; do
   # Run the Neo4J queries over custom-made ghost indexes
   cd ${14}/queries
   ./run_all_params.sh $1 $dataset 1 $9 ${11} ${14}/../JanusGraph/GhostIndex ${14}/ghost-queries ${15} neo4j ghost2019
+
+  # Run the filter queries to get query result size
+  cd ${14}/queries
+  python get_filter_results.py $1 $dataset ${11} ${14}/ghost-queries neo4j ghost2019
 done
 
 echo "Done"
