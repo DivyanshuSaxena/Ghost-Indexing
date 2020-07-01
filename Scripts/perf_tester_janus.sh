@@ -9,10 +9,10 @@
 # $5 : Query number for which the test is to be run
 # $6 : Whether the experiments are being run in distributed settings (0/1)
 
-# datasets=(1000 2500 4000 7500)
-# iterations=(0 1)
-datasets=( 2500 )
-iterations=( 0 )
+datasets=(1000 2500 4000 7500)
+iterations=(0 1)
+# datasets=( 7500 )
+# iterations=( 0 )
 cwd=$(pwd)
 
 load() {
@@ -46,6 +46,7 @@ load() {
 				cp $3/GhostIndex/conf/standalone/cassandra/cassandra.$dataset.g.yaml $1/conf/cassandra/cassandra.yaml
 				cp $3/GhostIndex/conf/standalone/elasticsearch/elasticsearch.$dataset.g.yml $1/elasticsearch/config/elasticsearch.yml
 			fi
+			sleep 5s
 			$1/bin/janusgraph.sh start
 
 			if [[ $iteration -eq 0 ]]; then
@@ -60,6 +61,11 @@ load() {
 				cd $3/IndexHandler
 				echo "time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus_$dataset/post_0_0.csv D BP po_id po_creationDate $5 ${dataset}"
 				time ./unifyIndex.sh post post_creationDate_index_bPlus_$4 $4 3 $2/social_network_janus_$dataset/post_0_0.csv D BP po_id po_creationDate $5 $dataset
+				##################################
+				# Add unifyIndex.sh command here #
+				##################################
+				# echo "time ./unifyIndex.sh tagClass tagClass_bTree_$4 $4 2 $2/social_network_janus_$dataset/tagclass_0_0.csv S B tc_id tc_name $5 ${dataset}"
+				# time ./unifyIndex.sh tagclass tagclass_bTree_$4 $4 2 $2/social_network_janus_$dataset/tagclass_0_0.csv S B tc_id tc_name $5 $dataset
 				cd $cwd
 			fi
 
@@ -85,6 +91,7 @@ performance() {
 	# Compile the project
 	cd $2/GhostIndex/Utilities
 	mvn compile
+	cd $cwd
 
 	for dataset in ${datasets[*]}; do
 		echo "=================================================="
