@@ -57,7 +57,7 @@ out.txt
 
 JanusGraph/dataLoader/reader.gremlin
 Neo4j/dataLoader/reader.gremlin
-Neo4j/queries/*.txt
+**/queries/*.txt
 Neo4j/queries/params/
 Neo4j/queries/results/
 
