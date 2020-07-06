@@ -47,7 +47,7 @@ echo '============';
 echo 'Schema creation commands generation'
 
 PWD=$(pwd)
-CONFIG="g = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/janusgraph/janusgraph-cassandra-es.$4.properties');"
+CONFIG="g = JanusGraphFactory.open('${PWD}/../GhostIndex/conf/standalone/janusgraph/janusgraph-cassandra-es.$4.properties');"
 if [[ $5 -gt 0 ]]
 then
     echo "DISTRIBUTED SETTING"

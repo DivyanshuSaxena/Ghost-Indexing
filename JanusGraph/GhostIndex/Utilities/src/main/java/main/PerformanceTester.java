@@ -84,9 +84,9 @@ public class PerformanceTester {
                             .set("index.search.hostname", "10.17.5.53:9210").open();
                 } else {
                     if (isGhost == 1)
-                        graph = JanusGraphFactory.open("../conf/janusgraph/janusgraph-cassandra-es." + dataset + ".g.properties");
+                        graph = JanusGraphFactory.open("../conf/standalone/janusgraph/janusgraph-cassandra-es." + dataset + ".g.properties");
                     else
-                        graph = JanusGraphFactory.open("../conf/janusgraph/janusgraph-cassandra-es." + dataset + ".properties");
+                        graph = JanusGraphFactory.open("../conf/standalone/janusgraph/janusgraph-cassandra-es." + dataset + ".properties");
                 }
                 GraphTraversalSource g = graph.traversal();
 
