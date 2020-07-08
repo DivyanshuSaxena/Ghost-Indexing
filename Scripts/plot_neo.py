@@ -5,7 +5,9 @@
 # 2: Directory from which to read the results
 # 3: Directory from which to read the filter result sizes
 # 4: Plot filter result sizes or parameters on the X axis (size/param)
+# 5: Directory to save the results in
 
+import os
 import sys
 import math
 import matplotlib.pyplot as plt
@@ -15,9 +17,13 @@ query = sys.argv[1]
 results_dir = sys.argv[2]
 filter_dir = sys.argv[3]
 x_axis = sys.argv[4] == "size"
+figure_dir = sys.argv[5] + '/Query ' + query
 
 datasets = ["1000", "2500", "4000", "7500"]
 cache_sizes = ["10m", "100m", "500m", "1g"]
+
+if not os.path.exists(figure_dir):
+  os.makedirs(figure_dir)
 
 for cache in cache_sizes:
     cache_results_dir = results_dir + '/results_neo_' + cache + '/' + cache
@@ -90,5 +96,4 @@ for cache in cache_sizes:
         ax.plot(param_sizes, ghost_warm_cache, 'b.-')
 
         fig.legend((l1, l2), ('Index', 'Ghost Index'), 'upper left')
-
-        plt.show()
+        plt.savefig(figure_dir + '/N' + cache + '_' + query + '_' + dataset + '.png')

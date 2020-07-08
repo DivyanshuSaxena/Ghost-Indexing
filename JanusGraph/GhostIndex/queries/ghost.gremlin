@@ -51,10 +51,10 @@ g.V().has("index_id", -1).out().has(
 g.V().has("index_id", -1).out().has(
   "name", "post_creationDate_index_bPlus_2000"
 ).repeat(
-  __.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV()
+  __.outE("INDEX_EDGE").has("max", P.gte(date)).inV()
 ).until(
   __.out("INDEX_EDGE").count().is(0)
-).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV().where(
+).outE("INDEX_DATA_EDGE").has("val", P.gte(date)).inV().where(
   __.inE("likes").count().is(
     P.gt(likeThreshold)
   )

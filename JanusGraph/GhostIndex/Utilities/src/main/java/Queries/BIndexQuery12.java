@@ -54,8 +54,8 @@ public class BIndexQuery12 extends BaseQuery {
             long startTime = System.currentTimeMillis();
 
             List<Vertex> result = g.V().has("index_id", -1).out().has("name", "post_creationDate_index_bPlus_2000")
-                    .repeat(__.outE("INDEX_EDGE").not(__.has("min", P.gte(date))).inV())
-                    .until(__.out("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE").has("val", P.lte(date)).inV()
+                    .repeat(__.outE("INDEX_EDGE").not(__.has("max", P.lte(date))).inV())
+                    .until(__.out("INDEX_EDGE").count().is(0)).outE("INDEX_DATA_EDGE").has("val", P.gte(date)).inV()
                     .where(__.inE("likes").count().is(P.gt(likeThreshold))).toList();
 
             long endTime = System.currentTimeMillis();
