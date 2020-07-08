@@ -106,10 +106,10 @@ performance() {
 				$1/bin/gremlin-server.sh start
 			else
 				if [[ $iteration -eq 0 ]]; then
-					cp $2/GhostIndex/conf/standalone/cassandra/cassandra.$dataset.yaml $1/conf/casssandra/cassandra.yaml
+					cp $2/GhostIndex/conf/standalone/cassandra/cassandra.$dataset.yaml $1/conf/cassandra/cassandra.yaml
 					cp $2/GhostIndex/conf/standalone/elasticsearch/elasticsearch.$dataset.yml $1/elasticsearch/config/elasticsearch.yml
 				else
-					cp $2/GhostIndex/conf/standalone/cassandra/cassandra.$dataset.g.yaml $1/conf/casssandra/cassandra.yaml
+					cp $2/GhostIndex/conf/standalone/cassandra/cassandra.$dataset.g.yaml $1/conf/cassandra/cassandra.yaml
 					cp $2/GhostIndex/conf/standalone/elasticsearch/elasticsearch.$dataset.g.yml $1/elasticsearch/config/elasticsearch.yml
 				fi
 				$1/bin/janusgraph.sh start
