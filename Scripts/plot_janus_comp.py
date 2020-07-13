@@ -6,7 +6,9 @@
 # 3: Directory from which to read the results for second fan-out
 # 4: Directory from which to read the filter result sizes
 # 5: Plot filter result sizes or parameters on the X axis (size/param)
+# 6: Directory to save the results in
 
+import os
 import sys
 import math
 import matplotlib.pyplot as plt
@@ -17,12 +19,16 @@ results_dir_1 = sys.argv[2]
 results_dir_2 = sys.argv[3]
 filter_dir = sys.argv[4]
 x_axis = sys.argv[5] == "size"
+figure_dir = sys.argv[6]
 
 # Get the fan-outs for the two directories
-fanout_1 = results_dir_1.split('_')[2]
-fanout_2 = results_dir_2.split('_')[2]
+fanout_1 = results_dir_1.split('/')[-1]
+fanout_2 = results_dir_2.split('/')[-1]
 
-datasets = ["1000", "2500", "4000", "7500"]
+if not os.path.exists(figure_dir):
+  os.makedirs(figure_dir)
+
+datasets = ["1000", "2500", "4000", "7500", "10000"]
 for dataset in datasets:
     results_size_file = filter_dir + '/bi_' + query + '_filter_results_' + dataset + '.txt'
 
@@ -34,7 +40,10 @@ for dataset in datasets:
         param_sizes = [x.strip().split(',') for x in content[1:]]
         param_num = 1
         for ele in param_sizes:
-            ele[0] = 'p' + str(param_num)
+            ele[0] = str(param_num)
+            if len(ele[1]) > 3:
+                ele[1] = int(ele[1])//1000
+                ele[1] = str(ele[1]) + 'k'
             param_num += 1
         param_sizes = [','.join(x) for x in param_sizes]
 
@@ -72,15 +81,15 @@ for dataset in datasets:
     # Plot these results
     fig = plt.figure(constrained_layout=True, figsize=fig_size)
     gs = gridspec.GridSpec(2, 1, figure=fig)
-    ax = fig.add_subplot(gs[0, :])
-    plt.title('JanusGraph | Query ' + query + ' | Cold start | Dataset ' +
-              dataset)
-    ax.set_ylabel('Timings (s)')
-    ax.set_ylim([0, max_cold_time])
+    ax = fig.add_subplot(gs[:, :])
+    # plt.title('JanusGraph | Query ' + query + ' | Cold start | Dataset ' +
+    #           dataset)
+    # ax.set_ylabel('Timings (s)')
+    # ax.set_ylim([0, max_cold_time])
     l1, = ax.plot(param_sizes, cold_start_1, 'r+-')
     l2, = ax.plot(param_sizes, cold_start_2, 'b.-')
 
-    ax = fig.add_subplot(gs[1, :])
+    # ax = fig.add_subplot(gs[:, :])
     plt.title('JanusGraph | Query ' + query + ' | Warm Cache | Dataset ' +
               dataset)
     ax.set_ylabel('Timings (s)')
@@ -90,5 +99,5 @@ for dataset in datasets:
     ax.plot(param_sizes, warm_cache_2, 'b.-')
 
     fig.legend((l1, l2), (fanout_1, fanout_2), 'upper left')
-
+    plt.savefig(figure_dir + '/JG_' + query + '_' + dataset + '.png')
     plt.show()

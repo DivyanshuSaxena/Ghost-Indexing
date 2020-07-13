@@ -4,16 +4,17 @@
 # Takes the following command line arguments
 # 1: the query number for which the statistics are to be calculated
 # 2: the cache size used for the experiment
+# 3: results folder
 
 import os
 import sys
 
 query = sys.argv[1]
 cache_size = sys.argv[2]
-stats_file = './results/stats_' + query + '_' + cache_size + '.csv'
+results_folder = sys.argv[3]
+stats_file = results_folder + '/stats_' + query + '_' + cache_size + '.csv'
 
-results_folder = './results/' + cache_size + '/'
-datasets = ["1000", "2500", "4000", "7500"]
+datasets = ["1000", "2500", "4000", "7500", "10000"]
 
 cold_speedup = {}
 warm_speedup = {}

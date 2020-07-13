@@ -17,9 +17,9 @@ query = sys.argv[1]
 results_dir = sys.argv[2]
 filter_dir = sys.argv[3]
 x_axis = sys.argv[4] == "size"
-figure_dir = sys.argv[5] + '/Query ' + query
+figure_dir = sys.argv[5] + '/Query' + query
 
-datasets = ["1000", "2500", "4000", "7500"]
+datasets = ["1000", "2500", "4000", "7500", "10000"]
 cache_sizes = ["10m", "100m", "500m", "1g"]
 
 if not os.path.exists(figure_dir):
@@ -38,7 +38,10 @@ for cache in cache_sizes:
             param_sizes = [x.strip().split(',') for x in content[1:]]
             param_num = 1
             for ele in param_sizes:
-                ele[0] = 'p' + str(param_num)
+                ele[0] = str(param_num)
+                if len(ele[1]) > 3:
+                    ele[1] = int(ele[1])//1000
+                    ele[1] = str(ele[1]) + 'k'
                 param_num += 1
             param_sizes = [','.join(x) for x in param_sizes]
 
@@ -97,3 +100,4 @@ for cache in cache_sizes:
 
         fig.legend((l1, l2), ('Index', 'Ghost Index'), 'upper left')
         plt.savefig(figure_dir + '/N' + cache + '_' + query + '_' + dataset + '.png')
+        # plt.show()
