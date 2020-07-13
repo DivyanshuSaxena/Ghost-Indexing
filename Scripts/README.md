@@ -1,0 +1,15 @@
+# Ghost-Indexing
+
+## Scripts for running experiments
+
+This directory holds the scripts for running various experiments with JanusGraph and Neo4J. The description for each of these scripts is mentioned below:  
+
+- `perf_tester_janus.sh`: Shell script to run a complete run of experiments - starting from loading data onto JanusGraph, to creating indexes, to running queries - utilizing conventional indexes as well as running queries utilizing ghost indexes. This script comes bundled with a huge set of customizable arguments - for details about each of these arguments, refer to the opening lines of this file.
+  - Standalone JanusGraph Instance: For the standalone instance, JanusGraph, Cassandra and Elasticsearch services shall be started within the same machine.
+  - Distributed Setting with a single JanusGraph master: The scripts in the `distributed/` directory can be used for setting up remote databases in a cluster (under testing).
+- `perf_tester_neo4j.sh`: Shell script to run a complete run of experiments - starting from loading data onto Neo4J, to creating indexes, to running queries - utilizing conventional indexes as well as running queries utilizing ghost indexes. This script comes bundled with a huge set of customizable arguments - for details about each of these arguments, refer to the opening lines of this file. This requires the benchmark implementations for the queries and loading procedure defined by LDBC for Neo4j. Check out those repositories [here](https://github.com/ldbc/ldbc_snb_datagen) and [here](https://github.com/ldbc/ldbc_snb_implementations).  
+- `plot_janus.py`: Python script to plot the results obtained on running a query with conventional indexes vs ghost indexes for JanusGraph. It can plot the query timings (for the cold start condition as well as warm cache condition), versus the query result size or the parameter. For more details about the CLI arguments used, refer to the opening lines of the file.
+- `plot_janus_comp.py`: Python script to plot the results obtained on running a query with ghost indexes of different fan-out factors for JanusGraph. It can plot the query timings (for the cold start condition as well as warm cache condition), versus the query result size or the parameter. For more details about the CLI arguments used, refer to the opening lines of the file.
+- `plot_neo.py`: Python script to plot the results obtained on running a query with conventional indexes vs ghost indexes for Neo4J. It can plot the query timings (for the cold start condition as well as warm cache condition), versus the query result size or the parameter, for various page-cache sizes by Neo4J. For more details about the CLI arguments used, refer to the opening lines of the file.
+- `remove_cassandra_data.gremlin`: Useful only while running JanusGraph in **distributed** settings - used for removing the Cassandra Data on a distributed JanusGraph cluster.
+- `remove_es_indexes.sh` and `remove_es_indexes_dist.sh`: Remove (permanently delete) the Mixed Indices from Elasticsearch service while running JanusGraph on single node vs distributed graph setting.
