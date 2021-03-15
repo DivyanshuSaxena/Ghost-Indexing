@@ -3,22 +3,16 @@ package Queries;
 import main.QueryResult;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.T;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.fold;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.group;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.select;
 
 public class Query3 extends Query {
